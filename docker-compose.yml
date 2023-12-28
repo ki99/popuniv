@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: ./popuniv-spring
+    ports:
+      - 3001:8080
+    restart: on-failure
+  web:
+    build:
+      context: ./popuniv-react
+    ports:
+      - 3000:3000
