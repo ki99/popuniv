@@ -3,6 +3,7 @@ import ClickBox from "./ClickBox";
 import DashBoard from "./DashBoard"; // DashBoard.js 파일의 경로에 따라 적절히 수정해야 합니다.
 import axios from 'axios';
 import { useEffect, useState, useCallback } from 'react';
+import "../index.css"
 function Home() {
   const [resetCount, setResetCount] = useState(0);
   const [dashboardData, setDashboardData] = useState(0);
@@ -19,14 +20,17 @@ function Home() {
   }
 
   const updateDashboardData = () => {
-    // here 구현해라
     return { popuniv: '1', popunivadmin: "43"};
   };
 
   return (
-    <div>
-      <ClickBox handleResetClickCount={handlResetClickCount}/>
-      <DashBoard dashboardData={dashboardData}/>
+    <div className="container">
+      <div className="clickbox">
+        <ClickBox handleResetClickCount={handlResetClickCount}/>
+      </div>
+      <div className="dashboard">
+        <DashBoard dashboardData={dashboardData}/>
+      </div>
     </div>
   );
 }
