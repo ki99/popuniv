@@ -36,7 +36,7 @@ export default function ClickBox({handleResetClickCount}) {
       }
     };
 
-    const interval = setInterval(sendClickCountToServer, 1000); // 3초마다 sendClickCountToServer 함수 실행
+    const interval = setInterval(sendClickCountToServer, 500); // 3초마다 sendClickCountToServer 함수 실행
 
     return () => {
       clearInterval(interval); // 컴포넌트가 언마운트되면 interval 정리
