@@ -3,6 +3,21 @@ spring:
     redis:
       host: localhost
       port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    각자 PC에 만들어놓은 Database이름을 써야 합니다. 
+    url: jdbc:mysql://localhost:3306/qa?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    #    mysql에 생성한 사용자 계정 정보를 써야 합니다.
+    username: root
+    password: rootpass # 자신의 mysql 비밀번호 
+  thymeleaf:
+    cache: false
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
 logging:
   level:
     root: debug
