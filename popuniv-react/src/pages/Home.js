@@ -1,24 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
-export default function Home() {
-  const [backendString, setBackendString] = useState('');
+import React from "react";
+import ClickBox from "./ClickBox";
+import DashBoard from "./DashBoard"; // DashBoard.js 파일의 경로에 따라 적절히 수정해야 합니다.
+import { useEffect, useState, useCallback } from 'react';
+function Home() {
+  const [resetCount, setResetCount] = useState(0);
+  const [dashboardData, setDashboardData] = useState(0);
 
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 API 요청을 보내고 응답 값을 받아옵니다.
-    axios.get('/homestring')
-      .then(response => {
-        console.log('API 요청 성공', response);
-        setBackendString(response.data); // 응답 값을 상태 변수에 저장합니다.
-      })
-      .catch(error => {
-        console.error('API 요청 중 에러가 발생했습니다:', error);
-      });
-  }, []);
+    console.log("useEffect executed");
+    updateDashboardData();
+
+  }, [resetCount]);
+
+  const handlResetClickCount = () => {
+    console.log("handlereset executed");
+    if (resetCount === 0) {setResetCount(1);} else {setResetCount(0);}
+  }
+
+  const updateDashboardData = async () => {
+    // try {
+    //   const response = await fetch('/api/dashboard');
+    //   const data = await response.json();
+    //   setDashboardData(data);
+    // } catch (error) {
+    //   console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
+    // }
+    setDashboardData(dashboardData+1);
+    console.log("dashboardData : ", dashboardData);
+  };
+
   return (
     <div>
-      <h2 className="text-center mt-5 mb-3">Home55</h2>
-      <p>Backend에서 가져온 string : {backendString}</p>
+      <ClickBox handleResetClickCount={handlResetClickCount}/>
+      <DashBoard dashboardData={dashboardData}/>
     </div>
   );
 }
+
+export default Home;
