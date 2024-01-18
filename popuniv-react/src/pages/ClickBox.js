@@ -18,11 +18,19 @@ export default function ClickBox({handleResetClickCount}) {
   }, []);
 
   useEffect(() => {
-    const sendClickCountToServer = () => {
+    const sendClickCountToServer = async () => {
       if (clickCount > 0) {
         // 클릭 횟수가 0보다 큰 경우에만 서버로 전송
-        console.log(`클릭 횟수를 서버로 전송: ${clickCount}`);
-        setAccClickCount(accClickCount + clickCount);
+        try {
+          const response = await axios.post(`${process.env.REACT_APP_API_URL}/clicks`, {
+            group: "popuniv",
+            clickCount: clickCount
+          });
+          console.log(`클릭 횟수를 서버로 전송 완료: ${clickCount}`);
+          setAccClickCount(response.data);
+        } catch (error) {
+          console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
+        }
         setClickCount(0); // 클릭 횟수 초기화
         handleResetClickCount();
       }
