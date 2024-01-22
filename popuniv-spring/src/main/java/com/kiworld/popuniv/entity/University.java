@@ -18,6 +18,6 @@ public class University {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private int id; // 시퀀스, auto_increment
 
-  @Column(nullable = false, length = 30)
+  @Column(nullable = false, length = 100, unique = true)
   private String name; // 대학교 이름
 }
