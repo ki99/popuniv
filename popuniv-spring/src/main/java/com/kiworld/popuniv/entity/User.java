@@ -23,5 +23,8 @@ public class User {
 	
 	@Column(nullable = false, length = 50)
 	private String email;
-
+  // make role column
+  @Enumerated(EnumType.STRING)
+  private UserType role; // Enum을 쓰는게 좋다. // ADMIN, USER
+  
 }
