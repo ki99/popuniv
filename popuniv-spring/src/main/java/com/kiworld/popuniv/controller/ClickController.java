@@ -26,8 +26,6 @@ public class ClickController {
   public Long recordClicks(@RequestBody ClickData clickData) {
       String groupName = clickData.getGroup();
       Long clickCount = clickData.getClickCount();
-      logger.debug("targetName : {}", groupName);
-      logger.debug("clickCount : {}", clickCount);
 
       ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
       String key = groupName + "_clicks";
