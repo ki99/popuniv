@@ -20,7 +20,15 @@ function Home() {
   }
 
   const updateDashboardData = () => {
-    return { popuniv: '1', popunivadmin: "43"};
+    // api get 요청을 해서 json을 받아와서 dashboardData를 업데이트 해줍니다.
+    axios.get(`${process.env.REACT_APP_API_URL}/dashboard`)
+      .then((response) => {
+        console.log(response.data);
+        setDashboardData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
