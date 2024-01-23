@@ -4,11 +4,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.apache.catalina.connector.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -28,8 +31,9 @@ public class ClickController {
     return clicks;
   }
 
-  @PostMapping("/api/universities/{university_name}/clicks/{click_count}")
-  public Long recordClicks(@PathVariable("university_name") String universityName,@PathVariable("click_count") Long clickCount) {
+  @PostMapping("/api/universities/{university_name}/clicks")
+  public Long recordClicks(@PathVariable("university_name") String universityName, @RequestBody Map<String, Long> requestBody) {
+    long clickCount = requestBody.get("clickCount");
 
     ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
     String key = universityName + "_clicks";
@@ -39,9 +43,9 @@ public class ClickController {
       logger.debug("key exists!");
       incrementedValue = valueOperations.increment(key, clickCount);
     } else {
-        logger.debug("key not exists!");
-        valueOperations.set(key, clickCount);
-        incrementedValue = clickCount;
+      logger.debug("key not exists!");
+      valueOperations.set(key, clickCount);
+      incrementedValue = clickCount;
     }
     logger.debug("incrementedValue : {}", incrementedValue);
 
