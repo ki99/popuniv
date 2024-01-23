@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import UniversityList from "./UniversityList";
 
-export default function ClickBox({ handleResetClickCount}) {
+export default function ClickBox({ handleResetClickCount }) {
   const [clickCount, setClickCount] = useState(0);
   const [accClickCount, setAccClickCount] = useState(0);
   const [selectedUniversity, setSelectedUniversity] = useState('popuniv university');
@@ -11,8 +11,7 @@ export default function ClickBox({ handleResetClickCount}) {
     if (clickCount > 0) {
       // 클릭 횟수가 0보다 큰 경우에만 서버로 전송
       try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/clicks`, {
-          group: selectedUniversity + " university",
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/universities/${selectedUniversity}/clicks`, {
           clickCount: clickCount
         });
         console.log(`클릭 횟수를 서버로 전송 완료: ${clickCount}`);
@@ -28,12 +27,9 @@ export default function ClickBox({ handleResetClickCount}) {
   const setAccClickCountWithServer = async (v) => {
     console.log("selected university: " + v);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/clicks`, {
-        group: v + " university",
-        clickCount: clickCount
-      });
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/universities/${selectedUniversity}/clicks`);
       console.log("대시보드 데이터를 성공적으로 가져왔습니다.");
-      console.log(response.data);
+      console.log("selectedUniversity의 response.data :" + selectedUniversity + " " + response.data);
       setAccClickCount(response.data);
     } catch (error) {
       console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
@@ -43,9 +39,13 @@ export default function ClickBox({ handleResetClickCount}) {
   const handleUniversitySelect = (event) => {
     console.log("handle university select");
     const v = event.target.value;
+    console.log("v : " + v);
     setSelectedUniversity(v);
-    setAccClickCountWithServer(v);
   };
+
+  useEffect(() => {
+    setAccClickCountWithServer(selectedUniversity);
+  }, [selectedUniversity]);
 
   const handleImageClick = useCallback(() => {
     setClickCount((prevCount) => prevCount + 1); // 클릭할 때마다 clickCount 상태 업데이트
