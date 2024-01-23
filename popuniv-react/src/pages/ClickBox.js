@@ -65,8 +65,8 @@ export default function ClickBox({ handleResetClickCount }) {
       <h3>선택된 대학교 : {selectedUniversity}</h3>
       <img src="https://pbs.twimg.com/profile_images/536509461204987905/BGuldKRe_400x400.png" alt="사진" onClick={handleImageClick} /> {/* 클릭할 사진을 추가하고 onClick 이벤트 핸들러 연결 */}
       <UniversityList onUniversitySelect={handleUniversitySelect} />
-      <h1>클릭 횟수: {clickCount}</h1>
-      <h1>누적 횟수: {accClickCount}</h1>
+      <h1>Clicks: {clickCount}</h1>
+      <h1>나의 클릭 누적 횟수: {accClickCount}</h1>
     </div>
   );
 }
