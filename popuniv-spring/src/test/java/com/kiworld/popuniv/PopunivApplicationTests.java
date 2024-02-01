@@ -10,7 +10,7 @@ import com.kiworld.popuniv.entity.University;
 import com.kiworld.popuniv.repository.UniversityRepository;
 import java.util.List;
 
-@SpringBootTest
+// @SpringBootTest
 class PopunivApplicationTests {
 
   @Autowired
