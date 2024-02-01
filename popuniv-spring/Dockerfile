@@ -1,5 +1,11 @@
 FROM openjdk:17-jdk-alpine
 
-COPY build/libs/*.jar app.jar
+WORKDIR /usr/src/spring
+COPY . /usr/src/spring
+VOLUME /tmp
 
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+RUN chmod +x run.sh
+
+EXPOSE 8080
+
+CMD [ "sh" , "run.sh" ]
