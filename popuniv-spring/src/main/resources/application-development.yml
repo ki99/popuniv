@@ -1,4 +1,7 @@
+
 spring:
+  profiles:
+    active: development
   data:
     redis:
       host: redis_test
@@ -18,6 +21,12 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      additional-paths: .
+      trigger-file: reload.txt
 logging:
   level:
     root: debug
