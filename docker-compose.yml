@@ -27,6 +27,8 @@ services:
       - ./popuniv-react:/usr/src/app
   redis:
     image: redis:alpine
+    container_name: redis
+    hostname: redis_test
     ports:
       - 6379:6379
     environment:

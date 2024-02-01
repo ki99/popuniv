@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kiworld.popuniv.entity.University;
 import com.kiworld.popuniv.repository.UniversityRepository;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -31,4 +34,10 @@ public class UniversitiesController {
     List<University> university_names = UniversityRepository.findAll();
     return ResponseEntity.ok(university_names);
   }
+  @PostMapping("/universities")
+  public ResponseEntity<Object> addUniversity(@RequestBody University university) {
+    UniversityRepository.save(university);
+    return ResponseEntity.ok(university);
+  }
+  
 }
