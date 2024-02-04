@@ -14,7 +14,6 @@ import lombok.Setter;
 @Setter
 @Schema(description = "대학교 정보")
 public class University {
-  // make university entity
   @Id //Primary key
 	//프로젝트에서 연결된db의 넘버링 전략을 따라간다.  -> 오라클이나 mysql에 따라 바뀐다는 뜻이다.
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
