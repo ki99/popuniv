@@ -13,13 +13,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema(description = "대학교 정보")
-public class University {
-  @Id //Primary key
-	//프로젝트에서 연결된db의 넘버링 전략을 따라간다.  -> 오라클이나 mysql에 따라 바뀐다는 뜻이다.
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	private int id; // 시퀀스, auto_increment
+public class University extends Suborganization {
 
-  @Column(nullable = false, length = 100, unique = true)
-  @Schema(description = "대학교 이름", nullable = false, example = "KAIST")
-  private String name; // 대학교 이름
 }
