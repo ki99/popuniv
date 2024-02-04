@@ -7,37 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kiworld.popuniv.entity.OrganizationType;
 import com.kiworld.popuniv.entity.University;
 import com.kiworld.popuniv.repository.UniversityRepository;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-public class UniversitiesController {
-  private final UniversityRepository UniversityRepository;
-
-  @Autowired
-  public UniversitiesController(UniversityRepository UniversityRepository) {
-    this.UniversityRepository = UniversityRepository;
-  }
+@RequestMapping("/api")
+@Tag(name = "Organization", description = "Organization 정보를 전송하는 API (University, Company...).")
+public class OrganizationTypeController {
   
-  // return ordered list of clickcounts of all universities
-  // response will be like this: { "kaist" : 100, "snu" : 200 }
-  @GetMapping("/universities")
+  @GetMapping("/{organization_type}")
   @CrossOrigin(origins = "http://localhost:3000")
-  public ResponseEntity<Object> getDashboard() {
+  public ResponseEntity<Object> getOrganizationTypes() {
     // fetch university_names from university table
-    List<University> university_names = UniversityRepository.findAll();
-    return ResponseEntity.ok(university_names);
+    OrganizationType[] organizationTypes = OrganizationType.values();
+    return ResponseEntity.ok(organizationTypes);
   }
-  @PostMapping("/universities")
-  public ResponseEntity<Object> addUniversity(@RequestBody University university) {
-    UniversityRepository.save(university);
-    return ResponseEntity.ok(university);
-  }
-  
 }
