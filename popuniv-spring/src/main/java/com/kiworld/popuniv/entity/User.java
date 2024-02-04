@@ -13,7 +13,6 @@ public class User {
 	@Id //Primary key
 	//프로젝트에서 연결된db의 넘버링 전략을 따라간다.  -> 오라클이나 mysql에 따라 바뀐다는 뜻이다.
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-  @Schema(description = "사용자 ID", nullable = false, example = "1")
 	private int id; // 시퀀스, auto_increment
 	
 	
@@ -30,6 +29,6 @@ public class User {
 	private String email;
   // make role column
   @Enumerated(EnumType.STRING)
-  @Schema(description = "사용자 역할", nullable = false, example = "USER")
+  @Schema(description = "사용자 역할. USER, ADMIN 중 하나", nullable = false, example = "USER")
   private UserType role; // Enum을 쓰는게 좋다. // ADMIN, USER
 }
