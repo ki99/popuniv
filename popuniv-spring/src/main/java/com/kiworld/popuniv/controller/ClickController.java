@@ -22,7 +22,6 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class ClickController {
-  private static final Logger logger = LoggerFactory.getLogger(ClickController.class);
   private final RedisTemplate<String, Long> redisTemplate;
 
   public ClickController(RedisTemplate<String, Long> redisTemplate) {
@@ -39,8 +38,8 @@ public class ClickController {
   }
   @Operation(summary = "User의 Organization의 subOrganization에 대한 click 개수 반영하기")
   @PutMapping("/{organization_type}/{suborganization_name}/clicks")
-  public boolean postClicks(@PathVariable("organization_type") String organization_type, @PathVariable("suborganization_name") String suborganization_name, @RequestBody Map<String, Long> requestBody) {
-    long clickCount = requestBody.get("clickCount");
+  public boolean postClicks(@PathVariable("organization_type") String organization_type, @PathVariable("suborganization_name") String suborganization_name, ClickData requestBody) {
+    long clickCount = requestBody.getClickCount();
 
     ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
     int user_id = 1;
