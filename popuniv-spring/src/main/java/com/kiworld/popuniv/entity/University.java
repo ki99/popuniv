@@ -1,5 +1,6 @@
 package com.kiworld.popuniv.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Schema(description = "대학교 정보")
 public class University {
   // make university entity
   @Id //Primary key
