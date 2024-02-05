@@ -12,6 +12,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/qa?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=rootpass
+      - SPRING_DATA_REDIS_HOST=redis_test
+      - SPRING_DATA_REDIS_PORT=6379
     restart: on-failure
     depends_on:
       redis:
