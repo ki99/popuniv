@@ -12,7 +12,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Schema(description = "대학교 정보")
-public class University extends Suborganization {
+@Schema(description = "회사 정보")
+public class Company extends Suborganization{
 
 }
