@@ -1,18 +1,19 @@
-FROM node:20-alpine
-
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json .
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Install dependencies
-RUN npm install
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
 
-# Copy the rest of the application code to the working directory
-COPY . .
-
-# Expose port 3000
-EXPOSE 3000
-
-# Start the application
-CMD [ "npm", "start"]
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/build /app/build
+EXPOSE 8000
+CMD [ "pnpm", "start" ]
