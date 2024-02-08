@@ -18,6 +18,12 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      additional-paths: .
+      trigger-file: reload.txt
 
 springdoc:
   packages-to-scan: com.kiworld.popuniv.controller

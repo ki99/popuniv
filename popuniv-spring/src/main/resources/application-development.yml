@@ -1,7 +1,5 @@
 
 spring:
-  profiles:
-    active: development
   data:
     redis:
       host: localhost
@@ -29,11 +27,11 @@ spring:
       trigger-file: reload.txt
 
 springdoc:
-  packages-to-scan: com.test.demo
+  packages-to-scan: com.kiworld.popuniv.controller
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
-    path: demo-ui.html            # Swagger UI 경로 => localhost:8000/demo-ui.html
+    path: swagger-ui.html            # Swagger UI 경로 => localhost:8000/demo-ui.html
     tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
     operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
   api-docs:

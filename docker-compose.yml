@@ -1,12 +1,12 @@
-version: "3"
+version: '3'
 
 services:
   api:
     build:
-      context: ./popuniv-spring
+      context: ./popuniv-spring/.
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
-    command: ./gradlew bootRun
     environment:
       - ENV=development
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/qa?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
@@ -20,13 +20,17 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
-  web:
-    build:
-      context: ./popuniv-react
-    ports: 
-    - 3000:3000
     volumes:
-      - ./popuniv-react:/usr/src/app
+      - ./popuniv-spring:/usr/src/spring
+  web:
+    image: popuniv-web
+    build:
+      context: ./popuniv-web
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./popuniv-web:/usr/src/app
   redis:
     image: redis:alpine
     container_name: redis
