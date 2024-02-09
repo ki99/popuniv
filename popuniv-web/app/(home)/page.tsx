@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import ClickBox from './components/home/box';
-import DashBoard from './components/home/dashboard';
-import Button from './components/common/button';
+import ClickBox from '../../components/home/box';
+import DashBoard from '../../components/home/dashboard';
+import Button from '../../components/common/button';
 
 const Home = () => {
 	const [resetCount, setResetCount] = useState(false);
