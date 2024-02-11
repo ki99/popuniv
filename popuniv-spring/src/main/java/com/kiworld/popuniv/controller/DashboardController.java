@@ -3,11 +3,9 @@ package com.kiworld.popuniv.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kiworld.popuniv.entity.Company;
-import com.kiworld.popuniv.entity.Suborganization;
 import com.kiworld.popuniv.entity.University;
 import com.kiworld.popuniv.repository.CompanyRepository;
 import com.kiworld.popuniv.repository.UniversityRepository;
@@ -23,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 @Tag(name = "DashBoard", description = "DashBoard 정보를 전송하는 API.")
 
@@ -43,27 +40,26 @@ public class DashboardController {
   // return ordered list of clickcounts of all universities
   // response will be like this: { "kaist" : 100, "snu" : 200 }
   @GetMapping("/dashboard/{organization_type}")
-  @CrossOrigin(origins = "http://localhost:3000")
   @Operation(summary = "Ornazination에 속한 subOrganization들의 총 click 개수들")
   public ResponseEntity<Object> getDashboard(@PathVariable("organization_type") String organization_type) {
-    HashMap<String, Long> dashboard_hash = new HashMap<>();
-    if (organization_type.equals("Company")) {
+    HashMap<Integer, Long> dashboard_hash = new HashMap<>();
+    if (organization_type.equals("company")) {
         List<Company> companies = companyRepository.findAll();
         for (Company company : companies) {
-          String company_name = company.getName();
-          Long value = redisTemplate.opsForValue().get(organization_type + "_" + company_name + "_clicks");
+          int company_id = company.getId();
+          Long value = redisTemplate.opsForValue().get(organization_type + "_" + company_id + "_clicks");
           if (value != null) {
-            dashboard_hash.put(company_name, value);
+            dashboard_hash.put(company_id, value);
           }
         }
         return ResponseEntity.ok(dashboard_hash);
-      } else if (organization_type.equals("University")) {
+      } else if (organization_type.equals("university")) {
         List<University> universities= universityRepository.findAll();
         for (University university : universities) {
-          String university_name = university.getName();
-          Long value = redisTemplate.opsForValue().get(organization_type + "_" + university_name + "_clicks");
+          int university_id = university.getId();
+          Long value = redisTemplate.opsForValue().get(organization_type + "_" + university_id + "_clicks");
           if (value != null) {
-            dashboard_hash.put(university_name, value);
+            dashboard_hash.put(university_id, value);
           }
         }
         return ResponseEntity.ok(dashboard_hash);

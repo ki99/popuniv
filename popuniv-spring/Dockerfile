@@ -1,12 +1,5 @@
-FROM openjdk:17-jdk
+FROM openjdk:17-jdk-alpine
 
-RUN microdnf install findutils
-WORKDIR /usr/src/spring
-COPY . /usr/src/spring
-VOLUME /tmp
+COPY build/libs/*.jar app.jar
 
-RUN chmod +x /usr/src/spring/run.sh
-
-EXPOSE 8080
-
-ENTRYPOINT [ "/usr/src/spring/run.sh" ]
+ENTRYPOINT [ "java", "-jar", "app.jar" ]

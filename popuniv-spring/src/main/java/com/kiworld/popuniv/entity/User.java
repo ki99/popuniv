@@ -17,18 +17,18 @@ public class User {
 	
 	
 	@Column(nullable = false, length = 30)
-  @Schema(description = "사용자 이름", nullable = false, example = "ki99")
+    @Schema(description = "사용자 이름", nullable = false, example = "ki99")
 	private String username; // 아이디
 	
 	@Column(nullable = false, length = 100) // -> 비밀번호를 암호화 하기위해서 해쉬를 사용해야 한다.
-  @Schema(description = "사용자 비밀번호", nullable = false, example = "1q2w3e4r!")
+    @Schema(description = "사용자 비밀번호", nullable = false, example = "1q2w3e4r!")
 	private String password;
 	
 	@Schema(description = "사용자 이메일", nullable = false, example = "qldntdma87@kaist.ac.kr")
 	@Column(nullable = false, length = 50)
 	private String email;
-  // make role column
-  @Enumerated(EnumType.STRING)
-  @Schema(description = "사용자 역할. USER, ADMIN 중 하나", nullable = false, example = "USER")
-  private UserType role; // Enum을 쓰는게 좋다. // ADMIN, USER
+    // make role column
+    @Enumerated(EnumType.STRING)
+    @Schema(description = "사용자 역할. USER, ADMIN 중 하나", nullable = false, example = "USER")
+    private UserType role; // Enum을 쓰는게 좋다. // ADMIN, USER
 }

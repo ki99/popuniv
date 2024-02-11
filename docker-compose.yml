@@ -20,8 +20,6 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
-    volumes:
-      - ./popuniv-spring:/usr/src/spring
   web:
     image: popuniv-web
     build:
