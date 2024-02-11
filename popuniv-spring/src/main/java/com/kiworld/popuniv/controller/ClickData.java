@@ -6,7 +6,7 @@ public class ClickData {
   @Schema(description = "유저 ID", example = "3")
   private int user_id;
 
-  @Schema(description = "클릭 개수", example = "32")
+  @Schema(description = "클릭 개수", example = "33")
   private long clickCount;
 
   // 생성자, 게터(getter), 세터(setter) 생략
