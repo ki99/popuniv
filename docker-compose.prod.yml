@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  web:
+    image: popuniv-web
+    build:
+      context: ./popuniv-web
+      dockerfile: prod.Dockerfile
+    env_file:
+      - ./popuniv-web/.env.production
+    restart: always
+    ports:
+      - 3000:3000

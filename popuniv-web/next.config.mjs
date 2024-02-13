@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	distDir: 'build',
+	reactStrictMode: true,
+	swcMinify: true,
+	output: 'standalone',
+	webpack: (config, _) => ({
+		...config,
+		watchOptions: {
+			...config.watchOptions,
+			poll: 1000,
+			aggregateTimeout: 300,
+		},
+	}),
 	images: {
 		remotePatterns: [
 			{
