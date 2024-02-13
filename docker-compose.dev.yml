@@ -24,11 +24,17 @@ services:
     image: popuniv-web
     build:
       context: ./popuniv-web
-      dockerfile: Dockerfile
+      dockerfile: dev.Dockerfile
+    env_file:
+      - ./popuniv-web/.env.development
+    volumes:
+      - ./popuniv-web/:/app
+      - /app/node_modules
+      - /app/.next
+    restart: always
     ports:
       - 3000:3000
-    volumes:
-      - ./popuniv-web:/usr/src/app
+
   redis:
     image: redis:alpine
     container_name: redis
