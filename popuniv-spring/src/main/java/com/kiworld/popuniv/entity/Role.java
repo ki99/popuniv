@@ -1,5 +1,5 @@
 package com.kiworld.popuniv.entity;
 
-public enum UserType {
+public enum Role {
   USER, ADMIN;
 }
