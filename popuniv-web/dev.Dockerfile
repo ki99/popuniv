@@ -13,7 +13,7 @@ RUN \
   fi
 
 COPY . /app
-COPY public ./public
+COPY public* ./public
 COPY next.config.mjs .
 COPY tsconfig.json .
 
