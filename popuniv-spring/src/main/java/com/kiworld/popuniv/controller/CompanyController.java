@@ -28,7 +28,7 @@ public class CompanyController {
         this.companyRepository = companyRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "모든 회사에 대한 정보")
     public ResponseEntity<Object> getSuborganizations() {
         // fetch university_names from university table
@@ -43,7 +43,7 @@ public class CompanyController {
         return ResponseEntity.ok(company);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @Operation(summary = "Company 추가하기")
     public ResponseEntity<Object> postSuborganization(@RequestBody SuborganizationRequest suborganizationRequest) {
         // fetch university_names from university table

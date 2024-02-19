@@ -17,7 +17,7 @@ export default function ClickBox({ handleResetCount }: IClickBoxProps) {
 		if (count > 0) {
 			// 클릭 횟수가 0보다 큰 경우에만 서버로 전송
 			await axios
-				.post(`${process.env.NEXT_PUBLIC_API_URL}/api/universities/${selectedUniversity}/clicks`, {
+				.post(`${process.env.NEXT_PUBLIC_API_URL}/api/university/${selectedUniversity}/clicks`, {
 					count: count,
 				})
 				.then((response) => {
@@ -35,7 +35,7 @@ export default function ClickBox({ handleResetCount }: IClickBoxProps) {
 
 	const getDashboard = async (university: string) => {
 		try {
-			const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/universities/${university}/clicks`);
+			const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/university/${university}/clicks`);
 			console.log('대시보드 데이터를 성공적으로 가져왔습니다.');
 			console.log('selectedUniversity의 response.data :' + university + ' ' + response.data);
 			setAccumulatedCount(response.data);

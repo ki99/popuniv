@@ -13,7 +13,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		// api get 요청을 해서 json을 받아와서 dashboardData를 업데이트 해줍니다.
 		axios
-			.get(`${process.env.NEXT_PUBLIC_API_URL}/dashboard`)
+			.get(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/university`)
 			.then((response) => {
 				setData(response.data);
 			})

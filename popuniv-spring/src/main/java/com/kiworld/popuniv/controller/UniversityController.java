@@ -28,7 +28,7 @@ public class UniversityController {
         this.universityRepository = UniversityRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "모든 대학에 대한 정보")
     public ResponseEntity<Object> getSuborganizations() {
         // fetch university_names from university table
@@ -43,7 +43,7 @@ public class UniversityController {
         return ResponseEntity.ok(University);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @Operation(summary = "University 추가하기")
     public ResponseEntity<Object> postSuborganization(@RequestBody SuborganizationRequest suborganizationRequest) {
         // fetch university_names from university table

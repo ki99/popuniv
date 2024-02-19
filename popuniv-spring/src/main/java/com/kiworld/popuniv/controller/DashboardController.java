@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kiworld.popuniv.dto.DashboardResponse;
 import com.kiworld.popuniv.entity.Company;
 import com.kiworld.popuniv.entity.University;
 import com.kiworld.popuniv.repository.CompanyRepository;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api")
@@ -42,31 +44,39 @@ public class DashboardController {
   @GetMapping("/dashboard/{organization_type}")
   @Operation(summary = "Ornazination에 속한 subOrganization들의 총 click 개수들")
   public ResponseEntity<Object> getDashboard(@PathVariable("organization_type") String organization_type) {
-    HashMap<Integer, Long> dashboard_hash = new HashMap<>();
+    List<DashboardResponse> dashboardDataList = new ArrayList<>();
+
     if (organization_type.equals("company")) {
         List<Company> companies = companyRepository.findAll();
+
         for (Company company : companies) {
-          int company_id = company.getId();
-          Long value = redisTemplate.opsForValue().get(organization_type + "_" + company_id + "_clicks");
-          if (value != null) {
-            dashboard_hash.put(company_id, value);
-          }
+            int company_id = company.getId();
+            Long value = redisTemplate.opsForValue().get(organization_type + "_" + company_id + "_clicks");
+
+            if (value != null) {
+                DashboardResponse dashboardData = new DashboardResponse(company_id, value);
+                dashboardDataList.add(dashboardData);
+            }
         }
-        return ResponseEntity.ok(dashboard_hash);
-      } else if (organization_type.equals("university")) {
-        List<University> universities= universityRepository.findAll();
+
+        return ResponseEntity.ok(dashboardDataList);
+    } else if (organization_type.equals("university")) {
+        List<University> universities = universityRepository.findAll();
+
         for (University university : universities) {
-          int university_id = university.getId();
-          Long value = redisTemplate.opsForValue().get(organization_type + "_" + university_id + "_clicks");
-          if (value != null) {
-            dashboard_hash.put(university_id, value);
-          }
+            int university_id = university.getId();
+            Long value = redisTemplate.opsForValue().get(organization_type + "_" + university_id + "_clicks");
+
+            if (value != null) {
+                DashboardResponse dashboardData = new DashboardResponse(university_id, value);
+                dashboardDataList.add(dashboardData);
+            }
         }
-        return ResponseEntity.ok(dashboard_hash);
-      } else {
-          // 예외 처리: 유효하지 않은 organization_type 값에 대한 처리
-          return ResponseEntity.badRequest().body("Invalid organization_type");
-      }
-    
-  }
+
+        return ResponseEntity.ok(dashboardDataList);
+    } else {
+        // 예외 처리: 유효하지 않은 organization_type 값에 대한 처리
+        return ResponseEntity.badRequest().body("Invalid organization_type");
+    }
+}
 }
