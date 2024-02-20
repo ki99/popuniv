@@ -14,7 +14,7 @@ export default function UniversityList({ onChange }: IUniversityListProps) {
 
 	const getUniversityList = async () => {
 		try {
-			const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/university`);
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/group?type=university`);
 			console.log('대학교 목록을 성공적으로 가져왔습니다.');
 			console.log(response.data);
 			setUniversityList(response.data);

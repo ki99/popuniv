@@ -11,13 +11,13 @@ interface IClickBoxProps {
 export default function ClickBox({ handleResetCount }: IClickBoxProps) {
 	const [count, setCount] = useState(0);
 	const [accumulatedCount, setAccumulatedCount] = useState(0);
-	const [selectedUniversity, setSelectedUniversity] = useState('popuniv university');
+	const [selectedUniversity, setSelectedUniversity] = useState('1');
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
 			// 클릭 횟수가 0보다 큰 경우에만 서버로 전송
 			await axios
-				.post(`${process.env.NEXT_PUBLIC_API_URL}/api/click/university/${selectedUniversity}`, {
+				.post(`${process.env.NEXT_PUBLIC_API_URL}/api/click/${selectedUniversity}`, {
 					count: count,
 				})
 				.then((response) => {
@@ -35,7 +35,7 @@ export default function ClickBox({ handleResetCount }: IClickBoxProps) {
 
 	const getDashboard = async (university: string) => {
 		try {
-			const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/click/university/${university}`);
+			const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/click/${university}`);
 			console.log('대시보드 데이터를 성공적으로 가져왔습니다.');
 			console.log('selectedUniversity의 response.data :' + university + ' ' + response.data);
 			setAccumulatedCount(response.data);

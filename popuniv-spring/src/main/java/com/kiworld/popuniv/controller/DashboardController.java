@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kiworld.popuniv.dto.DashboardResponse;
-import com.kiworld.popuniv.entity.Company;
-import com.kiworld.popuniv.entity.University;
-import com.kiworld.popuniv.repository.CompanyRepository;
-import com.kiworld.popuniv.repository.UniversityRepository;
+import com.kiworld.popuniv.entity.Group;
+import com.kiworld.popuniv.entity.GroupType;
+import com.kiworld.popuniv.repository.GroupRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,55 +28,35 @@ import java.util.ArrayList;
 
 public class DashboardController {
 
-  private final CompanyRepository companyRepository;
-  private final UniversityRepository universityRepository;
+  private final GroupRepository groupRepository;
   private final RedisTemplate<String, Long> redisTemplate;
 
   @Autowired
-  public DashboardController(RedisTemplate<String, Long> redisTemplate, CompanyRepository companyRepository, UniversityRepository universityRepository) {
-    this.companyRepository = companyRepository;
-    this.universityRepository = universityRepository;
+  public DashboardController(RedisTemplate<String, Long> redisTemplate, GroupRepository groupRepository) {
+    this.groupRepository = groupRepository;
     this.redisTemplate = redisTemplate;
   }
   
   // return ordered list of clickcounts of all universities
   // response will be like this: { "kaist" : 100, "snu" : 200 }
-  @GetMapping("/dashboard/{organization_type}")
-  @Operation(summary = "Ornazination에 속한 subOrganization들의 총 click 개수들")
-  public ResponseEntity<Object> getDashboard(@PathVariable("organization_type") String organization_type) {
+  @GetMapping("/dashboard")
+  @Operation(summary = "group=의 총 click 개수들")
+  public ResponseEntity<Object> getDashboard(@RequestParam GroupType type) {
     List<DashboardResponse> dashboardDataList = new ArrayList<>();
 
-    if (organization_type.equals("company")) {
-        List<Company> companies = companyRepository.findAll();
+    // filter by type
+    List<Group> groups = groupRepository.findByType(type);
 
-        for (Company company : companies) {
-            int company_id = company.getId();
-            Long value = redisTemplate.opsForValue().get(organization_type + "_" + company_id + "_clicks");
+    for (Group group : groups) {
+        int group_id = group.getId();
+        Long value = redisTemplate.opsForValue().get(group_id + "_clicks");
 
-            if (value != null) {
-                DashboardResponse dashboardData = new DashboardResponse(company_id, value);
-                dashboardDataList.add(dashboardData);
-            }
+        if (value != null) {
+            DashboardResponse dashboardData = new DashboardResponse(group, value);
+            dashboardDataList.add(dashboardData);
         }
-
-        return ResponseEntity.ok(dashboardDataList);
-    } else if (organization_type.equals("university")) {
-        List<University> universities = universityRepository.findAll();
-
-        for (University university : universities) {
-            int university_id = university.getId();
-            Long value = redisTemplate.opsForValue().get(organization_type + "_" + university_id + "_clicks");
-
-            if (value != null) {
-                DashboardResponse dashboardData = new DashboardResponse(university_id, value);
-                dashboardDataList.add(dashboardData);
-            }
-        }
-
-        return ResponseEntity.ok(dashboardDataList);
-    } else {
-        // 예외 처리: 유효하지 않은 organization_type 값에 대한 처리
-        return ResponseEntity.badRequest().body("Invalid organization_type");
     }
-}
+
+    return ResponseEntity.ok(dashboardDataList);
+    } 
 }

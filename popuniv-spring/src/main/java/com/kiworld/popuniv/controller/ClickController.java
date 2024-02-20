@@ -2,7 +2,9 @@ package com.kiworld.popuniv.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kiworld.popuniv.dto.ClickData;
+import com.kiworld.popuniv.dto.AllClickResponse;
+import com.kiworld.popuniv.dto.ClickRequest;
+import com.kiworld.popuniv.dto.ClickResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.ResponseEntity;
 
 @Tag(name = "Click", description = "Click관련 정보를 DB에 업데이트, 전송하는 API.")
 @RestController
@@ -25,34 +29,47 @@ public class ClickController {
         this.redisTemplate = redisTemplate;
     }
 
-    @GetMapping("/{organization_type}/{suborganization_id}")
-    @Operation(summary = "Ornazination의 subOrganization에 대한 모든 유저의 click 개수의 총합")
-    public Long getClicks(@PathVariable("organization_type") String organization_type, @PathVariable("suborganization_id") String suborganization_id) {
+    @GetMapping("")
+    @Operation(summary = "type의 모든 group에 대한 모든 유저의 click 개수의 총합")
+    public ResponseEntity<AllClickResponse> getClick(@RequestParam String type) {
+        String total_key = type + "_clicks";
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
-        String key = organization_type + "_" + suborganization_id + "_clicks";
-        Long clicks = valueOperations.get(key);
-        return clicks;
+        long value = valueOperations.get(total_key);
+        AllClickResponse allClickResponse = new AllClickResponse();
+        allClickResponse.setAllClickCount(value);
+        return ResponseEntity.ok(allClickResponse);
     }
-    @Operation(summary = "User의 Organization의 subOrganization에 대한 click 개수 반영하기")
-    @PutMapping("/{organization_type}/{suborganization_id}")
-    public boolean postClicks(@PathVariable("organization_type") String organization_type, @PathVariable("suborganization_id") String suborganization_id, @RequestBody ClickData requestBody) {
+
+    @GetMapping("/{group_id}")
+    @Operation(summary = "특정 group에 대한 유저의 click과, 모든 유저의 click 개수의 총합")
+    public ResponseEntity<ClickResponse> getClicks(@PathVariable("group_id") String group_id) {
+        String total_key = group_id + "_clicks";
+        int user_id = 1;
+        String user_key = user_id + "_" + group_id + "_clicks";
+        ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
+
+        long total_value = valueOperations.get(total_key);
+        long user_value = valueOperations.get(user_key);
+        ClickResponse clickResponse = new ClickResponse();
+        clickResponse.setUserClickCount(user_value);
+        clickResponse.setAllClickCount(total_value);
+
+        return ResponseEntity.ok(clickResponse);
+    }
+
+    @Operation(summary = "User의 Group에 click 개수 반영하기")
+    @PutMapping("/{group_id}")
+    public ResponseEntity<Boolean> postClicks(@PathVariable("group_id") String group_id, @RequestBody ClickRequest requestBody) {
         long clickCount = requestBody.getClickCount();
 
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
         int user_id = 1;
-        String user_key = user_id + "_" + organization_type + "_" + suborganization_id + "_clicks";
-        String total_key = organization_type + "_" + suborganization_id + "_clicks";
-
-        if (!redisTemplate.hasKey(user_key)) {
-            valueOperations.set(user_key, 0L);
-        }
-        if (!redisTemplate.hasKey(total_key)) {
-            valueOperations.set(total_key, 0L);
-        }
+        String user_key = user_id + "_" + group_id + "_clicks";
+        String total_key = group_id + "_clicks";
 
         valueOperations.increment(user_key, clickCount);
         valueOperations.increment(total_key, clickCount);
 
-        return true;
+        return ResponseEntity.ok(true);
     }
 }

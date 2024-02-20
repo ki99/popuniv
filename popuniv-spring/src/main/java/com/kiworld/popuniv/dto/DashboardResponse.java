@@ -1,5 +1,7 @@
 package com.kiworld.popuniv.dto;
 
+import com.kiworld.popuniv.entity.Group;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,11 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DashboardResponse {
-    private int key;
+    private Group group;
     private long value;
   
-    public DashboardResponse(int key, long value) {
-      this.key = key;
+    public DashboardResponse(Group group, long value) {
+      this.group = group;
       this.value = value;
     }
   }
