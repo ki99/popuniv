@@ -17,7 +17,7 @@ import org.springframework.data.redis.core.ValueOperations;
 
 @Tag(name = "Click", description = "Click관련 정보를 DB에 업데이트, 전송하는 API.")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/click")
 public class ClickController {
     private final RedisTemplate<String, Long> redisTemplate;
 
@@ -25,7 +25,7 @@ public class ClickController {
         this.redisTemplate = redisTemplate;
     }
 
-    @GetMapping("/{organization_type}/{suborganization_id}/clicks")
+    @GetMapping("/{organization_type}/{suborganization_id}")
     @Operation(summary = "Ornazination의 subOrganization에 대한 모든 유저의 click 개수의 총합")
     public Long getClicks(@PathVariable("organization_type") String organization_type, @PathVariable("suborganization_id") String suborganization_id) {
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
@@ -34,7 +34,7 @@ public class ClickController {
         return clicks;
     }
     @Operation(summary = "User의 Organization의 subOrganization에 대한 click 개수 반영하기")
-    @PutMapping("/{organization_type}/{suborganization_id}/clicks")
+    @PutMapping("/{organization_type}/{suborganization_id}")
     public boolean postClicks(@PathVariable("organization_type") String organization_type, @PathVariable("suborganization_id") String suborganization_id, @RequestBody ClickData requestBody) {
         long clickCount = requestBody.getClickCount();
 

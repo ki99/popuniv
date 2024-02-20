@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/jwt-login")
+@RequestMapping("api/auth")
 public class JwtLoginApiController {
 
     @Autowired

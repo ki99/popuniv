@@ -31,8 +31,8 @@ public class SecurityConfig {
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/jwt-login/join", "/jwt-login/login").permitAll()
-                        .requestMatchers("/jwt-login/admin/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/auth/join", "/auth/login").permitAll()
+                        .requestMatchers("/auth/admin/**").hasAuthority(Role.ADMIN.name())
                         .anyRequest().permitAll()
                 )
                 .build();
