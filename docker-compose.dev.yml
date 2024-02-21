@@ -25,8 +25,8 @@ services:
     build:
       context: ./popuniv-web
       dockerfile: dev.Dockerfile
-    env_file:
-      - ./popuniv-web/.env.development
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:8080
     volumes:
       - ./popuniv-web/:/app
       - /app/node_modules
