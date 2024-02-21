@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kiworld.popuniv.dto.JoinRequest;
-import com.kiworld.popuniv.dto.StringResponse;
+import com.kiworld.popuniv.dto.MessageResponse;
 import com.kiworld.popuniv.dto.TokenResponse;
 import com.kiworld.popuniv.dto.LoginRequest;
 import com.kiworld.popuniv.entity.User;
@@ -30,9 +30,9 @@ public class JwtLoginApiController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public ResponseEntity<StringResponse> join(@RequestBody JoinRequest joinRequest) {
+    public ResponseEntity<MessageResponse> join(@RequestBody JoinRequest joinRequest) {
 
-        StringResponse joinResponse = new StringResponse();
+        MessageResponse joinResponse = new MessageResponse();
 
         // 닉네임 중복 체크
         if(userService.checkNicknameDuplicate(joinRequest.getNickname())) {
@@ -57,7 +57,7 @@ public class JwtLoginApiController {
     public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
 
         User user = userService.login(loginRequest);
-        StringResponse loginResponse = new StringResponse();
+        MessageResponse loginResponse = new MessageResponse();
 
         // 로그인 아이디나 비밀번호가 틀린 경우 global error return
         if(user == null) {

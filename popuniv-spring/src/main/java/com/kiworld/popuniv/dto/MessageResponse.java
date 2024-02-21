@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class JoinResponse {
+public class MessageResponse {
     // return message
     private String message;
 }
