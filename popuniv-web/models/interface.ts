@@ -1,6 +1,6 @@
 export enum Group {
-	UNIVERSITY = 'University',
-	COMPANY = 'Company',
+	UNIVERSITY = 'university',
+	COMPANY = 'company',
 }
 
 export type GroupType = (typeof Group)[keyof typeof Group];

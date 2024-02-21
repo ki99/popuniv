@@ -3,6 +3,9 @@ build-dev:
 	cd popuniv-spring && ./gradlew build
 	docker compose -f docker-compose.dev.yml up --build
 	
+.PHONY: dev-down
+dev-down:
+	docker compose -f docker-compose.dev.yml down -v
 
 .PHONY: dev
 dev:
