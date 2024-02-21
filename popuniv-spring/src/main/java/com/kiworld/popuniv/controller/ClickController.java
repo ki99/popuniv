@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kiworld.popuniv.dto.AllClickResponse;
 import com.kiworld.popuniv.dto.ClickRequest;
 import com.kiworld.popuniv.dto.ClickResponse;
+import com.kiworld.popuniv.dto.StringResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,7 +60,7 @@ public class ClickController {
 
     @Operation(summary = "User의 Group에 click 개수 반영하기")
     @PutMapping("/{group_id}")
-    public ResponseEntity<Boolean> postClicks(@PathVariable("group_id") String group_id, @RequestBody ClickRequest requestBody) {
+    public ResponseEntity<StringResponse> postClicks(@PathVariable("group_id") String group_id, @RequestBody ClickRequest requestBody) {
         long clickCount = requestBody.getClickCount();
 
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
@@ -70,6 +71,9 @@ public class ClickController {
         valueOperations.increment(user_key, clickCount);
         valueOperations.increment(total_key, clickCount);
 
-        return ResponseEntity.ok(true);
+        StringResponse stringResponse = new StringResponse();
+        stringResponse.setMessage("Click count updated successfully");
+
+        return ResponseEntity.ok(stringResponse);
     }
 }

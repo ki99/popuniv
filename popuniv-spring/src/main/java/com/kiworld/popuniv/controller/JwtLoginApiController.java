@@ -1,5 +1,6 @@
 package com.kiworld.popuniv.controller;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kiworld.popuniv.dto.JoinRequest;
+import com.kiworld.popuniv.dto.StringResponse;
+import com.kiworld.popuniv.dto.TokenResponse;
 import com.kiworld.popuniv.dto.LoginRequest;
 import com.kiworld.popuniv.entity.User;
 import com.kiworld.popuniv.jwt.JwtTokenUtil;
 import com.kiworld.popuniv.service.UserService;
 
+import ch.qos.logback.core.subst.Token;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,33 +30,38 @@ public class JwtLoginApiController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public String join(@RequestBody JoinRequest joinRequest) {
+    public ResponseEntity<StringResponse> join(@RequestBody JoinRequest joinRequest) {
+
+        StringResponse joinResponse = new StringResponse();
 
         // 닉네임 중복 체크
         if(userService.checkNicknameDuplicate(joinRequest.getNickname())) {
-            return "닉네임이 중복됩니다.";
+            joinResponse.setMessage("이미 존재하는 닉네임입니다.");
         }
         // password와 passwordCheck가 같은지 체크
         if(!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
-            return"바밀번호가 일치하지 않습니다.";
+            joinResponse.setMessage("비밀번호가 일치하지 않습니다.");
         }
 
         if(!JoinRequest.isValidEmail(joinRequest.getEmail())) {
-            return "이메일 형식이 올바르지 않습니다.";
+            joinResponse.setMessage("이메일 형식이 올바르지 않습니다.");
         }
-
-        userService.join(joinRequest);
-        return "회원가입 성공";
+        else{
+            userService.join(joinRequest);
+            joinResponse.setMessage("회원가입 성공");
+        }
+        return ResponseEntity.ok().body(joinResponse);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
 
         User user = userService.login(loginRequest);
+        StringResponse loginResponse = new StringResponse();
 
         // 로그인 아이디나 비밀번호가 틀린 경우 global error return
         if(user == null) {
-            return"로그인 아이디 또는 비밀번호가 틀렸습니다.";
+            loginResponse.setMessage("아이디나 비밀번호가 틀렸습니다.");
         }
 
         // 로그인 성공 => Jwt Token 발급
@@ -62,7 +71,9 @@ public class JwtLoginApiController {
 
         String jwtToken = JwtTokenUtil.createToken(user.getEmail(), secretKey, expireTimeMs);
 
-        return jwtToken;
+        TokenResponse tokenResponse = new TokenResponse(jwtToken);
+
+        return ResponseEntity.ok().body(tokenResponse);
     }
 
     @GetMapping("/info")
