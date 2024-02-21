@@ -1,30 +1,30 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
-import { University } from '../../model/interface';
 
-interface IUniversityListProps {
+import React, { useEffect, useState, useRef } from 'react';
+import { DashboardRequest, Group, GroupInfo } from '../../models/interface';
+import { get } from '../../utils/http';
+
+interface ListProps {
 	onChange: any;
 }
 
-export default function UniversityList({ onChange }: IUniversityListProps) {
-	// send request to server to get university list
-	const [universityList, setUniversityList] = useState<University[]>([]);
+export default function List({ onChange }: ListProps) {
+	const [list, setList] = useState<GroupInfo[]>([]);
 	const listRef = useRef(null);
 
-	const getUniversityList = async () => {
+	const getList = async () => {
 		try {
-			const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/group?type=university`);
-			console.log('대학교 목록을 성공적으로 가져왔습니다.');
-			console.log(response.data);
-			setUniversityList(response.data);
+			const data = await get<GroupInfo[], DashboardRequest>('/group', { type: Group.UNIVERSITY });
+			console.log('선택 목록을 성공적으로 가져왔습니다.');
+			console.log(data);
+			setList(data || []);
 		} catch (error) {
-			console.error('대학교 목록을 가져오는 동안 오류가 발생했습니다.', error);
+			console.error('선택 목록을 가져오는 동안 오류가 발생했습니다.', error);
 		}
 	};
 
 	useEffect(() => {
-		getUniversityList();
+		getList();
 	}, []);
 
 	return (
@@ -33,10 +33,10 @@ export default function UniversityList({ onChange }: IUniversityListProps) {
 			ref={listRef}
 			onChange={onChange}
 		>
-			<option value="">대학교 선택</option>
-			{universityList.map((university) => (
-				<option key={university.id} value={university.name}>
-					{university.name}
+			<option value="">조직 선택</option>
+			{list.map((group) => (
+				<option key={group.id} value={group.name}>
+					{group.name}
 				</option>
 			))}
 		</select>

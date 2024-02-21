@@ -1,53 +1,45 @@
 'use client';
+
 import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import UniversityList from './list';
+import GroupList from './list';
 import Image from 'next/image';
+import { sendClicks } from '../../app/actions';
+import { get } from '../../utils/http';
+import { ClickResponse } from '../../models/interface';
 
-interface IClickBoxProps {
-	handleResetCount: () => void;
-}
-
-export default function ClickBox({ handleResetCount }: IClickBoxProps) {
+export default function ClickBox() {
 	const [count, setCount] = useState(0);
 	const [accumulatedCount, setAccumulatedCount] = useState(0);
-	const [selectedUniversity, setSelectedUniversity] = useState('1');
+	const [selectedId, setSelectedId] = useState(1);
+	const userId = 3; // temp
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
-			// 클릭 횟수가 0보다 큰 경우에만 서버로 전송
-			await axios
-				.post(`${process.env.NEXT_PUBLIC_API_URL}/api/click/${selectedUniversity}`, {
-					count: count,
-				})
-				.then((response) => {
-					console.log(`클릭 횟수를 서버로 전송 완료: ${count}`);
-					setAccumulatedCount(response.data);
-				})
-				.catch((error) => {
-					console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
-				});
-
-			setCount(0); // 클릭 횟수 초기화
-			handleResetCount();
+			const data = await sendClicks({ selectedId, clickCount: count, userId });
+			if (data) {
+				const { userClickCount, allClickCount } = data;
+				setAccumulatedCount(userClickCount);
+			}
+			setCount(0);
 		}
 	};
 
-	const getDashboard = async (university: string) => {
+	const getClicks = async (groupId: string) => {
 		try {
-			const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/click/${university}`);
-			console.log('대시보드 데이터를 성공적으로 가져왔습니다.');
-			console.log('selectedUniversity의 response.data :' + university + ' ' + response.data);
-			setAccumulatedCount(response.data);
+			const data = await get<ClickResponse>(`/click/${groupId}`);
+			if (data) {
+				const { userClickCount, allClickCount } = data;
+				setAccumulatedCount(userClickCount);
+			}
 		} catch (error) {
 			console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
 		}
 	};
 
-	const handleChangeUniversity = (event: any) => {
-		const university = event.target.value;
-		setSelectedUniversity(university);
-		getDashboard(university);
+	const handleChangeGroupId = (event: any) => {
+		const groupId = event.target.value;
+		setSelectedId(groupId);
+		getClicks(groupId);
 	};
 
 	const handleImageClick = useCallback(() => {
@@ -64,7 +56,7 @@ export default function ClickBox({ handleResetCount }: IClickBoxProps) {
 
 	return (
 		<div>
-			<div className="text-lg font-semibold">선택된 대학교 : {selectedUniversity}</div>
+			<div className="text-lg font-semibold">선택된 id : {selectedId}</div>
 			<div className="w-[400px] h-[400px] relative">
 				<Image
 					src="https://pbs.twimg.com/profile_images/536509461204987905/BGuldKRe_400x400.png"
@@ -74,9 +66,8 @@ export default function ClickBox({ handleResetCount }: IClickBoxProps) {
 					sizes="100vw"
 				/>
 			</div>
-			{/* 클릭할 사진을 추가하고 onClick 이벤트 핸들러 연결 */}
 			<div className="flex justify-end mb-2">
-				<UniversityList onChange={handleChangeUniversity} />
+				<GroupList onChange={handleChangeGroupId} />
 			</div>
 			<div className="flex flex-col gap-2">
 				<div className="text-2xl font-bold">현재 클릭 횟수: {count}</div>
