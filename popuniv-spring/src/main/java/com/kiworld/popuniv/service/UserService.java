@@ -24,12 +24,12 @@ public class UserService {
     // private final BCryptPasswordEncoder encoder;
 
     /**
-     * loginId 중복 체크
+     * Email 중복 체크
      * 회원가입 기능 구현 시 사용
      * 중복되면 true return
      */
-    public boolean checkLoginIdDuplicate(String loginId) {
-        return userRepository.existsByLoginId(loginId);
+    public boolean checkEmailDuplicate(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     /**
@@ -43,8 +43,8 @@ public class UserService {
 
     /**
      * 회원가입 기능 1
-     * 화면에서 JoinRequest(loginId, password, nickname)을 입력받아 User로 변환 후 저장
-     * loginId, nickname 중복 체크는 Controller에서 진행 => 에러 메세지 출력을 위해
+     * 화면에서 JoinRequest(email, password, nickname)을 입력받아 User로 변환 후 저장
+     * email, nickname 중복 체크는 Controller에서 진행 => 에러 메세지 출력을 위해
      */
     public void join(JoinRequest req) {
         userRepository.save(req.toEntity());
@@ -52,13 +52,13 @@ public class UserService {
 
     /**
      *  로그인 기능
-     *  화면에서 LoginRequest(loginId, password)을 입력받아 loginId와 password가 일치하면 User return
-     *  loginId가 존재하지 않거나 password가 일치하지 않으면 null return
+     *  화면에서 LoginRequest(email, password)을 입력받아 email와 password가 일치하면 User return
+     *  email가 존재하지 않거나 password가 일치하지 않으면 null return
      */
     public User login(LoginRequest req) {
-        Optional<User> optionalUser = userRepository.findByLoginId(req.getLoginId());
+        Optional<User> optionalUser = userRepository.findByEmail(req.getEmail());
 
-        // loginId와 일치하는 User가 없으면 null return
+        // email와 일치하는 User가 없으면 null return
         if(optionalUser.isEmpty()) {
             return null;
         }
@@ -89,15 +89,15 @@ public class UserService {
     }
 
     /**
-     * loginId(String)를 입력받아 User을 return 해주는 기능
+     * email(String)를 입력받아 User을 return 해주는 기능
      * 인증, 인가 시 사용
-     * loginId가 null이거나(로그인 X) userId로 찾아온 User가 없으면 null return
-     * loginId로 찾아온 User가 존재하면 User return
+     * email가 null이거나(로그인 X) userId로 찾아온 User가 없으면 null return
+     * email로 찾아온 User가 존재하면 User return
      */
-    public User getLoginUserByLoginId(String loginId) {
-        if(loginId == null) return null;
+    public User getLoginUserByEmail(String email) {
+        if(email == null) return null;
 
-        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
         if(optionalUser.isEmpty()) return null;
 
         return optionalUser.get();

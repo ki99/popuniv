@@ -28,10 +28,6 @@ public class JwtLoginApiController {
     @PostMapping("/join")
     public String join(@RequestBody JoinRequest joinRequest) {
 
-        // loginId 중복 체크
-        if(userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
-            return "로그인 아이디가 중복됩니다.";
-        }
         // 닉네임 중복 체크
         if(userService.checkNicknameDuplicate(joinRequest.getNickname())) {
             return "닉네임이 중복됩니다.";
@@ -64,14 +60,14 @@ public class JwtLoginApiController {
         String secretKey = "f052b4422c82fb007c3b499e275e957af125eb6ef097d0161338084a815c2de7";
         long expireTimeMs = 1000 * 60 * 60 * 24;     // Token 유효 시간 = 60분 * 24
 
-        String jwtToken = JwtTokenUtil.createToken(user.getLoginId(), secretKey, expireTimeMs);
+        String jwtToken = JwtTokenUtil.createToken(user.getEmail(), secretKey, expireTimeMs);
 
         return jwtToken;
     }
 
     @GetMapping("/info")
     public ResponseEntity<User> userInfo(Authentication auth) {
-        User loginUser = userService.getLoginUserByLoginId(auth.getName());
+        User loginUser = userService.getLoginUserByEmail(auth.getName());
 
         // return with Json
         return ResponseEntity.ok().body(loginUser);

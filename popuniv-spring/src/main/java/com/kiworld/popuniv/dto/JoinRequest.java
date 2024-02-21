@@ -13,8 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JoinRequest {
 
-    @NotBlank(message = "로그인 아이디가 비어있습니다.")
-    private String loginId;
+    @NotBlank(message = "이메일이 비어있습니다.")
+    private String email;
 
     @NotBlank(message = "비밀번호가 비어있습니다.")
     private String password;
@@ -23,13 +23,9 @@ public class JoinRequest {
     @NotBlank(message = "닉네임이 비어있습니다.")
     private String nickname;
 
-    @NotBlank(message = "이메일이 비어있습니다.")
-    private String email;
-
     // 비밀번호 암호화 X
     public User toEntity() {
         return User.builder()
-                .loginId(this.loginId)
                 .password(this.password)
                 .nickname(this.nickname)
                 .email(this.email)
@@ -40,7 +36,6 @@ public class JoinRequest {
     // 비밀번호 암호화
     public User toEntity(String encodedPassword) {
         return User.builder()
-                .loginId(this.loginId)
                 .password(encodedPassword)
                 .nickname(this.nickname)
                 .email(this.email)

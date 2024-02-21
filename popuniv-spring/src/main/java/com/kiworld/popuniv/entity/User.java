@@ -18,18 +18,15 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private long id; // 시퀀스, auto_increment
 	
-	
-	@Column(nullable = false, length = 30)
-    @Schema(description = "사용자 이름", nullable = false, example = "ki99")
-	private String loginId; // 아이디
+	@Schema(description = "사용자 이메일", nullable = false, example = "qldntdma87@kaist.ac.kr")
+	@Column(nullable = false, length = 50)
+	private String email;
 	
 	@Column(nullable = false, length = 100) // -> 비밀번호를 암호화 하기위해서 해쉬를 사용해야 한다.
     @Schema(description = "사용자 비밀번호", nullable = false, example = "1q2w3e4r!")
 	private String password;
 	
-	@Schema(description = "사용자 이메일", nullable = false, example = "qldntdma87@kaist.ac.kr")
-	@Column(nullable = false, length = 50)
-	private String email;
+
 
     // make nickname column
     @Column(nullable = false, length = 30)
