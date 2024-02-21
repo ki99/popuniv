@@ -6,6 +6,8 @@ import com.kiworld.popuniv.dto.AllClickResponse;
 import com.kiworld.popuniv.dto.ClickRequest;
 import com.kiworld.popuniv.dto.ClickResponse;
 import com.kiworld.popuniv.dto.StringResponse;
+import com.kiworld.popuniv.entity.User;
+import com.kiworld.popuniv.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,15 +21,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 @Tag(name = "Click", description = "Click관련 정보를 DB에 업데이트, 전송하는 API.")
 @RestController
 @RequestMapping("/api/click")
 public class ClickController {
     private final RedisTemplate<String, Long> redisTemplate;
+    private final UserService userService;
 
-    public ClickController(RedisTemplate<String, Long> redisTemplate) {
+    public ClickController(RedisTemplate<String, Long> redisTemplate, UserService userService) {
         this.redisTemplate = redisTemplate;
+        this.userService = userService;
     }
 
     @GetMapping("")
@@ -43,10 +48,10 @@ public class ClickController {
 
     @GetMapping("/{group_id}")
     @Operation(summary = "특정 group에 대한 유저의 click과, 모든 유저의 click 개수의 총합")
-    public ResponseEntity<ClickResponse> getClicks(@PathVariable("group_id") String group_id) {
+    public ResponseEntity<ClickResponse> getClicks(Authentication auth, @PathVariable("group_id") String group_id) {
         String total_key = group_id + "_clicks";
-        int user_id = 1;
-        String user_key = user_id + "_" + group_id + "_clicks";
+        User user = userService.getLoginUserByEmail(auth.getName());
+        String user_key = user.getId() + "_" + group_id + "_clicks";
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
 
         long total_value = valueOperations.get(total_key);
@@ -60,12 +65,12 @@ public class ClickController {
 
     @Operation(summary = "User의 Group에 click 개수 반영하기")
     @PutMapping("/{group_id}")
-    public ResponseEntity<StringResponse> postClicks(@PathVariable("group_id") String group_id, @RequestBody ClickRequest requestBody) {
+    public ResponseEntity<StringResponse> postClicks(Authentication auth, @PathVariable("group_id") String group_id, @RequestBody ClickRequest requestBody) {
         long clickCount = requestBody.getClickCount();
 
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
-        int user_id = 1;
-        String user_key = user_id + "_" + group_id + "_clicks";
+        User user = userService.getLoginUserByEmail(auth.getName());
+        String user_key = user.getId() + "_" + group_id + "_clicks";
         String total_key = group_id + "_clicks";
 
         valueOperations.increment(user_key, clickCount);
