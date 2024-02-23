@@ -50,7 +50,8 @@ public class ClickController {
     @Operation(summary = "특정 group에 대한 유저의 click과, 모든 유저의 click 개수의 총합")
     public ResponseEntity<ClickResponse> getClicks(Authentication auth, @PathVariable("group_id") String group_id) {
         String total_key = group_id + "_clicks";
-        User user = userService.getLoginUserByEmail(auth.getName());
+        User user;
+        if (auth == null) user = userService.getLoginUserById(1L); else user = userService.getLoginUserByEmail(auth.getName());
         String user_key = user.getId() + "_" + group_id + "_clicks";
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
 
@@ -69,7 +70,8 @@ public class ClickController {
         long clickCount = requestBody.getClickCount();
 
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
-        User user = userService.getLoginUserByEmail(auth.getName());
+        User user;
+        if (auth == null) user = userService.getLoginUserById(1L); else user = userService.getLoginUserByEmail(auth.getName());
         String user_key = user.getId() + "_" + group_id + "_clicks";
         String total_key = group_id + "_clicks";
 
