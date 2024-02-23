@@ -12,7 +12,7 @@ const Signin = () => {
 	const { errors } = formState;
 
 	const fields = {
-		loginId: register('loginId', { required: 'Id is required' }),
+		email: register('email', { required: 'Id is required' }),
 		password: register('password', {
 			required: 'Password is required',
 		}),
@@ -29,9 +29,9 @@ const Signin = () => {
 			<div className="my-4">
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<div>
-						<label>아이디</label>
-						<Input {...fields.loginId} type="text" required />
-						<div className="text-red-400">{errors.loginId?.message?.toString()}</div>
+						<label>이메일</label>
+						<Input {...fields.email} type="text" required />
+						<div className="text-red-400">{errors.email?.message?.toString()}</div>
 					</div>
 					<div>
 						<label>비밀번호</label>
@@ -46,7 +46,7 @@ const Signin = () => {
 					<div className="flex flex-col gap-4 mt-4">
 						<Button disabled={formState.isSubmitting}>
 							{formState.isSubmitting && <span className="animate-spin"></span>}
-							회원가입
+							로그인
 						</Button>
 						<Link href="/signup">
 							아직 계정이 없나요? <u>회원가입</u>

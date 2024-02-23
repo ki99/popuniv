@@ -13,7 +13,7 @@ const Signup = () => {
 	const { errors } = formState;
 
 	const fields = {
-		loginId: register('loginId', { required: 'Id is required' }),
+		email: register('email', { required: 'Id is required' }),
 		password: register('password', {
 			required: 'Password is required',
 		}),
@@ -34,20 +34,15 @@ const Signup = () => {
 			<h4 className="text-xl font-bold">회원가입</h4>
 			<div className="my-4">
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-					<div>
-						<label>아이디</label>
-						<Input {...fields.loginId} type="text" required />
-						<div className="text-red-400">{errors.loginId?.message?.toString()}</div>
+                    <div>
+						<label>이메일</label>
+						<Input {...fields.email} type="text" required />
+						<div className="text-red-400">{errors.email?.message?.toString()}</div>
 					</div>
 					<div>
 						<label>닉네임</label>
 						<Input {...fields.nickname} type="text" required />
 						<div className="text-red-400">{errors.nickname?.message?.toString()}</div>
-					</div>
-					<div>
-						<label>이메일</label>
-						<Input {...fields.email} type="text" required />
-						<div className="text-red-400">{errors.email?.message?.toString()}</div>
 					</div>
 					<div>
 						<label>비밀번호</label>

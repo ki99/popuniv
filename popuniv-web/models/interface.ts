@@ -36,14 +36,13 @@ export interface ClickResponse {
 }
 
 export interface SignupRequest {
-	loginId: string;
+    email: string;
 	password: string;
 	passwordCheck: string;
 	nickname: string;
-	email: string;
 }
 
 export interface SigninRequest {
-	loginId: string;
+	email: string;
 	password: string;
 }
