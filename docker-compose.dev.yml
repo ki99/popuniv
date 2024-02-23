@@ -9,17 +9,14 @@ services:
       - 8080:8080
     environment:
       - ENV=development
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/qa?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootpass
       - SPRING_DATA_REDIS_HOST=redis_test
       - SPRING_DATA_REDIS_PORT=6379
     restart: on-failure
     depends_on:
       redis:
         condition: service_healthy
-      mysql:
-        condition: service_healthy
+      # mysql:
+      #   condition: service_healthy
   web:
     image: popuniv-web
     build:
@@ -46,20 +43,20 @@ services:
     healthcheck:
       test: redis-cli --raw incr ping
       interval: 5s
-  mysql:
-    container_name: mysql_db
-    image: mysql
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: 'rootpass'
-      MYSQL_DATABASE: qa
-    command: # 명령어 실행
-      - '--character-set-server=utf8mb4'
-      - '--collation-server=utf8mb4_unicode_ci'
-    volumes:
-      - ./mysql/conf.d:/etc/mysql/conf.d
-      - ./mysql/data:/var/lib//mysql # mysql/data에 데이터를 담을 때 사용 합니다.
-      - ./mysql/initdb.d:/docker-entrypoint-initdb.d #intidb.d의 create.sql을 실행
-    healthcheck:
-      test: mysql -h 127.0.0.1 -u root --password=rootpass qa -e 'SHOW TABLES'
+  # mysql:
+  #   container_name: mysql_db
+  #   image: mysql
+  #   ports:
+  #     - 3306:3306
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 'rootpass'
+  #     MYSQL_DATABASE: qa
+  #   command: # 명령어 실행
+  #     - '--character-set-server=utf8mb4'
+  #     - '--collation-server=utf8mb4_unicode_ci'
+  #   volumes:
+  #     - ./mysql/conf.d:/etc/mysql/conf.d
+  #     - ./mysql/data:/var/lib//mysql # mysql/data에 데이터를 담을 때 사용 합니다.
+  #     - ./mysql/initdb.d:/docker-entrypoint-initdb.d #intidb.d의 create.sql을 실행
+  #   healthcheck:
+  #     test: mysql -h 127.0.0.1 -u root --password=rootpass qa -e 'SHOW TABLES'
