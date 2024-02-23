@@ -13,8 +13,4 @@ public class ClickRequest {
   @Schema(description = "클릭 개수", example = "33")
   private long clickCount;
 
-  @Schema(description = "유저 ID", example = "3")
-  private int userId;
-
-
 }

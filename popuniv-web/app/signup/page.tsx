@@ -13,7 +13,7 @@ const Signup = () => {
 	const { errors } = formState;
 
 	const fields = {
-		email: register('email', { required: 'Id is required' }),
+		email: register('email', { required: 'Email is required' }),
 		password: register('password', {
 			required: 'Password is required',
 		}),
@@ -21,7 +21,6 @@ const Signup = () => {
 			required: 'Password is required',
 		}),
 		nickname: register('nickname', { required: 'Nickname is required' }),
-		email: register('email', { required: 'Email is required' }),
 	};
 
 	async function onSubmit(body: SignupRequest) {

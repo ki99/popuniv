@@ -16,6 +16,7 @@ export default function ClickBox() {
 	const sendCountToServer = async () => {
 		if (count > 0) {
 			const data = await sendClicks({ selectedId, clickCount: count, userId });
+            console.log(data);
 			if (data) {
 				const { userClickCount, allClickCount } = data;
 				setAccumulatedCount(userClickCount);
