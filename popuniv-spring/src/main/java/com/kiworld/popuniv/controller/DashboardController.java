@@ -52,7 +52,7 @@ public class DashboardController {
         Long value = redisTemplate.opsForValue().get(group_id + "_clicks");
 
         if (value != null) {
-            DashboardResponse dashboardData = new DashboardResponse(group, value);
+            DashboardResponse dashboardData = new DashboardResponse(group.getName(), value);
             dashboardDataList.add(dashboardData);
         }
     }

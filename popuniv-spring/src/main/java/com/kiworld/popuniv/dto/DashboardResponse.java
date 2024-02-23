@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DashboardResponse {
-    private Group group;
+    private String group_name;
     private long value;
   
-    public DashboardResponse(Group group, long value) {
-      this.group = group;
+    public DashboardResponse(String group_name, long value) {
+      this.group_name = group_name;
       this.value = value;
     }
   }
