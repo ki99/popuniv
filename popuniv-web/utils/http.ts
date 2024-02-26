@@ -7,6 +7,9 @@ export async function get<TResponse, TParam = {}>(url: string, param?: TParam, c
 		const response = await fetch(endpoint.toString(), cacheTag && { next: { tags: cacheTag } });
 		const json = await response.json();
 		const data: TResponse = await json.data;
+
+		makeConsoleLog<TResponse>('GET', 'orange', endpoint.toString(), data);
+
 		return data;
 	} catch (error) {
 		if (error) throw error;
@@ -23,7 +26,11 @@ export async function post<TResponse, TRequest>(url: string, body: TRequest) {
 			body: JSON.stringify(body),
 		});
 		const json = await response.json();
+
 		const data: TResponse = await json.data;
+
+		makeConsoleLog<TResponse>('POST', 'blue', url, data);
+
 		return data;
 	} catch (error) {
 		if (error) throw error;
@@ -41,8 +48,17 @@ export async function put<TResponse, TRequest>(url: string, body: TRequest) {
 		});
 		const json = await response.json();
 		const data: TResponse = await json.data;
+
+		makeConsoleLog<TResponse>('PUT', 'skyblue', url, data);
+
 		return data;
 	} catch (error) {
 		if (error) throw error;
 	}
+}
+
+function makeConsoleLog<T>(method: string, color: string, url: string, data: T) {
+	console.log('%c--QUERY RESPONSE--', `background: ${color}; color: white`);
+	console.log(`%c🐣 ${method}`, `color: ${color}`, url);
+	console.log('%c✨ DATA', `color: ${color}`, data);
 }

@@ -20,7 +20,6 @@ const Signin = () => {
 
 	async function onSubmit(body: SigninRequest) {
 		const data = await post<Response, SigninRequest>('/auth/login', body);
-		console.log('로그인>>>', data);
 	}
 
 	return (

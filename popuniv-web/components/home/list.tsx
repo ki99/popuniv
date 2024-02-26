@@ -15,8 +15,6 @@ export default function List({ onChange }: ListProps) {
 	const getList = async () => {
 		try {
 			const data = await get<GroupInfo[], DashboardRequest>('/group', { type: Group.UNIVERSITY });
-			console.log('선택 목록을 성공적으로 가져왔습니다.');
-			console.log(data);
 			setList(data || []);
 		} catch (error) {
 			console.error('선택 목록을 가져오는 동안 오류가 발생했습니다.', error);

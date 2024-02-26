@@ -25,7 +25,6 @@ const Signup = () => {
 
 	async function onSubmit(body: SignupRequest) {
 		const data = await post<{}, SignupRequest>('/auth/join', body);
-		console.log('회원가입>>>', data);
 	}
 
 	return (
@@ -33,7 +32,7 @@ const Signup = () => {
 			<h4 className="text-xl font-bold">회원가입</h4>
 			<div className="my-4">
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                    <div>
+					<div>
 						<label>이메일</label>
 						<Input {...fields.email} type="text" required />
 						<div className="text-red-400">{errors.email?.message?.toString()}</div>
