@@ -45,6 +45,7 @@ export default function ClickBox() {
 
 	const handleImageClick = useCallback(() => {
 		setCount((prevCount) => prevCount + 1);
+		new Audio('assets/audios/click.wav').play();
 	}, []);
 
 	useEffect(() => {
