@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Navigation from '../components/common/navigation';
+import classNames from 'classnames';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="ko">
-			<body className={inter.className}>
+			<body className={classNames(inter.className, 'overflow-y-hidden')}>
 				<Navigation />
 				<div className="py-16 px-32">{children}</div>
 			</body>

@@ -9,10 +9,8 @@ const Home = async () => {
 
 	return (
 		<div>
-			<div className="grid grid-cols-2 gap-8">
-				<ClickBox />
-				<Dashboard data={data || []} />
-			</div>
+			<ClickBox />
+			<Dashboard data={data || []} />
 		</div>
 	);
 };

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { sendClicks } from '../../app/actions';
 import { get } from '../../utils/http';
 import { ClickResponse } from '../../models/interface';
+import Mascot from 'public/assets/images/mascot.png';
 
 export default function ClickBox() {
 	const [count, setCount] = useState(0);
@@ -55,23 +56,26 @@ export default function ClickBox() {
 	}, [count]);
 
 	return (
-		<div>
-			<div className="text-lg font-semibold">선택된 id : {selectedId}</div>
-			<div className="w-[400px] h-[400px] relative">
-				<Image
-					src="https://pbs.twimg.com/profile_images/536509461204987905/BGuldKRe_400x400.png"
-					alt="사진"
-					onClick={handleImageClick}
-					fill
-					sizes="100vw"
-				/>
+		<div className="h-[76vh] flex flex-col items-center justify-between">
+			<div className="flex flex-col gap-6">
+				<div className="w-[240px]">
+					<GroupList onChange={handleChangeGroupId} />
+				</div>
+				<div className="flex flex-col gap-4 text-white text-center">
+					<div className="flex flex-col gap-2">
+						<div className="text-lg font-semibold">누적 클릭 횟수</div>
+						<div className="text-2xl font-extrabold lining-nums slashed-zero">{accumulatedCount}</div>
+					</div>
+					<div className="flex flex-col gap-2">
+						<div className="text-lg font-semibold">현재 클릭 횟수</div>
+						<div className="text-2xl font-extrabold lining-nums slashed-zero">{count}</div>
+					</div>
+				</div>
 			</div>
-			<div className="flex justify-end mb-2">
-				<GroupList onChange={handleChangeGroupId} />
-			</div>
-			<div className="flex flex-col gap-2">
-				<div className="text-2xl font-bold">현재 클릭 횟수: {count}</div>
-				<div className="text-2xl font-bold">나의 클릭 누적 횟수: {accumulatedCount}</div>
+			<div className="items-end">
+				<div className="min-w-[300px] w-[300px] h-[300px] relative">
+					<Image src={Mascot} alt="캐릭터" onClick={handleImageClick} fill sizes="100vw" />
+				</div>
 			</div>
 		</div>
 	);

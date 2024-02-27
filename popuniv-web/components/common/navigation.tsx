@@ -8,7 +8,7 @@ const Navigation = () => {
 	const path = usePathname();
 	const isSigninSignup = path === '/signin' || path === '/signup';
 
-	return <nav>{isSigninSignup ? <Logo /> : <SigninSignUp />}</nav>;
+	return <nav className="z-[999]">{isSigninSignup ? <Logo /> : <SigninSignUp />}</nav>;
 };
 
 const Logo = () => {
@@ -21,12 +21,16 @@ const Logo = () => {
 
 const SigninSignUp = () => {
 	return (
-		<ul className="flex justify-end gap-4 pt-8 pr-16">
+		<ul className="flex justify-end gap-6 pt-8 pr-16">
 			<li>
-				<Link href="/signin">로그인</Link>
+				<Link href="/signin">
+					<div className="font-semibold">로그인</div>
+				</Link>
 			</li>
 			<li>
-				<Link href="/signup">회원가입</Link>
+				<Link href="/signup">
+					<div className="font-semibold">회원가입</div>
+				</Link>
 			</li>
 		</ul>
 	);
