@@ -5,8 +5,8 @@ export async function get<TResponse, TParam = {}>(url: string, param?: TParam, c
 	try {
 		const endpoint = !param ? base(url) : base(url) + '?' + new URLSearchParams(param);
 		const response = await fetch(endpoint.toString(), cacheTag && { next: { tags: cacheTag } });
-		const json = await response.json();
-		const data: TResponse = await json.data;
+		const data: TResponse = await response.json();
+		// const data: TResponse = await json.data;
 
 		makeConsoleLog<TResponse>('GET', 'orange', endpoint.toString(), data);
 
@@ -25,9 +25,8 @@ export async function post<TResponse, TRequest>(url: string, body: TRequest) {
 			},
 			body: JSON.stringify(body),
 		});
-		const json = await response.json();
-
-		const data: TResponse = await json.data;
+		const data: TResponse = await response.json();
+		// const data: TResponse = await json.data;
 
 		makeConsoleLog<TResponse>('POST', 'blue', url, data);
 
@@ -46,8 +45,8 @@ export async function put<TResponse, TRequest>(url: string, body: TRequest) {
 			},
 			body: JSON.stringify(body),
 		});
-		const json = await response.json();
-		const data: TResponse = await json.data;
+		const data: TResponse = await response.json();
+		// const data: TResponse = await json.data;
 
 		makeConsoleLog<TResponse>('PUT', 'skyblue', url, data);
 
