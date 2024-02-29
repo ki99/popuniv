@@ -14,6 +14,7 @@ export default function ClickBox() {
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
 	const [selectedId, setSelectedId] = useState(1);
 	const userId = 3; // temp
+	const token = localStorage.getItem('token');
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
@@ -26,7 +27,7 @@ export default function ClickBox() {
 		}
 	};
 
-	const getClicks = async (groupId: string) => {
+	const getClicks = async (groupId: number) => {
 		try {
 			const data = await get<ClickResponse>(`/click/${groupId}`);
 			if (data) {
@@ -38,16 +39,22 @@ export default function ClickBox() {
 		}
 	};
 
-	const handleChangeGroupId = (event: any) => {
-		const groupId = event.target.value;
+	const handleChangeGroupId = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		if (!token) {
+			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
+		}
+		const groupId = Number(event.target.value);
 		setSelectedId(groupId);
-		getClicks(groupId);
 	};
 
 	const handleImageClick = () => {
 		setCount((prevCount) => prevCount + 1);
 		new Audio('assets/audios/click.wav').play();
 	};
+
+	useEffect(() => {
+		getClicks(selectedId);
+	}, [selectedId]);
 
 	useEffect(() => {
 		const interval = setInterval(sendCountToServer, 500);
@@ -61,7 +68,7 @@ export default function ClickBox() {
 		<div className="h-[76vh] flex flex-col items-center justify-between">
 			<div className="flex flex-col gap-6">
 				<div className="w-[240px]">
-					<GroupList onChange={handleChangeGroupId} />
+					<GroupList selectedId={selectedId} onChange={handleChangeGroupId} />
 				</div>
 				<div className="flex flex-col gap-4 text-white text-center">
 					<div className="flex flex-col gap-2">

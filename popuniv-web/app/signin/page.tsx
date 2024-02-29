@@ -1,13 +1,18 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { SigninRequest } from '../../models/interface';
+import { SigninRequest, SigninResponse } from '../../models/interface';
 import { post } from '../../utils/http';
 import Link from 'next/link';
 import Button from '../../components/common/button';
 import Input from '../../components/common/input';
+import { redirect } from 'next/navigation';
 
 const Signin = () => {
+	if (localStorage.getItem('token')) {
+		redirect('/');
+	}
+
 	const { register, handleSubmit, formState } = useForm<SigninRequest>({ mode: 'onBlur' });
 	const { errors } = formState;
 
@@ -19,7 +24,14 @@ const Signin = () => {
 	};
 
 	async function onSubmit(body: SigninRequest) {
-		const data = await post<Response, SigninRequest>('/auth/login', body);
+		const data = await post<SigninResponse, SigninRequest>('/auth/login', body);
+		try {
+			if (data?.token) {
+				localStorage.setItem('token', data.token);
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	return (

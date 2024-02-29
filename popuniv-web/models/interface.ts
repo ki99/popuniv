@@ -36,6 +36,7 @@ export interface ClickResponse {
 }
 
 export interface SignupRequest {
+	selectedId: number;
 	email: string;
 	password: string;
 	passwordCheck: string;
@@ -45,4 +46,11 @@ export interface SignupRequest {
 export interface SigninRequest {
 	email: string;
 	password: string;
+}
+export interface SigninResponse {
+	token: string;
+}
+
+export interface MessageResponse {
+	message: string;
 }
