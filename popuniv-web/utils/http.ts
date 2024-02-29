@@ -1,10 +1,20 @@
+import { RequestGET, RequestUPDATE } from '../models/http.interface';
+
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const base = (path: string) => new URL(`/api${path}`, API_URL);
 
-export async function get<TResponse, TParam = {}>(url: string, param?: TParam, cacheTag?: string[]) {
+export async function get<TResponse, TParam = {}>({ token, url, param, cacheTag }: RequestGET<TParam>) {
 	try {
 		const endpoint = !param ? base(url) : base(url) + '?' + new URLSearchParams(param);
-		const response = await fetch(endpoint.toString(), cacheTag && { next: { tags: cacheTag } });
+		const response = await fetch(endpoint.toString(), {
+			method: 'GET',
+			...(token && {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
+			...(cacheTag && { next: { tags: cacheTag } }),
+		});
 		const data: TResponse = await response.json();
 		// const data: TResponse = await json.data;
 
@@ -16,12 +26,13 @@ export async function get<TResponse, TParam = {}>(url: string, param?: TParam, c
 	}
 }
 
-export async function post<TResponse, TRequest>(url: string, body: TRequest) {
+export async function post<TResponse, TRequest>({ token, url, body }: RequestUPDATE<TRequest>) {
 	try {
 		const response = await fetch(base(url).toString(), {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				...(token && { Authorization: `Bearer ${token}` }),
 			},
 			body: JSON.stringify(body),
 		});
@@ -36,12 +47,13 @@ export async function post<TResponse, TRequest>(url: string, body: TRequest) {
 	}
 }
 
-export async function put<TResponse, TRequest>(url: string, body: TRequest) {
+export async function put<TResponse, TRequest>({ token, url, body }: RequestUPDATE<TRequest>) {
 	try {
 		const response = await fetch(base(url).toString(), {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
+				...(token && { Authorization: `Bearer ${token}` }),
 			},
 			body: JSON.stringify(body),
 		});

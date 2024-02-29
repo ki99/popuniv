@@ -9,12 +9,12 @@ import { addComma } from '../../utils/number';
 import { ClickResponse } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
-export default function ClickBox() {
+const ClickBox = () => {
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
 	const [selectedId, setSelectedId] = useState(1);
 	const userId = 3; // temp
-	const token = localStorage.getItem('token');
+	const token = (typeof window !== 'undefined' && localStorage.getItem('token')) || '';
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
@@ -29,7 +29,7 @@ export default function ClickBox() {
 
 	const getClicks = async (groupId: number) => {
 		try {
-			const data = await get<ClickResponse>(`/click/${groupId}`);
+			const data = await get<ClickResponse>({ url: `/click/${groupId}` });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
 				setClickCount({ user: userClickCount, all: allClickCount });
@@ -93,4 +93,6 @@ export default function ClickBox() {
 			</div>
 		</div>
 	);
-}
+};
+
+export default ClickBox;

@@ -15,7 +15,7 @@ export default function List({ selectedId, onChange }: ListProps) {
 
 	const getList = async () => {
 		try {
-			const data = await get<GroupInfo[], LeaderboardRequest>('/group', { type: Group.UNIVERSITY });
+			const data = await get<GroupInfo[], LeaderboardRequest>({ url: '/group', param: { type: Group.UNIVERSITY } });
 			setList(data || []);
 		} catch (error) {
 			console.error('선택 목록을 가져오는 동안 오류가 발생했습니다.', error);

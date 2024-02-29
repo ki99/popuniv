@@ -12,7 +12,7 @@ import GroupList from '../../components/home/list';
 import { redirect, useRouter } from 'next/navigation';
 
 const Signup = () => {
-	if (localStorage.getItem('token')) {
+	if (typeof window !== 'undefined' && localStorage.getItem('token')) {
 		redirect('/');
 	}
 
@@ -38,7 +38,7 @@ const Signup = () => {
 	};
 
 	const onSubmit = async (body: SignupRequest) => {
-		const data = await post<MessageResponse, SignupRequest>('/auth/join', body);
+		const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
 		if (data) {
 			alert('회원가입에 성공하였습니다 ✧*.◟(ˊᗨˋ)◞.*✧');
 			router.push('/signin');

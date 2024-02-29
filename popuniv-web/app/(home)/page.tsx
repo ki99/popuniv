@@ -5,7 +5,11 @@ import { get } from '../../utils/http';
 
 const Home = async () => {
 	// const [type, setType] = useState<GroupType>(Group.UNIVERSITY);
-	const data = await get<Leaderboard[], LeaderboardRequest>('/dashboard', { type: Group.UNIVERSITY }, ['leaderboard']);
+	const data = await get<Leaderboard[], LeaderboardRequest>({
+		url: '/dashboard',
+		param: { type: Group.UNIVERSITY },
+		cacheTag: ['leaderboard'],
+	});
 
 	return (
 		<div>

@@ -1,15 +1,37 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { put } from '../utils/http';
+import { get, put } from '../utils/http';
 import { ClickRequest, ClickRequestBody, ClickResponse } from '../models/interface';
+import { cookies } from 'next/headers';
 
-export async function sendClicks({ selectedId, clickCount, userId }: ClickRequest) {
+export const setToken = async (token: string) => {
+	cookies().set('token', token);
+};
+
+export const getToken = () => {
+	return cookies().get('token')?.value || '';
+};
+
+export const getUserInfo = async () => {
 	try {
-		const data = await put<ClickResponse, ClickRequestBody>(`/click/${selectedId}`, { clickCount, userId });
+		const data = await get<ClickResponse, ClickRequestBody>({ token: getToken(), url: '/auth/info' });
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export const sendClicks = async ({ selectedId, clickCount, userId }: ClickRequest) => {
+	try {
+		const data = await put<ClickResponse, ClickRequestBody>({
+			token: getToken(),
+			url: `/click/${selectedId}`,
+			body: { clickCount, userId },
+		});
 		revalidateTag('leaderboard');
 		return data;
 	} catch (error) {
 		console.error(error);
 	}
-}
+};

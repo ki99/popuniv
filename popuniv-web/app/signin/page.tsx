@@ -1,15 +1,17 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { SigninRequest, SigninResponse } from '../../models/interface';
-import { post } from '../../utils/http';
 import Link from 'next/link';
-import Button from '../../components/common/button';
-import Input from '../../components/common/input';
 import { redirect } from 'next/navigation';
 
+import { getUserInfo, setToken } from '../actions';
+import Button from '../../components/common/button';
+import Input from '../../components/common/input';
+import { SigninRequest, SigninResponse } from '../../models/interface';
+import { post } from '../../utils/http';
+
 const Signin = () => {
-	if (localStorage.getItem('token')) {
+	if (typeof window !== 'undefined' && localStorage.getItem('token')) {
 		redirect('/');
 	}
 
@@ -24,10 +26,13 @@ const Signin = () => {
 	};
 
 	async function onSubmit(body: SigninRequest) {
-		const data = await post<SigninResponse, SigninRequest>('/auth/login', body);
+		const data = await post<SigninResponse, SigninRequest>({ url: '/auth/login', body });
+
 		try {
 			if (data?.token) {
-				localStorage.setItem('token', data.token);
+				await localStorage.setItem('token', data.token);
+				await setToken(data.token);
+				await getUserInfo();
 			}
 		} catch (error) {
 			console.error(error);

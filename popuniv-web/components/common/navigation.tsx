@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const Navigation = () => {
-	const token = localStorage.getItem('token');
+	const token = typeof window !== 'undefined' && localStorage.getItem('token');
 	const path = usePathname();
 	const isSigninSignup = path === '/signin' || path === '/signup';
 
