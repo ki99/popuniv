@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import GroupList from './list';
 import Image from 'next/image';
 import { sendClicks } from '../../app/actions';
 import { get } from '../../utils/http';
+import { addComma } from '../../utils/number';
 import { ClickResponse } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
 export default function ClickBox() {
 	const [count, setCount] = useState(0);
-	const [accumulatedCount, setAccumulatedCount] = useState(0);
+	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
 	const [selectedId, setSelectedId] = useState(1);
 	const userId = 3; // temp
 
@@ -19,7 +20,7 @@ export default function ClickBox() {
 			const data = await sendClicks({ selectedId, clickCount: count, userId });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
-				setAccumulatedCount(userClickCount);
+				setClickCount({ user: userClickCount, all: allClickCount });
 			}
 			setCount(0);
 		}
@@ -30,7 +31,7 @@ export default function ClickBox() {
 			const data = await get<ClickResponse>(`/click/${groupId}`);
 			if (data) {
 				const { userClickCount, allClickCount } = data;
-				setAccumulatedCount(userClickCount);
+				setClickCount({ user: userClickCount, all: allClickCount });
 			}
 		} catch (error) {
 			console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
@@ -64,12 +65,17 @@ export default function ClickBox() {
 				</div>
 				<div className="flex flex-col gap-4 text-white text-center">
 					<div className="flex flex-col gap-2">
-						<div className="text-lg font-semibold">누적 클릭 횟수</div>
-						<div className="text-2xl font-extrabold lining-nums slashed-zero">{accumulatedCount}</div>
+						<div className="font-semibold">전체 클릭 횟수</div>
+						<div className="text-2xl font-extrabold lining-nums slashed-zero">{addComma(clickCount.all)}</div>
 					</div>
 					<div className="flex flex-col gap-2">
-						<div className="text-lg font-semibold">현재 클릭 횟수</div>
-						<div className="text-2xl font-extrabold lining-nums slashed-zero">{count}</div>
+						<div className="font-semibold">내 누적 클릭 횟수</div>
+						<div className="text-2xl font-extrabold lining-nums slashed-zero">{addComma(clickCount.user)}</div>
+					</div>
+					<div className="mt-2">
+						<div className="text-4xl font-extrabold underline decoration-8 decoration-yellow-300 lining-nums slashed-zero">
+							{addComma(count)}
+						</div>
 					</div>
 				</div>
 			</div>
