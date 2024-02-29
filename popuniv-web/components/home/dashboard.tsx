@@ -2,7 +2,7 @@
 
 import 'flowbite';
 import { Dashboard } from '../../models/interface';
-import { addComma } from '../../utils/currency';
+import { addComma } from '../../utils/number';
 
 interface DashboardProps {
 	data: Dashboard[];
