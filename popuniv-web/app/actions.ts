@@ -7,7 +7,7 @@ import { ClickRequest, ClickRequestBody, ClickResponse } from '../models/interfa
 export async function sendClicks({ selectedId, clickCount, userId }: ClickRequest) {
 	try {
 		const data = await put<ClickResponse, ClickRequestBody>(`/click/${selectedId}`, { clickCount, userId });
-		revalidateTag('dashboard');
+		revalidateTag('leaderboard');
 		return data;
 	} catch (error) {
 		console.error(error);

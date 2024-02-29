@@ -1,16 +1,16 @@
 import ClickBox from '../../components/home/box';
-import Dashboard from '../../components/home/dashboard';
-import { DashboardRequest, Group } from '../../models/interface';
+import Leaderboard from '../../components/home/leaderboard';
+import { LeaderboardRequest, Group } from '../../models/interface';
 import { get } from '../../utils/http';
 
 const Home = async () => {
 	// const [type, setType] = useState<GroupType>(Group.UNIVERSITY);
-	const data = await get<Dashboard[], DashboardRequest>('/dashboard', { type: Group.UNIVERSITY }, ['dashboard']);
+	const data = await get<Leaderboard[], LeaderboardRequest>('/dashboard', { type: Group.UNIVERSITY }, ['leaderboard']);
 
 	return (
 		<div>
 			<ClickBox />
-			<Dashboard data={data || []} />
+			<Leaderboard data={data || []} />
 		</div>
 	);
 };

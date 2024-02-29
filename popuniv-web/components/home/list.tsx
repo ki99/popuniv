@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { DashboardRequest, Group, GroupInfo } from '../../models/interface';
+import { LeaderboardRequest, Group, GroupInfo } from '../../models/interface';
 import { get } from '../../utils/http';
 
 interface ListProps {
@@ -15,7 +15,7 @@ export default function List({ selectedId, onChange }: ListProps) {
 
 	const getList = async () => {
 		try {
-			const data = await get<GroupInfo[], DashboardRequest>('/group', { type: Group.UNIVERSITY });
+			const data = await get<GroupInfo[], LeaderboardRequest>('/group', { type: Group.UNIVERSITY });
 			setList(data || []);
 		} catch (error) {
 			console.error('선택 목록을 가져오는 동안 오류가 발생했습니다.', error);

@@ -10,12 +10,12 @@ export interface GroupInfo {
 	name: string;
 }
 
-export interface Dashboard {
+export interface Leaderboard {
 	group_name: string;
 	value: number;
 }
 
-export interface DashboardRequest {
+export interface LeaderboardRequest {
 	type: GroupType;
 }
 
