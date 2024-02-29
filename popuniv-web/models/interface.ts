@@ -11,7 +11,7 @@ export interface GroupInfo {
 }
 
 export interface Dashboard {
-	key: string;
+	group_name: string;
 	value: number;
 }
 
@@ -36,7 +36,7 @@ export interface ClickResponse {
 }
 
 export interface SignupRequest {
-    email: string;
+	email: string;
 	password: string;
 	passwordCheck: string;
 	nickname: string;

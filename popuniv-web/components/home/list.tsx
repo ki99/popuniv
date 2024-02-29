@@ -27,13 +27,13 @@ export default function List({ onChange }: ListProps) {
 
 	return (
 		<select
-			className="w-full h-10 rounded shadow-md border-r-transparent border-r-[8px] px-3 py-2 text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-r-transparent focus:border-r-[8px] focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+			className="w-full h-10 rounded shadow-md border-transparent border-r-[8px] px-3 py-2 text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-transparent focus:border-r-[8px] focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
 			ref={listRef}
 			onChange={onChange}
 		>
 			<option value="">조직 선택</option>
 			{list.map((group) => (
-				<option key={group.id} value={group.name}>
+				<option key={group.id} value={group.id}>
 					{group.name}
 				</option>
 			))}

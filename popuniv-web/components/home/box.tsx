@@ -43,16 +43,16 @@ export default function ClickBox() {
 		getClicks(groupId);
 	};
 
-	const handleImageClick = useCallback(() => {
+	const handleImageClick = () => {
 		setCount((prevCount) => prevCount + 1);
 		new Audio('assets/audios/click.wav').play();
-	}, []);
+	};
 
 	useEffect(() => {
 		const interval = setInterval(sendCountToServer, 500);
 
 		return () => {
-			clearInterval(interval); // 컴포넌트가 언마운트되면 interval 정리
+			clearInterval(interval);
 		};
 	}, [count]);
 
