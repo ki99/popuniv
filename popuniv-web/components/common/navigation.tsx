@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import classNames from 'classnames';
+import { dynaPuff } from '../../app/fonts';
 
 const Navigation = () => {
 	const token = typeof window !== 'undefined' && localStorage.getItem('token');
@@ -20,7 +22,7 @@ const Logo = () => {
 	return (
 		<div>
 			<Link href="/">
-				<div className="font-extrabold uppercase tracking-wide">popuniv</div>
+				<div className={classNames(dynaPuff.className, 'font-bold text-3xl')}>POPUNIV</div>
 			</Link>
 		</div>
 	);
