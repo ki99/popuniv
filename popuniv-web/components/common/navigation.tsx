@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';
+import { deleteToken } from '../../app/actions';
 import { dynaPuff } from '../../app/fonts';
 
 const Navigation = () => {
@@ -53,6 +54,7 @@ const SigninSignUp = () => {
 
 const SignOut = () => {
 	const handleClick = () => {
+		deleteToken();
 		localStorage.removeItem('token');
 		window.location.reload();
 	};

@@ -13,6 +13,10 @@ export const getToken = () => {
 	return cookies().get('token')?.value || '';
 };
 
+export const deleteToken = () => {
+	return cookies().delete('token');
+};
+
 export const getUserInfo = async () => {
 	try {
 		const data = await get<ClickResponse, ClickRequestBody>({ token: getToken(), url: '/auth/info' });
