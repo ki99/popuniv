@@ -11,6 +11,7 @@ import Mascot from 'public/assets/images/mascot.png';
 
 const ClickBox = () => {
 	const token = (typeof window !== 'undefined' && localStorage.getItem('token')) || '';
+	const accumulatedCount = (typeof window !== 'undefined' && Number(localStorage.getItem('accumulated_count'))) || 0;
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
 	const [selectedId, setSelectedId] = useState(1);
@@ -20,18 +21,28 @@ const ClickBox = () => {
 			const data = await sendClicks({ selectedId, clickCount: count });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
-				setClickCount({ user: userClickCount, all: allClickCount });
+				if (token) {
+					setClickCount({ user: userClickCount, all: allClickCount });
+				} else {
+					const value = accumulatedCount + count;
+					localStorage.setItem('accumulated_count', value.toString());
+					setClickCount({ user: value, all: allClickCount });
+				}
+				setCount(0);
 			}
-			setCount(0);
 		}
 	};
 
 	const getClicks = async (groupId: number) => {
 		try {
-			const data = await get<ClickResponse>({ url: `/click/${groupId}` });
+			const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
-				setClickCount({ user: userClickCount, all: allClickCount });
+				if (token) {
+					setClickCount({ user: userClickCount, all: allClickCount });
+				} else {
+					setClickCount({ user: accumulatedCount, all: allClickCount });
+				}
 			}
 		} catch (error) {
 			console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
