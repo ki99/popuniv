@@ -10,7 +10,7 @@ export interface GroupInfo {
 	name: string;
 }
 
-export interface Leaderboard {
+export interface ClicksByName {
 	group_name: string;
 	value: number;
 }

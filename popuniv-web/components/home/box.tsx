@@ -10,11 +10,11 @@ import { ClickResponse } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
 const ClickBox = () => {
+	const token = (typeof window !== 'undefined' && localStorage.getItem('token')) || '';
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
 	const [selectedId, setSelectedId] = useState(1);
 	const userId = 3; // temp
-	const token = (typeof window !== 'undefined' && localStorage.getItem('token')) || '';
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
