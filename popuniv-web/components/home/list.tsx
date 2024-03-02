@@ -3,13 +3,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { LeaderboardRequest, Group, GroupInfo } from '../../models/interface';
 import { get } from '../../utils/http';
+import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface ListProps {
 	selectedId: number;
 	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+	register?: UseFormRegister<FieldValues>;
 }
 
-export default function List({ selectedId, onChange }: ListProps) {
+const List = React.forwardRef(function List({ selectedId, onChange, register }: ListProps) {
 	const [list, setList] = useState<GroupInfo[]>([]);
 	const listRef = useRef(null);
 
@@ -32,6 +34,7 @@ export default function List({ selectedId, onChange }: ListProps) {
 			ref={listRef}
 			onChange={onChange}
 			value={selectedId}
+			{...register}
 		>
 			{list.map((group) => (
 				<option key={group.id} value={group.id}>
@@ -40,4 +43,6 @@ export default function List({ selectedId, onChange }: ListProps) {
 			))}
 		</select>
 	);
-}
+});
+
+export default List;

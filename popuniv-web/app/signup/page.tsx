@@ -22,6 +22,7 @@ const Signup = () => {
 	const { errors } = formState;
 
 	const fields = {
+		selectedId: register('selectedId'),
 		email: register('email', { required: '이메일을 입력해주세요' }),
 		nickname: register('nickname', { required: '닉네임을 입력해주세요' }),
 		password: register('password', {
@@ -52,7 +53,7 @@ const Signup = () => {
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<div>
 						<label>대학교</label>
-						<GroupList selectedId={selectedId} onChange={handleChangeGroupId} />
+						<GroupList {...fields.selectedId} selectedId={selectedId} onChange={handleChangeGroupId} />
 					</div>
 					<div>
 						<label>이메일</label>
