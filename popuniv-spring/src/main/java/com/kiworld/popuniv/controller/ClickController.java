@@ -66,7 +66,7 @@ public class ClickController {
 
     @Operation(summary = "User의 Group에 click 개수 반영하기")
     @PutMapping("/{group_id}")
-    public ResponseEntity<MessageResponse> postClicks(Authentication auth, @PathVariable("group_id") String group_id, @RequestBody ClickRequest requestBody) {
+    public ResponseEntity<ClickResponse> postClicks(Authentication auth, @PathVariable("group_id") String group_id, @RequestBody ClickRequest requestBody) {
         long clickCount = requestBody.getClickCount();
 
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
@@ -75,12 +75,14 @@ public class ClickController {
         String user_key = user.getId() + "_" + group_id + "_clicks";
         String total_key = group_id + "_clicks";
 
-        valueOperations.increment(user_key, clickCount);
-        valueOperations.increment(total_key, clickCount);
+        long user_value = valueOperations.increment(user_key, clickCount);
+        long total_value = valueOperations.increment(total_key, clickCount);
 
-        MessageResponse stringResponse = new MessageResponse();
-        stringResponse.setMessage("Click count updated successfully");
 
-        return ResponseEntity.ok(stringResponse);
+        ClickResponse clickResponse = new ClickResponse();
+        clickResponse.setUserClickCount(user_value);
+        clickResponse.setAllClickCount(total_value);
+
+        return ResponseEntity.ok(clickResponse);
     }
 }
