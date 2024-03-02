@@ -23,6 +23,8 @@ public class JoinRequest {
     @NotBlank(message = "닉네임이 비어있습니다.")
     private String nickname;
 
+    private String selectedId;
+
     // 비밀번호 암호화 X
     public User toEntity() {
         return User.builder()
