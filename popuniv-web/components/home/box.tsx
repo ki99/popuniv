@@ -14,11 +14,10 @@ const ClickBox = () => {
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
 	const [selectedId, setSelectedId] = useState(1);
-	const userId = 3; // temp
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
-			const data = await sendClicks({ selectedId, clickCount: count, userId });
+			const data = await sendClicks({ selectedId, clickCount: count });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
 				setClickCount({ user: userClickCount, all: allClickCount });

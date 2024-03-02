@@ -27,7 +27,6 @@ export interface ClickRequestParam {
 
 export interface ClickRequestBody {
 	clickCount: number;
-	userId: number;
 }
 
 export interface ClickResponse {

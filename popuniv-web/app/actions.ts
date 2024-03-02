@@ -26,12 +26,12 @@ export const getUserInfo = async () => {
 	}
 };
 
-export const sendClicks = async ({ selectedId, clickCount, userId }: ClickRequest) => {
+export const sendClicks = async ({ selectedId, clickCount }: ClickRequest) => {
 	try {
 		const data = await put<ClickResponse, ClickRequestBody>({
 			token: getToken(),
 			url: `/click/${selectedId}`,
-			body: { clickCount, userId },
+			body: { clickCount },
 		});
 		revalidateTag('leaderboard');
 		return data;
