@@ -54,26 +54,23 @@ public class JwtLoginApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
         User user = userService.login(loginRequest);
-        MessageResponse loginResponse = new MessageResponse();
 
-        // 로그인 아이디나 비밀번호가 틀린 경우 global error return
-        if(user == null) {
+        if (user == null) {
+            MessageResponse loginResponse = new MessageResponse();
             loginResponse.setMessage("아이디나 비밀번호가 틀렸습니다.");
+            return ResponseEntity.ok().body(loginResponse);
+        } else {
+            String secretKey = "f052b4422c82fb007c3b499e275e957af125eb6ef097d0161338084a815c2de7";
+            long expireTimeMs = 1000 * 60 * 60 * 24; // Token 유효 시간 = 60분 * 24
+
+            String jwtToken = JwtTokenUtil.createToken(user.getEmail(), secretKey, expireTimeMs);
+
+            TokenResponse tokenResponse = new TokenResponse(jwtToken);
+            return ResponseEntity.ok().body(tokenResponse);
         }
-
-        // 로그인 성공 => Jwt Token 발급
-
-        String secretKey = "f052b4422c82fb007c3b499e275e957af125eb6ef097d0161338084a815c2de7";
-        long expireTimeMs = 1000 * 60 * 60 * 24;     // Token 유효 시간 = 60분 * 24
-
-        String jwtToken = JwtTokenUtil.createToken(user.getEmail(), secretKey, expireTimeMs);
-
-        TokenResponse tokenResponse = new TokenResponse(jwtToken);
-
-        return ResponseEntity.ok().body(tokenResponse);
     }
 
     @GetMapping("/info")

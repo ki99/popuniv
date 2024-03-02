@@ -8,6 +8,8 @@ import com.kiworld.popuniv.dto.JoinRequest;
 import com.kiworld.popuniv.dto.LoginRequest;
 import com.kiworld.popuniv.entity.Role;
 import com.kiworld.popuniv.entity.User;
+import com.kiworld.popuniv.entity.UserGroup;
+import com.kiworld.popuniv.repository.UserGroupRepository;
 import com.kiworld.popuniv.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserGroupRepository userGroupRepository;
 
     // Spring Security를 사용한 로그인 구현 시 사용
     // private final BCryptPasswordEncoder encoder;
@@ -47,7 +50,11 @@ public class UserService {
      * email, nickname 중복 체크는 Controller에서 진행 => 에러 메세지 출력을 위해
      */
     public void join(JoinRequest req) {
-        userRepository.save(req.toEntity());
+        User user = userRepository.save(req.toEntity());
+        UserGroup userGroup = new UserGroup();
+        userGroup.setUserId(user.getId());
+        userGroup.setGroupId(Integer.valueOf(req.getSelectedId()));
+        userGroupRepository.save(userGroup);
     }
 
     /**

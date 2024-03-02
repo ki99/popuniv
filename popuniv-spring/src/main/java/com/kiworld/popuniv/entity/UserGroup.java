@@ -22,7 +22,7 @@ public class UserGroup {
 
     @Column(nullable = false)
     @Schema(description = "유저 id", nullable = false, example = "1")
-    private int userId; // user id
+    private long userId; // user id
 
     @Column(nullable = false)
     @Schema(description = "그룹 id", nullable = false, example = "1")
