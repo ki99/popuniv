@@ -1,26 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';
 import { deleteToken } from '../../app/actions';
 import { dynaPuff } from '../../app/fonts';
 
-const Navigation = () => {
+interface NavigationProps {
+	isAuth: boolean;
+}
+
+const Navigation = ({ isAuth }: NavigationProps) => {
 	const path = usePathname();
 	const isSigninSignup = path === '/signin' || path === '/signup';
-
-	const [token, setToken] = useState<string | null>(null);
-
-	useEffect(() => {
-		setToken(localStorage.getItem('token'));
-	}, []);
 
 	return (
 		<nav className="z-[999] flex flex-row justify-between p-8">
 			<Logo />
-			{token ? <SignOut /> : !isSigninSignup && <SigninSignUp />}
+			{isAuth ? <SignOut /> : !isSigninSignup && <SigninSignUp />}
 		</nav>
 	);
 };
@@ -53,10 +50,10 @@ const SigninSignUp = () => {
 };
 
 const SignOut = () => {
-	const handleClick = () => {
-		deleteToken();
-		localStorage.removeItem('token');
-		window.location.reload();
+	const handleClick = async () => {
+		await deleteToken();
+		await localStorage.removeItem('token');
+		await window.location.reload();
 	};
 
 	return (

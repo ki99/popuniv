@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import './globals.css';
 import { noto_sans, noto_sans_kr } from './fonts';
 import Navigation from '../components/common/navigation';
+import { getToken } from './actions';
 
 export const metadata: Metadata = {
 	title: 'POPUNIV',
@@ -21,7 +22,7 @@ export default function RootLayout({
 	return (
 		<html lang="ko">
 			<body className={classNames(noto_sans.className, noto_sans_kr.className, 'overflow-y-hidden')}>
-				<Navigation />
+				<Navigation isAuth={!!getToken()} />
 				<div className="py-16 px-32">{children}</div>
 			</body>
 		</html>
