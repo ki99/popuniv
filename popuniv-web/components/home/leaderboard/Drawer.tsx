@@ -17,7 +17,7 @@ const Drawer = ({ data }: LeaderboardProps) => {
 	return (
 		<div
 			id="drawer-left"
-			className="fixed top-0 left-0 z-40 h-screen w-96 p-4 overflow-y-auto transition-transform -translate-x-full bg-white opacity-90"
+			className="fixed top-0 left-0 z-40 h-screen w-96 p-4 overflow-y-auto transition-transform duration-300 -translate-x-full bg-white opacity-90"
 			aria-labelledby="drawer-left-label"
 		>
 			<h5
