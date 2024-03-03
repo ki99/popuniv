@@ -1,8 +1,13 @@
 'use client';
 
-import 'flowbite';
+import { useEffect } from 'react';
+import { initFlowbite } from 'flowbite';
 
 const OpenButton = () => {
+	useEffect(() => {
+		initFlowbite();
+	}, []);
+
 	return (
 		<div className="h-full flex justify-center ml-8">
 			<button

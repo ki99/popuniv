@@ -1,6 +1,7 @@
 'use client';
 
-import 'flowbite';
+import { useEffect } from 'react';
+import { initFlowbite } from 'flowbite';
 import { addComma, numToRank } from '../../../utils/number';
 import { ClicksByName } from '../../../models/interface';
 
@@ -9,6 +10,10 @@ interface LeaderboardProps {
 }
 
 const Drawer = ({ data }: LeaderboardProps) => {
+	useEffect(() => {
+		initFlowbite();
+	}, []);
+
 	return (
 		<div
 			id="drawer-left"
@@ -27,7 +32,7 @@ const Drawer = ({ data }: LeaderboardProps) => {
 				aria-controls="drawer-left"
 				className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
 			>
-				<svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+				<svg className="w-3 h-3" aria-hidden xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
 					<path
 						stroke="currentColor"
 						strokeLinecap="round"
