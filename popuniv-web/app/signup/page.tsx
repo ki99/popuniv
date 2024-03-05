@@ -17,12 +17,11 @@ const Signup = () => {
 	}
 
 	const router = useRouter();
-	const [selectedId, setSelectedId] = useState<number>(1);
+	const [selectedId, setSelectedId] = useState('1');
 	const { register, handleSubmit, formState } = useForm<SignupRequest>({ mode: 'onBlur' });
 	const { errors } = formState;
 
 	const fields = {
-		selectedId: register('selectedId'),
 		email: register('email', { required: '이메일을 입력해주세요' }),
 		nickname: register('nickname', { required: '닉네임을 입력해주세요' }),
 		password: register('password', {
@@ -34,15 +33,24 @@ const Signup = () => {
 	};
 
 	const handleChangeGroupId = (event: any) => {
-		const groupId = Number(event.target.value);
+		const groupId = event.target.value;
 		setSelectedId(groupId);
 	};
 
 	const onSubmit = async (body: SignupRequest) => {
-		const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
-		if (data) {
-			alert('회원가입에 성공하였습니다 ✧*.◟(ˊᗨˋ)◞.*✧');
-			router.push('/signin');
+		if (selectedId === '1') {
+			return alert('대학교를 선택해주세요');
+		}
+		body = Object.assign(body, { selectedId });
+		try {
+			const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
+			if (data) {
+				alert('회원가입에 성공하였습니다 ✧*.◟(ˊᗨˋ)◞.*✧');
+				router.push('/signin');
+			}
+		} catch (error) {
+			console.error(error);
+			alert(error);
 		}
 	};
 
@@ -53,7 +61,7 @@ const Signup = () => {
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<div>
 						<label>대학교</label>
-						<GroupList {...fields.selectedId} selectedId={selectedId} onChange={handleChangeGroupId} />
+						<GroupList selectedId={selectedId} onChange={handleChangeGroupId} />
 					</div>
 					<div>
 						<label>이메일</label>

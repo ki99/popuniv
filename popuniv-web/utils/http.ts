@@ -15,6 +15,13 @@ export async function get<TResponse, TParam = {}>({ token, url, param, cacheTag 
 			}),
 			...(cacheTag && { next: { tags: cacheTag } }),
 		});
+
+		if (!response.ok) {
+			return response.json().then((error) => {
+				throw error.message;
+			});
+		}
+
 		const data: TResponse = await response.json();
 		// const data: TResponse = await json.data;
 
@@ -36,6 +43,13 @@ export async function post<TResponse, TRequest>({ token, url, body }: RequestUPD
 			},
 			body: JSON.stringify(body),
 		});
+
+		if (!response.ok) {
+			return response.json().then((error) => {
+				throw error.message;
+			});
+		}
+
 		const data: TResponse = await response.json();
 		// const data: TResponse = await json.data;
 
@@ -57,6 +71,13 @@ export async function put<TResponse, TRequest>({ token, url, body }: RequestUPDA
 			},
 			body: JSON.stringify(body),
 		});
+
+		if (!response.ok) {
+			return response.json().then((error) => {
+				throw error.message;
+			});
+		}
+
 		const data: TResponse = await response.json();
 		// const data: TResponse = await json.data;
 

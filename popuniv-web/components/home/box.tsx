@@ -14,7 +14,7 @@ const ClickBox = () => {
 	const accumulatedCount = (typeof window !== 'undefined' && Number(localStorage.getItem('accumulated_count'))) || 0;
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
-	const [selectedId, setSelectedId] = useState(1);
+	const [selectedId, setSelectedId] = useState('1');
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
@@ -33,7 +33,7 @@ const ClickBox = () => {
 		}
 	};
 
-	const getClicks = async (groupId: number) => {
+	const getClicks = async (groupId: string) => {
 		try {
 			const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
 			if (data) {
@@ -53,7 +53,7 @@ const ClickBox = () => {
 		if (!token) {
 			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
 		}
-		const groupId = Number(event.target.value);
+		const groupId = event.target.value;
 		setSelectedId(groupId);
 	};
 

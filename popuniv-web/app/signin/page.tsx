@@ -26,16 +26,18 @@ const Signin = () => {
 	};
 
 	async function onSubmit(body: SigninRequest) {
-		const data = await post<SigninResponse, SigninRequest>({ url: '/auth/login', body });
-
 		try {
+			const data = await post<SigninResponse, SigninRequest>({ url: '/auth/login', body });
 			if (data?.token) {
 				await localStorage.setItem('token', data.token);
 				await setToken(data.token);
 				await getUserInfo();
+			} else {
+				alert('문제가 발생하였습니다 ( ´△｀) 다시 시도해주세요');
 			}
 		} catch (error) {
 			console.error(error);
+			alert(error);
 		}
 	}
 
