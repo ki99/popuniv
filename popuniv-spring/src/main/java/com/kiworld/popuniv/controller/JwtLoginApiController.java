@@ -2,6 +2,7 @@ package com.kiworld.popuniv.controller;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,27 +31,34 @@ public class JwtLoginApiController {
     private final UserService userService;
 
     @PostMapping("/join")
-    public ResponseEntity<MessageResponse> join(@RequestBody JoinRequest joinRequest) {
+    public ResponseEntity<?> join(@RequestBody JoinRequest joinRequest) {
 
         MessageResponse joinResponse = new MessageResponse();
 
         // 닉네임 중복 체크
         if(userService.checkNicknameDuplicate(joinRequest.getNickname())) {
             joinResponse.setMessage("이미 존재하는 닉네임입니다.");
+            return ResponseEntity.badRequest().body(joinResponse);
         }
         // password와 passwordCheck가 같은지 체크
-        if(!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
+        if (!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
             joinResponse.setMessage("비밀번호가 일치하지 않습니다.");
+            return ResponseEntity.badRequest().body(joinResponse);
         }
 
-        if(!JoinRequest.isValidEmail(joinRequest.getEmail())) {
+        if (!JoinRequest.isValidEmail(joinRequest.getEmail())) {
             joinResponse.setMessage("이메일 형식이 올바르지 않습니다.");
+            return ResponseEntity.badRequest().body(joinResponse);
+        } else {
+            try {
+                userService.join(joinRequest);
+                joinResponse.setMessage("회원가입 성공");
+                return ResponseEntity.ok().body(joinResponse);
+            } catch (Exception e) {
+                joinResponse.setMessage("회원가입 중 오류가 발생했습니다.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(joinResponse);
+            }
         }
-        else{
-            userService.join(joinRequest);
-            joinResponse.setMessage("회원가입 성공");
-        }
-        return ResponseEntity.ok().body(joinResponse);
     }
 
     @PostMapping("/login")
@@ -61,7 +69,7 @@ public class JwtLoginApiController {
         if (user == null) {
             MessageResponse loginResponse = new MessageResponse();
             loginResponse.setMessage("아이디나 비밀번호가 틀렸습니다.");
-            return ResponseEntity.ok().body(loginResponse);
+            return ResponseEntity.badRequest().body(loginResponse);
         } else {
             String secretKey = "f052b4422c82fb007c3b499e275e957af125eb6ef097d0161338084a815c2de7";
             long expireTimeMs = 1000 * 60 * 60 * 24; // Token 유효 시간 = 60분 * 24
