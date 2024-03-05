@@ -22,7 +22,7 @@ export interface LeaderboardRequest {
 export type ClickRequest = ClickRequestParam & ClickRequestBody;
 
 export interface ClickRequestParam {
-	selectedId: number;
+	selectedId: string;
 }
 
 export interface ClickRequestBody {
@@ -35,7 +35,7 @@ export interface ClickResponse {
 }
 
 export interface SignupRequest {
-	selectedId: number;
+	selectedId: string;
 	email: string;
 	password: string;
 	passwordCheck: string;

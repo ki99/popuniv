@@ -6,7 +6,7 @@ import { get } from '../../utils/http';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface ListProps {
-	selectedId: number;
+	selectedId: string;
 	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 	register?: UseFormRegister<FieldValues>;
 }

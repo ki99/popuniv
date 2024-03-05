@@ -17,7 +17,7 @@ const Signup = () => {
 	}
 
 	const router = useRouter();
-	const [selectedId, setSelectedId] = useState<number>(1);
+	const [selectedId, setSelectedId] = useState('1');
 	const { register, handleSubmit, formState } = useForm<SignupRequest>({ mode: 'onBlur' });
 	const { errors } = formState;
 
@@ -33,15 +33,15 @@ const Signup = () => {
 	};
 
 	const handleChangeGroupId = (event: any) => {
-		const groupId = Number(event.target.value);
+		const groupId = event.target.value;
 		setSelectedId(groupId);
 	};
 
 	const onSubmit = async (body: SignupRequest) => {
-		if (selectedId === 1) {
+		if (selectedId === '1') {
 			return alert('대학교를 선택해주세요');
 		}
-		body = Object.assign(body, { selectedId: selectedId.toString() });
+		body = Object.assign(body, { selectedId });
 		try {
 			const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
 			if (data) {
