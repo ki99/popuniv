@@ -22,7 +22,6 @@ const Signup = () => {
 	const { errors } = formState;
 
 	const fields = {
-		selectedId: register('selectedId'),
 		email: register('email', { required: '이메일을 입력해주세요' }),
 		nickname: register('nickname', { required: '닉네임을 입력해주세요' }),
 		password: register('password', {
@@ -39,6 +38,10 @@ const Signup = () => {
 	};
 
 	const onSubmit = async (body: SignupRequest) => {
+		if (selectedId === 1) {
+			return alert('대학교를 선택해주세요');
+		}
+		body = Object.assign(body, { selectedId: selectedId.toString() });
 		try {
 			const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
 			if (data) {
@@ -58,7 +61,7 @@ const Signup = () => {
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<div>
 						<label>대학교</label>
-						<GroupList {...fields.selectedId} selectedId={selectedId} onChange={handleChangeGroupId} />
+						<GroupList selectedId={selectedId} onChange={handleChangeGroupId} />
 					</div>
 					<div>
 						<label>이메일</label>
