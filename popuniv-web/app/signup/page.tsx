@@ -39,10 +39,15 @@ const Signup = () => {
 	};
 
 	const onSubmit = async (body: SignupRequest) => {
-		const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
-		if (data) {
-			alert('회원가입에 성공하였습니다 ✧*.◟(ˊᗨˋ)◞.*✧');
-			router.push('/signin');
+		try {
+			const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
+			if (data) {
+				alert('회원가입에 성공하였습니다 ✧*.◟(ˊᗨˋ)◞.*✧');
+				router.push('/signin');
+			}
+		} catch (error) {
+			console.error(error);
+			alert(error);
 		}
 	};
 
