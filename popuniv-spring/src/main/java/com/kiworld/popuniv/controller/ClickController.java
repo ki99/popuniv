@@ -56,6 +56,8 @@ public class ClickController {
         String user_key = user.getId() + "_" + group_id + "_clicks";
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
 
+        if (valueOperations.get(total_key) == null) valueOperations.set(total_key, 0L);
+        if (valueOperations.get(user_key) == null) valueOperations.set(user_key, 0L);
         long total_value = valueOperations.get(total_key);
         long user_value = valueOperations.get(user_key);
         ClickResponse clickResponse = new ClickResponse();

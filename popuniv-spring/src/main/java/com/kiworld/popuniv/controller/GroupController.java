@@ -17,6 +17,7 @@ import com.kiworld.popuniv.repository.GroupRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/group")
@@ -36,8 +37,10 @@ public class GroupController {
     @Operation(summary = "모든 group에 대한 정보")
     public ResponseEntity<Object> getGroups(@RequestParam GroupType type) {
         // fetch groups from group table using group_type column
-
-        return ResponseEntity.ok(groupRepository.findByType(type));
+        List<Group> groups = groupRepository.findByType(type);
+        // Group의 name에 따라 가나다순 정렬
+        groups.sort((a, b) -> a.getName().compareTo(b.getName()));
+        return ResponseEntity.ok(groups);
     }
     
     @GetMapping("/{id}")

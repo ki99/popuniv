@@ -57,6 +57,8 @@ public class DashboardController {
         }
     }
 
+    dashboardDataList.sort((a, b) -> (int) (b.getValue() - a.getValue()));
+
     return ResponseEntity.ok(dashboardDataList);
     } 
 }

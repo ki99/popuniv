@@ -90,7 +90,8 @@ public class JwtLoginApiController {
         // join with User and UserGroup
         User user = userService.getLoginUserByEmail(auth.getName());
         UserGroup userGroup = userGroupService.findByUserId(user.getId());
-        UserResponse userResponse = new UserResponse(user, userGroup);
+        UserResponse userResponse = new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getRole(), userGroup.getGroupId());
+
         return ResponseEntity.ok().body(userResponse);
 
     }
