@@ -31,7 +31,8 @@ const Signin = () => {
 			if (data?.token) {
 				await localStorage.setItem('token', data.token);
 				await setToken(data.token);
-				await getUserInfo();
+				const userInfo = await getUserInfo();
+				await localStorage.setItem('user', JSON.stringify(userInfo));
 			} else {
 				alert('문제가 발생하였습니다 ( ´△｀) 다시 시도해주세요');
 			}

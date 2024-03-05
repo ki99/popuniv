@@ -53,6 +53,7 @@ const SignOut = () => {
 	const handleClick = async () => {
 		await deleteToken();
 		await localStorage.removeItem('token');
+		await localStorage.removeItem('user');
 		await window.location.reload();
 	};
 

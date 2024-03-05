@@ -11,6 +11,7 @@ import Mascot from 'public/assets/images/mascot.png';
 
 const ClickBox = () => {
 	const token = (typeof window !== 'undefined' && localStorage.getItem('token')) || '';
+	const user = (typeof window !== 'undefined' && localStorage.getItem('user')) || null;
 	const accumulatedCount = (typeof window !== 'undefined' && Number(localStorage.getItem('accumulated_count'))) || 0;
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
@@ -55,6 +56,7 @@ const ClickBox = () => {
 		}
 		const groupId = event.target.value;
 		setSelectedId(groupId);
+		getClicks(groupId);
 	};
 
 	const handleImageClick = () => {
@@ -63,8 +65,10 @@ const ClickBox = () => {
 	};
 
 	useEffect(() => {
-		getClicks(selectedId);
-	}, [selectedId]);
+		if (token && user) {
+			setSelectedId(JSON.parse(user).groupId);
+		}
+	}, [token, user]);
 
 	useEffect(() => {
 		const interval = setInterval(sendCountToServer, 500);

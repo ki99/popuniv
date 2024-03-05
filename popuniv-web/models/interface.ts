@@ -53,3 +53,11 @@ export interface SigninResponse {
 export interface MessageResponse {
 	message: string;
 }
+
+export interface UserInfo {
+	id: number;
+	email: string;
+	nickname: string;
+	role: string;
+	groupId: number;
+}
