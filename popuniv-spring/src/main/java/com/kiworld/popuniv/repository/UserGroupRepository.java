@@ -10,6 +10,6 @@ import com.kiworld.popuniv.entity.UserGroup;
 
 public interface UserGroupRepository extends JpaRepository<UserGroup, Integer> {
 
-    Object findByUserId(int int1);
+    UserGroup findByUserId(long int1);
       
 }

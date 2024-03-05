@@ -40,6 +40,7 @@ public class ClickController {
     public ResponseEntity<AllClickResponse> getClick(@RequestParam String type) {
         String total_key = type + "_clicks";
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
+        if (valueOperations.get(total_key) == null) valueOperations.set(total_key, 0L);
         long value = valueOperations.get(total_key);
         AllClickResponse allClickResponse = new AllClickResponse();
         allClickResponse.setAllClickCount(value);

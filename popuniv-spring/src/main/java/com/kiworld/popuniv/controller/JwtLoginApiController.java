@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kiworld.popuniv.dto.JoinRequest;
 import com.kiworld.popuniv.dto.MessageResponse;
 import com.kiworld.popuniv.dto.TokenResponse;
+import com.kiworld.popuniv.dto.UserResponse;
 import com.kiworld.popuniv.dto.LoginRequest;
 import com.kiworld.popuniv.entity.User;
+import com.kiworld.popuniv.entity.UserGroup;
 import com.kiworld.popuniv.jwt.JwtTokenUtil;
+import com.kiworld.popuniv.service.UserGroupService;
 import com.kiworld.popuniv.service.UserService;
 
 import ch.qos.logback.core.subst.Token;
@@ -29,6 +32,7 @@ public class JwtLoginApiController {
 
     @Autowired
     private final UserService userService;
+    private final UserGroupService userGroupService;
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody JoinRequest joinRequest) {
@@ -82,11 +86,13 @@ public class JwtLoginApiController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<User> userInfo(Authentication auth) {
-        User loginUser = userService.getLoginUserByEmail(auth.getName());
+    public ResponseEntity<UserResponse> userInfo(Authentication auth) {
+        // join with User and UserGroup
+        User user = userService.getLoginUserByEmail(auth.getName());
+        UserGroup userGroup = userGroupService.findByUserId(user.getId());
+        UserResponse userResponse = new UserResponse(user, userGroup);
+        return ResponseEntity.ok().body(userResponse);
 
-        // return with Json
-        return ResponseEntity.ok().body(loginUser);
     }
 
     @GetMapping("/admin")
