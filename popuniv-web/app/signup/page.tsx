@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import Button from '../../components/common/button';
 import Input from '../../components/common/input';
-import { MessageResponse, SignupRequest } from '../../models/interface';
+import { MessageResponse, SelectOption, SignupRequest } from '../../models/interface';
 import { post } from '../../utils/http';
 import { useState } from 'react';
 import GroupList from '../../components/home/list';
@@ -17,7 +17,7 @@ const Signup = () => {
 	}
 
 	const router = useRouter();
-	const [selectedId, setSelectedId] = useState('1');
+	const [selected, setSelected] = useState<SelectOption>();
 	const { register, handleSubmit, formState } = useForm<SignupRequest>({ mode: 'onBlur' });
 	const { errors } = formState;
 
@@ -32,16 +32,15 @@ const Signup = () => {
 		}),
 	};
 
-	const handleChangeGroupId = (event: any) => {
-		const groupId = event.target.value;
-		setSelectedId(groupId);
+	const handleChangeGroup = (group: SelectOption) => {
+		setSelected(group);
 	};
 
 	const onSubmit = async (body: SignupRequest) => {
-		if (selectedId === '1') {
+		if (!selected?.value) {
 			return alert('대학교를 선택해주세요');
 		}
-		body = Object.assign(body, { selectedId });
+		body = Object.assign(body, { selectedId: selected.value });
 		try {
 			const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
 			if (data) {
@@ -61,7 +60,7 @@ const Signup = () => {
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<div>
 						<label>대학교</label>
-						<GroupList selectedId={selectedId} onChange={handleChangeGroupId} />
+						<GroupList onChange={handleChangeGroup} />
 					</div>
 					<div>
 						<label>이메일</label>

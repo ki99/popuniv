@@ -1,25 +1,69 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import GroupList from './list';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import GroupList from './list';
 import { sendClicks } from '../../app/actions';
 import { get } from '../../utils/http';
 import { addComma } from '../../utils/number';
-import { ClickResponse } from '../../models/interface';
+import { ClickResponse, SelectOption } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
 const ClickBox = () => {
 	const token = (typeof window !== 'undefined' && localStorage.getItem('token')) || '';
-	const user = (typeof window !== 'undefined' && localStorage.getItem('user')) || null;
+
 	const accumulatedCount = (typeof window !== 'undefined' && Number(localStorage.getItem('accumulated_count'))) || 0;
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
-	const [selectedId, setSelectedId] = useState('1');
+
+	const defaultValue = useMemo(() => {
+		const user = (typeof window !== 'undefined' && localStorage.getItem('user')) || null;
+		if (user) {
+			const group = JSON.parse(user).group;
+			return { value: group.id, label: group.name };
+		}
+		return { value: '1', label: 'Default University' };
+	}, []);
+	const [selected, setSelected] = useState<SelectOption>(defaultValue);
+
+	const handleChangeGroup = (group: SelectOption) => {
+		if (!token) {
+			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
+		}
+		setSelected(group);
+	};
+
+	const getClicks = useCallback(
+		async (groupId: string) => {
+			try {
+				const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
+				if (data) {
+					const { userClickCount, allClickCount } = data;
+					if (token) {
+						setClickCount({ user: userClickCount, all: allClickCount });
+					} else {
+						setClickCount({ user: accumulatedCount, all: allClickCount });
+					}
+				}
+			} catch (error) {
+				console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
+			}
+		},
+		[accumulatedCount, token]
+	);
+
+	useEffect(() => {
+		getClicks(selected.value);
+	}, [getClicks, selected]);
+
+	const handleImageClick = () => {
+		setCount((prevCount) => prevCount + 1);
+		new Audio('assets/audios/click.wav').play();
+	};
 
 	const sendCountToServer = async () => {
 		if (count > 0) {
-			const data = await sendClicks({ selectedId, clickCount: count });
+			const data = await sendClicks({ selectedId: selected.value, clickCount: count });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
 				if (token) {
@@ -34,42 +78,6 @@ const ClickBox = () => {
 		}
 	};
 
-	const getClicks = async (groupId: string) => {
-		try {
-			const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
-			if (data) {
-				const { userClickCount, allClickCount } = data;
-				if (token) {
-					setClickCount({ user: userClickCount, all: allClickCount });
-				} else {
-					setClickCount({ user: accumulatedCount, all: allClickCount });
-				}
-			}
-		} catch (error) {
-			console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
-		}
-	};
-
-	const handleChangeGroupId = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		if (!token) {
-			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
-		}
-		const groupId = event.target.value;
-		setSelectedId(groupId);
-		getClicks(groupId);
-	};
-
-	const handleImageClick = () => {
-		setCount((prevCount) => prevCount + 1);
-		new Audio('assets/audios/click.wav').play();
-	};
-
-	useEffect(() => {
-		if (token && user) {
-			setSelectedId(JSON.parse(user).groupId);
-		}
-	}, [token, user]);
-
 	useEffect(() => {
 		const interval = setInterval(sendCountToServer, 500);
 
@@ -82,7 +90,7 @@ const ClickBox = () => {
 		<div className="h-[76vh] flex flex-col items-center justify-between">
 			<div className="flex flex-col gap-6">
 				<div className="w-[240px]">
-					<GroupList selectedId={selectedId} onChange={handleChangeGroupId} />
+					<GroupList defaultValue={defaultValue} onChange={handleChangeGroup} />
 				</div>
 				<div className="flex flex-col gap-4 text-white text-center">
 					<div className="flex flex-col gap-2">

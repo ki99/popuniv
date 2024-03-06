@@ -6,10 +6,17 @@ export enum Group {
 export type GroupType = (typeof Group)[keyof typeof Group];
 
 export interface GroupInfo {
-	id: number;
+	id: string;
 	name: string;
 }
 
+export interface SelectOption {
+	readonly value: string;
+	readonly label: string;
+	readonly color?: string;
+	readonly isFixed?: boolean;
+	readonly isDisabled?: boolean;
+}
 export interface ClicksByName {
 	group_name: string;
 	value: number;
