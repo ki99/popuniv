@@ -39,3 +39,7 @@ export const sendClicks = async ({ selectedId, clickCount }: ClickRequest) => {
 		console.error(error);
 	}
 };
+
+export const updateLeaderboard = () => {
+	revalidateTag('leaderboard');
+};
