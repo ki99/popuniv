@@ -16,9 +16,11 @@ import com.kiworld.popuniv.dto.MessageResponse;
 import com.kiworld.popuniv.dto.TokenResponse;
 import com.kiworld.popuniv.dto.UserResponse;
 import com.kiworld.popuniv.dto.LoginRequest;
+import com.kiworld.popuniv.entity.Group;
 import com.kiworld.popuniv.entity.User;
 import com.kiworld.popuniv.entity.UserGroup;
 import com.kiworld.popuniv.jwt.JwtTokenUtil;
+import com.kiworld.popuniv.service.GroupService;
 import com.kiworld.popuniv.service.UserGroupService;
 import com.kiworld.popuniv.service.UserService;
 
@@ -33,6 +35,7 @@ public class JwtLoginApiController {
     @Autowired
     private final UserService userService;
     private final UserGroupService userGroupService;
+    private final GroupService groupService;
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody JoinRequest joinRequest) {
@@ -90,7 +93,8 @@ public class JwtLoginApiController {
         // join with User and UserGroup
         User user = userService.getLoginUserByEmail(auth.getName());
         UserGroup userGroup = userGroupService.findByUserId(user.getId());
-        UserResponse userResponse = new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getRole(), userGroup.getGroupId());
+        Group group = groupService.findById(userGroup.getGroupId());
+        UserResponse userResponse = new UserResponse(user.getId(), user.getEmail(), user.getNickname(), user.getRole(), group);
 
         return ResponseEntity.ok().body(userResponse);
 

@@ -12,5 +12,6 @@ import java.util.List;
 public interface GroupRepository extends JpaRepository<Group, Integer>{
 
     List<Group> findByType(GroupType type);
+    Group findById(long id);
   
 }

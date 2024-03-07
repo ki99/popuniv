@@ -47,7 +47,7 @@ public class GroupController {
     @Operation(summary = "특정 group에 대한 정보")
     public ResponseEntity<Object> getSuborganization(@PathVariable("id") String id) {
         // fetch university_names from university table
-        Group group = groupRepository.findById(Integer.parseInt(id)).get();
+        Group group = groupRepository.findById(Integer.parseInt(id));
         return ResponseEntity.ok(group);
     }
 

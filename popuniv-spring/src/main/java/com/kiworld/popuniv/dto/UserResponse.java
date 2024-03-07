@@ -1,5 +1,6 @@
 package com.kiworld.popuniv.dto;
 
+import com.kiworld.popuniv.entity.Group;
 import com.kiworld.popuniv.entity.Role;
 import com.kiworld.popuniv.entity.User;
 import com.kiworld.popuniv.entity.UserGroup;
@@ -20,5 +21,5 @@ public class UserResponse {
     private String email;
     private String nickname;
     private Role role;
-    private int groupId;
+    private Group group;
 }

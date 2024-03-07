@@ -22,7 +22,7 @@ const ClickBox = () => {
 			const group = JSON.parse(user).group;
 			return { value: group.id, label: group.name };
 		}
-		return { value: '1', label: 'Default University' };
+		return { value: 1, label: 'Default University' };
 	}, []);
 	const [selected, setSelected] = useState<SelectOption>(defaultValue);
 
@@ -34,7 +34,7 @@ const ClickBox = () => {
 	};
 
 	const getClicks = useCallback(
-		async (groupId: string) => {
+		async (groupId: number) => {
 			try {
 				const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
 				if (data) {

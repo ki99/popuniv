@@ -11,7 +11,7 @@ export interface GroupInfo {
 }
 
 export interface SelectOption {
-	readonly value: string;
+	readonly value: number;
 	readonly label: string;
 	readonly color?: string;
 	readonly isFixed?: boolean;
@@ -29,7 +29,7 @@ export interface LeaderboardRequest {
 export type ClickRequest = ClickRequestParam & ClickRequestBody;
 
 export interface ClickRequestParam {
-	selectedId: string;
+	selectedId: number;
 }
 
 export interface ClickRequestBody {
