@@ -2,6 +2,8 @@ package com.kiworld.popuniv.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kiworld.popuniv.dto.JoinRequest;
@@ -22,6 +24,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserGroupRepository userGroupRepository;
+    
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     // Spring Security를 사용한 로그인 구현 시 사용
     // private final BCryptPasswordEncoder encoder;
@@ -50,6 +55,8 @@ public class UserService {
      * email, nickname 중복 체크는 Controller에서 진행 => 에러 메세지 출력을 위해
      */
     public void join(JoinRequest req) {
+        String passwd = req.getPassword();
+        req.setPassword(passwordEncoder.encode(passwd));
         User user = userRepository.save(req.toEntity());
         UserGroup userGroup = new UserGroup();
         userGroup.setUserId(user.getId());
@@ -73,7 +80,7 @@ public class UserService {
         User user = optionalUser.get();
 
         // 찾아온 User의 password와 입력된 password가 다르면 null return
-        if(!user.getPassword().equals(req.getPassword())) {
+        if(!passwordEncoder.matches(req.getPassword(), user.getPassword())){
             return null;
         }
 
