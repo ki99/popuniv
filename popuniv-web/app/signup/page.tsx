@@ -60,7 +60,7 @@ const Signup = () => {
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<div>
 						<label>대학교</label>
-						<GroupList onChange={handleChangeGroup} />
+						<GroupList value={selected} onChange={handleChangeGroup} />
 					</div>
 					<div>
 						<label>이메일</label>

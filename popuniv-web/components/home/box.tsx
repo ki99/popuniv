@@ -90,7 +90,7 @@ const ClickBox = () => {
 		<div className="h-[76vh] flex flex-col items-center justify-between">
 			<div className="flex flex-col gap-6">
 				<div className="w-[240px]">
-					<GroupList defaultValue={defaultValue} onChange={handleChangeGroup} />
+					<GroupList defaultValue={defaultValue} value={selected} onChange={handleChangeGroup} />
 				</div>
 				<div className="flex flex-col gap-4 text-white text-center">
 					<div className="flex flex-col gap-2">

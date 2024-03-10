@@ -7,6 +7,7 @@ import { get } from '../../utils/http';
 
 interface ListProps {
 	defaultValue?: SelectOption;
+	value: SelectOption | undefined;
 	onChange: (option: any) => void;
 }
 
@@ -44,7 +45,7 @@ const Select = dynamic(() => import('react-select').then((mod) => mod.default), 
 	),
 });
 
-const List = ({ defaultValue, onChange }: ListProps) => {
+const List = ({ value, defaultValue, onChange }: ListProps) => {
 	const id = useId();
 	const [list, setList] = useState<any[]>([]);
 
@@ -67,6 +68,7 @@ const List = ({ defaultValue, onChange }: ListProps) => {
 			id={id}
 			styles={customStyles}
 			defaultValue={defaultValue}
+			value={value}
 			onChange={(option) => {
 				onChange(option);
 			}}
