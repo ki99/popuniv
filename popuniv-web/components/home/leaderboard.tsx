@@ -1,7 +1,6 @@
 import Drawer from './leaderboard/Drawer';
 import OpenButton from './leaderboard/OpenButton';
-import { ClicksByName } from '../../models/interface';
-import { LeaderboardRequest, Group } from '../../models/interface';
+import { ClicksByName, Group, LeaderboardRequest } from '../../models/interface';
 import { get } from '../../utils/http';
 
 const Leaderboard = async () => {

@@ -1,22 +1,19 @@
 'use client';
 
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { initFlowbite } from 'flowbite';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { addComma, numToRank } from '../../../utils/number';
-import { ClicksByName } from '../../../models/interface';
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 import { updateLeaderboard } from '../../../app/actions';
 import useFirstRender from '../../../hooks/common/useFirstRender';
+import { addComma, numToRank } from '../../../utils/number';
+import { ClicksByName } from '../../../models/interface';
 
-interface LeaderboardProps {
+interface DrawerProps {
 	data: ClicksByName[];
 }
 
-const Drawer = ({ data }: LeaderboardProps) => {
-	// server actions를 client component에서 사용하기 위함
-	const [pending, startTransition] = useTransition();
-
+const Drawer = ({ data }: DrawerProps) => {
 	// Drawer를 default로 보여주기 위함
 	const [isInitial, setInitial] = useState(useFirstRender());
 	const ref = useRef<any>(null);
@@ -38,6 +35,15 @@ const Drawer = ({ data }: LeaderboardProps) => {
 		};
 	}, []);
 
+	useEffect(() => {
+		// polling every 10s
+		const interval = setInterval(updateLeaderboard, 10000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
+
 	return (
 		<div
 			id="drawer-left"
@@ -54,6 +60,25 @@ const Drawer = ({ data }: LeaderboardProps) => {
 				Leaderboard
 			</h5>
 			<button
+				type="button"
+				data-drawer-hide="drawer-left"
+				aria-controls="drawer-left"
+				className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-6 h-6 absolute top-[2rem] end-[2rem] inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
+			>
+				<svg className="w-3 h-3" aria-hidden xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+					<path
+						stroke="currentColor"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth="2"
+						d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+					/>
+				</svg>
+				<span className="sr-only">Close menu</span>
+			</button>
+
+			{/* 새로고침 버튼 */}
+			{/* <button
 				type="button"
 				className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-6 h-6 absolute top-[2rem] end-[2rem] inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
 				onClick={() => {
@@ -80,8 +105,7 @@ const Drawer = ({ data }: LeaderboardProps) => {
 				</svg>
 				<span className="sr-only">Refresh Leaderboard</span>
 			</button>
-
-			<ToastContainer />
+			<ToastContainer /> */}
 
 			<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
 				<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

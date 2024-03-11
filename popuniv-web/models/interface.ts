@@ -6,7 +6,7 @@ export enum Group {
 export type GroupType = (typeof Group)[keyof typeof Group];
 
 export interface GroupInfo {
-	id: string;
+	id: number;
 	name: string;
 }
 
@@ -42,7 +42,7 @@ export interface ClickResponse {
 }
 
 export interface SignupRequest {
-	selectedId: string;
+	selectedId: number;
 	email: string;
 	password: string;
 	passwordCheck: string;
