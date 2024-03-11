@@ -14,6 +14,8 @@ interface DrawerProps {
 }
 
 const Drawer = ({ data }: DrawerProps) => {
+	const [polling, setPolling] = useState(true);
+
 	// Drawer를 default로 보여주기 위함
 	const [isInitial, setInitial] = useState(useFirstRender());
 	const ref = useRef<any>(null);
@@ -36,13 +38,30 @@ const Drawer = ({ data }: DrawerProps) => {
 	}, []);
 
 	useEffect(() => {
+		// refetch on window focus
+		const startPolling = () => setPolling(true);
+		const stopPolling = () => setPolling(false);
+
+		window.addEventListener('focus', startPolling);
+		window.addEventListener('blur', stopPolling);
+
+		return () => {
+			window.removeEventListener('focus', startPolling);
+			window.removeEventListener('blur', stopPolling);
+		};
+	}, []);
+
+	useEffect(() => {
+		// refetch on window focus
+		if (!polling) return;
+
 		// polling every 10s
 		const interval = setInterval(updateLeaderboard, 10000);
 
 		return () => {
 			clearInterval(interval);
 		};
-	}, []);
+	}, [polling]);
 
 	return (
 		<div
