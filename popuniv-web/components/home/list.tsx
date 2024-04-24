@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useId, useState } from 'react';
+import React, { useId } from 'react';
 import dynamic from 'next/dynamic';
-import { LeaderboardRequest, Group, GroupInfo, SelectOption } from '../../models/interface';
-import { get } from '../../utils/http';
+import { Group, GroupInfo, LeaderboardRequest, SelectOption } from '../../models/interface';
+import useQuery from '../../hooks/common/useQuery';
 
 interface ListProps {
 	defaultValue?: SelectOption;
@@ -47,20 +47,11 @@ const Select = dynamic(() => import('react-select').then((mod) => mod.default), 
 
 const List = ({ value, defaultValue, onChange }: ListProps) => {
 	const id = useId();
-	const [list, setList] = useState<any[]>([]);
-
-	const getList = async () => {
-		try {
-			const data = await get<GroupInfo[], LeaderboardRequest>({ url: '/group', param: { type: Group.UNIVERSITY } });
-			setList(data?.map((x) => ({ value: x.id, label: x.name })) || []);
-		} catch (error) {
-			console.error('선택 목록을 가져오는 동안 오류가 발생했습니다.', error);
-		}
-	};
-
-	useEffect(() => {
-		getList();
-	}, []);
+	const { data } = useQuery<GroupInfo[], LeaderboardRequest>({
+		url: '/group',
+		param: JSON.stringify({ type: Group.UNIVERSITY }),
+	});
+	const list: SelectOption[] = data?.map((x) => ({ value: x.id, label: x.name })) || [];
 
 	return (
 		<Select
@@ -69,9 +60,7 @@ const List = ({ value, defaultValue, onChange }: ListProps) => {
 			styles={customStyles}
 			defaultValue={defaultValue}
 			value={value}
-			onChange={(option) => {
-				onChange(option);
-			}}
+			onChange={onChange}
 			isSearchable
 			name="color"
 			options={list}
