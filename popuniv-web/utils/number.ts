@@ -1,16 +1,14 @@
-export const addComma = (value: number) => {
+export const addCommas = (value: number) => {
 	if (!value) return '0';
 
 	const num = value.toString();
 	const mod = num.length % 3;
-	let res = '';
-	for (let i = 0; i < num.length; i++) {
-		res += num.charAt(i);
-		if (i + 1 < num.length && (i + 1) % 3 == mod) {
-			res += ',';
-		}
-	}
-	return res;
+
+	const isBetweenThreeDigits = (index: number) => {
+		return index + 1 < num.length && (index + 1) % 3 === mod;
+	};
+
+	return num.split('').reduce((a, v, i) => a + v + (isBetweenThreeDigits(i) ? ',' : ''), '');
 };
 
 export const numToRank = (num: Number): string => {

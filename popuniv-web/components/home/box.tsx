@@ -5,7 +5,7 @@ import Image from 'next/image';
 import GroupList from './list';
 import { sendClicks } from '../../app/actions';
 import { get } from '../../utils/http';
-import { addComma } from '../../utils/number';
+import { addCommas } from '../../utils/number';
 import { TOKEN, USER } from '../../utils/constants';
 import { ClickResponse, SelectOption } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
@@ -94,15 +94,15 @@ const ClickBox = () => {
 				<div className="flex flex-col gap-4 text-white text-center">
 					<div className="flex flex-col gap-2">
 						<div className="font-semibold">전체 클릭 횟수</div>
-						<div className="text-2xl font-extrabold lining-nums slashed-zero">{addComma(clickCount.all)}</div>
+						<div className="text-2xl font-extrabold lining-nums slashed-zero">{addCommas(clickCount.all)}</div>
 					</div>
 					<div className="flex flex-col gap-2">
 						<div className="font-semibold">내 누적 클릭 횟수</div>
-						<div className="text-2xl font-extrabold lining-nums slashed-zero">{addComma(clickCount.user)}</div>
+						<div className="text-2xl font-extrabold lining-nums slashed-zero">{addCommas(clickCount.user)}</div>
 					</div>
 					<div className="mt-2">
 						<div className="text-4xl font-extrabold underline decoration-8 decoration-yellow-300 lining-nums slashed-zero">
-							{addComma(count)}
+							{addCommas(count)}
 						</div>
 					</div>
 				</div>

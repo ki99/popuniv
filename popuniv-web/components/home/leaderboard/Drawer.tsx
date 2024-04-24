@@ -6,7 +6,7 @@ import { initFlowbite } from 'flowbite';
 // import 'react-toastify/dist/ReactToastify.css';
 import { updateLeaderboard } from '../../../app/actions';
 import useFirstRender from '../../../hooks/common/useFirstRender';
-import { addComma, numToRank } from '../../../utils/number';
+import { addCommas, numToRank } from '../../../utils/number';
 import { ClicksByName } from '../../../models/interface';
 
 interface DrawerProps {
@@ -151,7 +151,7 @@ const Drawer = ({ data }: DrawerProps) => {
 								<th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 									{x.group_name}
 								</th>
-								<td className="px-6 py-4">{addComma(x.value)}</td>
+								<td className="px-6 py-4">{addCommas(x.value)}</td>
 							</tr>
 						))}
 					</tbody>
