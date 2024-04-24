@@ -6,20 +6,19 @@ import GroupList from './list';
 import { sendClicks } from '../../app/actions';
 import { get } from '../../utils/http';
 import { addComma } from '../../utils/number';
+import { TOKEN, USER } from '../../utils/constants';
 import { ClickResponse, SelectOption } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
 const ClickBox = () => {
-	const token = (typeof window !== 'undefined' && localStorage.getItem('token')) || '';
-
-	const accumulatedCount = (typeof window !== 'undefined' && Number(localStorage.getItem('accumulated_count'))) || 0;
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
+	// 로그인하지 않은 사용자의 Default University 클릭 횟수
+	const accumulatedCount = (typeof window !== 'undefined' && Number(localStorage.getItem('accumulated_count'))) || 0;
 
 	const defaultValue = useMemo(() => {
-		const user = (typeof window !== 'undefined' && localStorage.getItem('user')) || null;
-		if (user) {
-			const group = JSON.parse(user).group;
+		if (USER) {
+			const group = JSON.parse(USER).group;
 			return { value: group.id, label: group.name };
 		}
 		return { value: 1, label: 'Default University' };
@@ -27,7 +26,7 @@ const ClickBox = () => {
 	const [selected, setSelected] = useState<SelectOption>(defaultValue);
 
 	const handleChangeGroup = (group: SelectOption) => {
-		if (!token) {
+		if (!TOKEN) {
 			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
 		}
 		setSelected(group);
@@ -36,10 +35,10 @@ const ClickBox = () => {
 	const getClicks = useCallback(
 		async (groupId: number) => {
 			try {
-				const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
+				const data = await get<ClickResponse>({ token: TOKEN, url: `/click/${groupId}` });
 				if (data) {
 					const { userClickCount, allClickCount } = data;
-					if (token) {
+					if (TOKEN) {
 						setClickCount({ user: userClickCount, all: allClickCount });
 					} else {
 						setClickCount({ user: accumulatedCount, all: allClickCount });
@@ -49,7 +48,7 @@ const ClickBox = () => {
 				console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
 			}
 		},
-		[accumulatedCount, token]
+		[accumulatedCount]
 	);
 
 	useEffect(() => {
@@ -61,12 +60,12 @@ const ClickBox = () => {
 		new Audio('assets/audios/click.wav').play();
 	};
 
-	const sendCountToServer = async () => {
+	const sendCountToServer = useCallback(async () => {
 		if (count > 0) {
 			const data = await sendClicks({ selectedId: selected.value, clickCount: count });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
-				if (token) {
+				if (TOKEN) {
 					setClickCount({ user: userClickCount, all: allClickCount });
 				} else {
 					const value = accumulatedCount + count;
@@ -76,7 +75,7 @@ const ClickBox = () => {
 				setCount(0);
 			}
 		}
-	};
+	}, [accumulatedCount, count, selected.value]);
 
 	useEffect(() => {
 		const interval = setInterval(sendCountToServer, 500);
@@ -84,7 +83,7 @@ const ClickBox = () => {
 		return () => {
 			clearInterval(interval);
 		};
-	}, [count]);
+	}, [count, sendCountToServer]);
 
 	return (
 		<div className="h-[76vh] flex flex-col items-center justify-between">
