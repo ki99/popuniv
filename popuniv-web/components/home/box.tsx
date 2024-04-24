@@ -3,10 +3,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import GroupList from './list';
-import { sendClicks } from '../../app/actions';
+import { getToken, sendClicks } from '../../app/actions';
 import { get } from '../../utils/http';
 import { addCommas } from '../../utils/number';
-import { TOKEN } from '../../utils/constants';
 import { ClickResponse, SelectOption } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
@@ -15,6 +14,7 @@ interface ClickBoxProps {
 	initialCount: ClickResponse;
 }
 const ClickBox = ({ selectedGroup, initialCount }: ClickBoxProps) => {
+	const token = getToken();
 	const [count, setCount] = useState(0);
 	const [clickCount, setClickCount] = useState({ user: initialCount.userClickCount, all: initialCount.allClickCount });
 	// 로그인하지 않은 사용자의 Default University 클릭 횟수
@@ -23,7 +23,7 @@ const ClickBox = ({ selectedGroup, initialCount }: ClickBoxProps) => {
 	const [selected, setSelected] = useState<SelectOption>(selectedGroup);
 
 	const handleChangeGroup = (group: SelectOption) => {
-		if (!TOKEN) {
+		if (!token) {
 			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
 		}
 		setSelected(group);
@@ -32,10 +32,10 @@ const ClickBox = ({ selectedGroup, initialCount }: ClickBoxProps) => {
 
 	const getClicks = async (selectedValue: number) => {
 		try {
-			const data = await get<ClickResponse>({ token: TOKEN, url: `/click/${selectedValue}` });
+			const data = await get<ClickResponse>({ token, url: `/click/${selectedValue}` });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
-				if (TOKEN) {
+				if (token) {
 					setClickCount({ user: userClickCount, all: allClickCount });
 				} else {
 					setClickCount({ user: accumulatedCount, all: allClickCount });
@@ -56,7 +56,7 @@ const ClickBox = ({ selectedGroup, initialCount }: ClickBoxProps) => {
 			const data = await sendClicks({ selectedId: selected.value, clickCount: count });
 			if (data) {
 				const { userClickCount, allClickCount } = data;
-				if (TOKEN) {
+				if (token) {
 					setClickCount({ user: userClickCount, all: allClickCount });
 				} else {
 					const value = accumulatedCount + count;
@@ -66,7 +66,7 @@ const ClickBox = ({ selectedGroup, initialCount }: ClickBoxProps) => {
 				setCount(0);
 			}
 		}
-	}, [accumulatedCount, count, selected.value]);
+	}, [accumulatedCount, count, selected.value, token]);
 
 	useEffect(() => {
 		const interval = setInterval(sendCountToServer, 500);
