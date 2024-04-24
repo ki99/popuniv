@@ -1,8 +1,8 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
 import { getUserInfo, setToken } from '../actions';
 import Button from '../../components/common/button';
@@ -11,10 +11,7 @@ import { SigninRequest, SigninResponse } from '../../models/interface';
 import { post } from '../../utils/http';
 
 const Signin = () => {
-	if (typeof window !== 'undefined' && localStorage.getItem('token')) {
-		redirect('/');
-	}
-
+	const router = useRouter();
 	const { register, handleSubmit, formState } = useForm<SigninRequest>({ mode: 'onBlur' });
 	const { errors } = formState;
 
@@ -33,6 +30,7 @@ const Signin = () => {
 				await setToken(data.token);
 				const userInfo = await getUserInfo();
 				await localStorage.setItem('user', JSON.stringify(userInfo));
+				router.push('/');
 			} else {
 				alert('문제가 발생하였습니다 ( ´△｀) 다시 시도해주세요');
 			}

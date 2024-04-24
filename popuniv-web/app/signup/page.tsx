@@ -1,21 +1,18 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
 import { useForm } from 'react-hook-form';
 
 import Button from '../../components/common/button';
 import Input from '../../components/common/input';
 import { MessageResponse, SelectOption, SignupRequest } from '../../models/interface';
 import { post } from '../../utils/http';
-import { useState } from 'react';
 import GroupList from '../../components/home/list';
-import { redirect, useRouter } from 'next/navigation';
 
 const Signup = () => {
-	if (typeof window !== 'undefined' && localStorage.getItem('token')) {
-		redirect('/');
-	}
-
 	const router = useRouter();
 	const [selected, setSelected] = useState<SelectOption>();
 	const { register, handleSubmit, formState } = useForm<SignupRequest>({ mode: 'onBlur' });
