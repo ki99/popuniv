@@ -1,59 +1,50 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import GroupList from './list';
 import { sendClicks } from '../../app/actions';
 import { get } from '../../utils/http';
 import { addCommas } from '../../utils/number';
-import { TOKEN, USER } from '../../utils/constants';
+import { TOKEN } from '../../utils/constants';
 import { ClickResponse, SelectOption } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
-const ClickBox = () => {
+interface ClickBoxProps {
+	selectedGroup: SelectOption;
+	initialCount: ClickResponse;
+}
+const ClickBox = ({ selectedGroup, initialCount }: ClickBoxProps) => {
 	const [count, setCount] = useState(0);
-	const [clickCount, setClickCount] = useState({ user: 0, all: 0 });
+	const [clickCount, setClickCount] = useState({ user: initialCount.userClickCount, all: initialCount.allClickCount });
 	// 로그인하지 않은 사용자의 Default University 클릭 횟수
 	const accumulatedCount = (typeof window !== 'undefined' && Number(localStorage.getItem('accumulated_count'))) || 0;
 
-	const defaultValue = useMemo(() => {
-		if (USER) {
-			const group = JSON.parse(USER).group;
-			return { value: group.id, label: group.name };
-		}
-		return { value: 1, label: 'Default University' };
-	}, []);
-	const [selected, setSelected] = useState<SelectOption>(defaultValue);
+	const [selected, setSelected] = useState<SelectOption>(selectedGroup);
 
 	const handleChangeGroup = (group: SelectOption) => {
 		if (!TOKEN) {
 			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
 		}
 		setSelected(group);
+		getClicks(group.value);
 	};
 
-	const getClicks = useCallback(
-		async (groupId: number) => {
-			try {
-				const data = await get<ClickResponse>({ token: TOKEN, url: `/click/${groupId}` });
-				if (data) {
-					const { userClickCount, allClickCount } = data;
-					if (TOKEN) {
-						setClickCount({ user: userClickCount, all: allClickCount });
-					} else {
-						setClickCount({ user: accumulatedCount, all: allClickCount });
-					}
+	const getClicks = async (selectedValue: number) => {
+		try {
+			const data = await get<ClickResponse>({ token: TOKEN, url: `/click/${selectedValue}` });
+			if (data) {
+				const { userClickCount, allClickCount } = data;
+				if (TOKEN) {
+					setClickCount({ user: userClickCount, all: allClickCount });
+				} else {
+					setClickCount({ user: accumulatedCount, all: allClickCount });
 				}
-			} catch (error) {
-				console.error('대시보드 데이터를 가져오는 동안 오류가 발생했습니다.', error);
 			}
-		},
-		[accumulatedCount]
-	);
-
-	useEffect(() => {
-		getClicks(selected.value);
-	}, [getClicks, selected]);
+		} catch (error) {
+			console.error('클릭 횟수를 가져오는 동안 오류가 발생했습니다.', error);
+		}
+	};
 
 	const handleImageClick = () => {
 		setCount((prevCount) => prevCount + 1);
@@ -89,7 +80,7 @@ const ClickBox = () => {
 		<div className="h-[76vh] flex flex-col items-center justify-between">
 			<div className="flex flex-col gap-6">
 				<div className="w-[240px]">
-					<GroupList defaultValue={defaultValue} value={selected} onChange={handleChangeGroup} />
+					<GroupList value={selected} onChange={handleChangeGroup} />
 				</div>
 				<div className="flex flex-col gap-4 text-white text-center">
 					<div className="flex flex-col gap-2">
