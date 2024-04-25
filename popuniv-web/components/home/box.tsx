@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import GroupList from './list';
 import { sendClicks } from '../../app/actions';
-import { get } from '../../utils/http';
+import useQuery from '../../hooks/common/useQuery';
 import { addCommas } from '../../utils/number';
 import { ClickResponse, SelectOption } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
@@ -24,35 +24,28 @@ const ClickBox = () => {
 
 	const [selected, setSelected] = useState<SelectOption>(defaultValue);
 
+	const { data } = useQuery<ClickResponse>({
+		token,
+		url: `/click/${selected.value}`,
+	});
+
+	useEffect(() => {
+		if (data) {
+			const { userClickCount, allClickCount } = data;
+			if (token) {
+				setClickCount({ user: userClickCount, all: allClickCount });
+			} else {
+				setClickCount({ user: accumulatedCount, all: allClickCount });
+			}
+		}
+	}, [accumulatedCount, data, token]);
+
 	const handleChangeGroup = (group: SelectOption) => {
 		if (!token) {
 			return alert('로그인 후 선택 가능합니다 ٩( ᐛ )و');
 		}
 		setSelected(group);
 	};
-
-	const getClicks = useCallback(
-		async (groupId: number) => {
-			try {
-				const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
-				if (data) {
-					const { userClickCount, allClickCount } = data;
-					if (token) {
-						setClickCount({ user: userClickCount, all: allClickCount });
-					} else {
-						setClickCount({ user: accumulatedCount, all: allClickCount });
-					}
-				}
-			} catch (error) {
-				console.error('클릭 횟수를 가져오는 동안 오류가 발생했습니다.', error);
-			}
-		},
-		[accumulatedCount, token]
-	);
-
-	useEffect(() => {
-		getClicks(selected.value);
-	}, [getClicks, selected.value]);
 
 	const handleImageClick = () => {
 		setCount((prevCount) => prevCount + 1);
