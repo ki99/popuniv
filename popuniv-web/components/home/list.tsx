@@ -49,7 +49,7 @@ const List = ({ value, defaultValue, onChange }: ListProps) => {
 	const id = useId();
 	const { data } = useQuery<GroupInfo[], LeaderboardRequest>({
 		url: '/group',
-		param: JSON.stringify({ type: Group.UNIVERSITY }),
+		param: { type: Group.UNIVERSITY },
 	});
 	const list: SelectOption[] = data?.map((x) => ({ value: x.id, label: x.name })) || [];
 
