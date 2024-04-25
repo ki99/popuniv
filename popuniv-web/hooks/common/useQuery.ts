@@ -2,10 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { get } from '../../utils/http';
 
 interface Options {
+	token?: string | undefined;
 	url: string;
-	param: string;
+	param?: string;
 }
-const useQuery = <TResponse, TParam>({ url, param }: Options) => {
+const useQuery = <TResponse, TParam = {}>({ token, url, param }: Options) => {
 	const [data, setData] = useState<TResponse>();
 	const [error, setError] = useState<string>();
 	const [loading, setLoading] = useState(false);
@@ -22,10 +23,10 @@ const useQuery = <TResponse, TParam>({ url, param }: Options) => {
 		};
 
 		setLoading(true);
-		get<TResponse, TParam>({ url, param: JSON.parse(param) })
+		get<TResponse, TParam>({ token, url, ...(param && { param: JSON.parse(param) }) })
 			.then(handleSuccess)
 			.catch(handleError);
-	}, [url, param]);
+	}, [token, url, param]);
 
 	useEffect(() => {
 		runQuery();
