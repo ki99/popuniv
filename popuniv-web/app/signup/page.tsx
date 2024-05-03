@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 import Button from '../../components/common/button';
 import Input from '../../components/common/input';
-import { MessageResponse, SelectOption, SignupRequest } from '../../models/interface';
+import type { MessageResponse, SelectOption, SignupRequest } from '../../models/interface';
 import { post } from '../../utils/http';
 import GroupList from '../../components/home/list';
 

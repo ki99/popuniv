@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { getUserInfo, setToken } from '../actions';
 import Button from '../../components/common/button';
 import Input from '../../components/common/input';
-import { SigninRequest, SigninResponse } from '../../models/interface';
+import type { SigninRequest, SigninResponse } from '../../models/interface';
 import { post } from '../../utils/http';
 
 const Signin = () => {

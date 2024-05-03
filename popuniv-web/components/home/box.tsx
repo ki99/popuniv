@@ -6,7 +6,7 @@ import GroupList from './list';
 import { sendClicks } from '../../app/actions';
 import useQuery from '../../hooks/common/useQuery';
 import { addCommas } from '../../utils/number';
-import { ClickResponse, SelectOption } from '../../models/interface';
+import type { ClickResponse, SelectOption } from '../../models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
 const ClickBox = () => {

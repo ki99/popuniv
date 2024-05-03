@@ -7,7 +7,7 @@ import { initFlowbite } from 'flowbite';
 import { updateLeaderboard } from '../../../app/actions';
 import useFirstRender from '../../../hooks/common/useFirstRender';
 import { addCommas, numToRank } from '../../../utils/number';
-import { ClicksByName } from '../../../models/interface';
+import type { ClicksByName } from '../../../models/interface';
 
 interface DrawerProps {
 	data: ClicksByName[];
