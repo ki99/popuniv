@@ -26,10 +26,10 @@ const Signin = () => {
 		try {
 			const data = await post<SigninResponse, SigninRequest>({ url: '/auth/login', body });
 			if (data?.token) {
-				await localStorage.setItem('token', data.token);
-				await setToken(data.token);
+				localStorage.setItem('token', data.token);
+				setToken(data.token);
 				const userInfo = await getUserInfo();
-				await localStorage.setItem('user', JSON.stringify(userInfo));
+				localStorage.setItem('user', JSON.stringify(userInfo));
 				router.push('/');
 			} else {
 				alert('문제가 발생하였습니다 ( ´△｀) 다시 시도해주세요');
