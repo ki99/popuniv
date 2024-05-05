@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
 
-import Button from '../../components/common/button';
-import Input from '../../components/common/input';
-import type { SigninRequest, SigninResponse } from '../../models/interface';
-import { post } from '../../utils/http';
+import Button from '@/components/common/button';
+import Input from '@/components/common/input';
+import type { SigninRequest, SigninResponse } from '@/models/interface';
+import { post } from '@/utils/http';
+
 import { getUserInfo, setToken } from '../actions';
 
 const Signin = () => {

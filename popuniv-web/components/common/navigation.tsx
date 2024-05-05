@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 
 import classNames from 'classnames';
 
-import { deleteToken } from '../../app/actions';
-import { dynaPuff } from '../../app/fonts';
+import { deleteToken } from '@/app/actions';
+import { dynaPuff } from '@/app/fonts';
 
 interface NavigationProps {
   isAuth: boolean;

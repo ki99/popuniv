@@ -6,11 +6,11 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import Button from '../../components/common/button';
-import Input from '../../components/common/input';
-import GroupList from '../../components/home/list';
-import type { MessageResponse, SelectOption, SignupRequest } from '../../models/interface';
-import { post } from '../../utils/http';
+import Button from '@/components/common/button';
+import Input from '@/components/common/input';
+import GroupList from '@/components/home/list';
+import type { MessageResponse, SelectOption, SignupRequest } from '@/models/interface';
+import { post } from '@/utils/http';
 
 const Signup = () => {
   const router = useRouter();

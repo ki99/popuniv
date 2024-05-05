@@ -4,9 +4,9 @@ import dynamic from 'next/dynamic';
 
 import React, { useId } from 'react';
 
-import useQuery from '../../hooks/common/useQuery';
-import type { GroupInfo, LeaderboardRequest, SelectOption } from '../../models/interface';
-import { Group } from '../../models/interface';
+import useQuery from '@/hooks/common/useQuery';
+import type { GroupInfo, LeaderboardRequest, SelectOption } from '@/models/interface';
+import { Group } from '@/models/interface';
 
 interface ListProps {
   defaultValue?: SelectOption;

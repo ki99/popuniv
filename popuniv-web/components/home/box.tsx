@@ -6,10 +6,11 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Mascot from 'public/assets/images/mascot.png';
 
-import { sendClicks } from '../../app/actions';
-import useQuery from '../../hooks/common/useQuery';
-import type { ClickResponse, SelectOption } from '../../models/interface';
-import { addCommas } from '../../utils/number';
+import { sendClicks } from '@/app/actions';
+import useQuery from '@/hooks/common/useQuery';
+import type { ClickResponse, SelectOption } from '@/models/interface';
+import { addCommas } from '@/utils/number';
+
 import GroupList from './list';
 
 const ClickBox = () => {

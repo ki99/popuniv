@@ -1,6 +1,7 @@
-import type { ClicksByName, LeaderboardRequest } from '../../models/interface';
-import { Group } from '../../models/interface';
-import { get } from '../../utils/http';
+import type { ClicksByName, LeaderboardRequest } from '@/models/interface';
+import { Group } from '@/models/interface';
+import { get } from '@/utils/http';
+
 import Drawer from './leaderboard/Drawer';
 import OpenButton from './leaderboard/OpenButton';
 
