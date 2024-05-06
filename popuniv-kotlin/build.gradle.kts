@@ -5,6 +5,10 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.4"
 	kotlin("jvm") version "1.9.23"
 	kotlin("plugin.spring") version "1.9.23"
+	kotlin("plugin.jpa") version "1.4.32"
+	kotlin("plugin.allopen") version "1.4.32"
+	kotlin("plugin.noarg") version "1.4.32"
+	kotlin("kapt") version "1.4.32"
 }
 
 group = "org.example"
@@ -20,6 +24,8 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly("mysql:mysql-connector-java")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")

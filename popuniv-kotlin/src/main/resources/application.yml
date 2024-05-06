@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: popuniv-spring-kotlin
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+server:
+  error:
+    include-message: always
