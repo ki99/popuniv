@@ -1,0 +1,21 @@
+package org.example.popunivkotlin.entity
+
+import jakarta.persistence.*
+import org.example.popunivkotlin.dto.JoinRequest
+
+@Entity
+class User (
+    @Column(nullable = false, unique = true)
+    val email: String,
+    @Column(nullable = false)
+    var password: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    var university: University,
+    @Column(nullable = false)
+    val nickname: String
+) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0
+
+}
