@@ -1,7 +1,7 @@
 package org.example.popunivkotlin.entity
 
 import jakarta.persistence.*
-import org.example.popunivkotlin.dto.JoinRequest
+import org.example.popunivkotlin.common.Role
 
 @Entity
 class User (
@@ -12,7 +12,9 @@ class User (
     @ManyToOne(fetch = FetchType.LAZY)
     var university: University,
     @Column(nullable = false)
-    val nickname: String
+    val nickname: String,
+    @Enumerated(EnumType.STRING)
+    val role: Role = Role.USER
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

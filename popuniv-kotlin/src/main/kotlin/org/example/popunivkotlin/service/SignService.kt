@@ -1,8 +1,8 @@
 package org.example.popunivkotlin.service
 
 import jakarta.transaction.Transactional
+import org.example.popunivkotlin.common.Role
 import org.example.popunivkotlin.dto.JoinRequest
-import org.example.popunivkotlin.entity.University
 import org.example.popunivkotlin.entity.User
 import org.example.popunivkotlin.repository.UniversityRepository
 import org.example.popunivkotlin.repository.UserRepository
@@ -36,7 +36,8 @@ class SignService (
             email = joinRequest.email,
             password = encoder.encode(joinRequest.password),
             nickname = joinRequest.nickname,
-            university = university
+            university = university,
+            role = Role.USER
         )
         userRepository.save(user)
     }
