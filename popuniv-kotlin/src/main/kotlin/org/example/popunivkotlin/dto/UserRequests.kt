@@ -7,3 +7,8 @@ class JoinRequest (
     val nickname: String,
     val selectedId: Long,
 )
+
+class LoginRequest (
+    val email: String,
+    val password: String
+)

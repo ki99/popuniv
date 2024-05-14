@@ -12,6 +12,18 @@ spring:
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
+
+springdoc:
+  paths-to-match: /**
+  swagger-ui:
+    path: /
+    display-request-duration: true
+    groups-order: desc
+    operations-sorter: alpha
+    disable-swagger-default-url: true
+  api-docs:
+    groups:
+      enabled: true
 server:
   error:
     include-message: always
