@@ -2,7 +2,7 @@ spring:
   application:
     name: popuniv-spring-kotlin
   datasource:
-    url: jdbc:mysql://localhost:3306/popuniv?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/db?serverTimezone=UTC
     username: root
     password: rootpass
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,7 +16,7 @@ spring:
 springdoc:
   paths-to-match: /**
   swagger-ui:
-    path: /
+    path: /swagger
     display-request-duration: true
     groups-order: desc
     operations-sorter: alpha

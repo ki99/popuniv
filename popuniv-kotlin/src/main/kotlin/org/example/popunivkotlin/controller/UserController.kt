@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController
 @UserAuthorize
 @RestController
 @RequestMapping("/user")
-class MemberController(private val userService: UserService) {
+class UserController(private val userService: UserService) {
     @GetMapping
-    fun getMemberInfo(@AuthenticationPrincipal user: User) =
+    fun getUserInfo(@AuthenticationPrincipal user: User) =
         ApiResponse.success(userService.getUserInfo(user.username))
 }

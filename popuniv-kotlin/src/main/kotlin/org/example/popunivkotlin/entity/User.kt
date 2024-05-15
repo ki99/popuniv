@@ -4,13 +4,13 @@ import jakarta.persistence.*
 import org.example.popunivkotlin.common.Role
 
 @Entity
-class User (
+class User(
     @Column(nullable = false, unique = true)
     val email: String,
     @Column(nullable = false)
     var password: String,
-    @ManyToOne(fetch = FetchType.LAZY)
-    var university: University,
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    var university: University?,
     @Column(nullable = false)
     val nickname: String,
     @Enumerated(EnumType.STRING)

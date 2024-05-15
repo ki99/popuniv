@@ -1,14 +1,15 @@
 package org.example.popunivkotlin.controller
 
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/healthz")
 class TestController {
 
-    @RequestMapping("")
+    @GetMapping("")
     fun test() : String {
-        return "test succeed"
+        return "OK"
     }
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 class University (
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     var name: String
 ) {
 

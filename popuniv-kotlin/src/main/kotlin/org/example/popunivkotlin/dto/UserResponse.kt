@@ -15,7 +15,7 @@ class UserInfoResponse (
     val email: String,
     val nickname: String,
     val role: String,
-    val university: University
+    val university: University?
 ) {
     companion object {
         fun from(user: User) = UserInfoResponse(
