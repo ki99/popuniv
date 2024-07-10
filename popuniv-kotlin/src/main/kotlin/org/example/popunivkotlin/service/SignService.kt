@@ -9,7 +9,7 @@ import org.example.popunivkotlin.entity.User
 import org.example.popunivkotlin.repository.UniversityRepository
 import org.example.popunivkotlin.repository.UserRepository
 import org.example.popunivkotlin.security.TokenProvider
-import org.example.popunivkotlin.util.RedisUtil
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -20,7 +20,7 @@ class SignService (
     private val universityRepository: UniversityRepository,
     private val tokenProvider: TokenProvider,
     private val encoder: PasswordEncoder,
-    private val redisUtil: RedisUtil
+    private val redisTemplate: RedisTemplate<String, Any>
 ) {
     fun join(joinRequest: JoinRequest) {
         if (joinRequest.password != joinRequest.passwordCheck) {
@@ -47,9 +47,10 @@ class SignService (
         )
         userRepository.save(user)
 
-        val key = "university:${university.id}"
-        val path = "$.users.${user.id}"
-        redisUtil.jsonSet(key, path, 0)
+        // store redis (key, value) : ("user:${user.id}_univ_${university.id}", 0) using redisTemplate
+        if (redisTemplate.opsForValue().get("user:${user.id}_univ:${university.id}") == null) {
+            redisTemplate.opsForValue().set("user:${user.id}_univ:${university.id}", "0")
+        }
     }
 
     fun login(loginRequest: LoginRequest): LoginResponse {

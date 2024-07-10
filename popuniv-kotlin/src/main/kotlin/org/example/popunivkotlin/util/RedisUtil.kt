@@ -13,4 +13,10 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
         redisTemplate.execute { connection ->
             connection.execute("JSON.SET", key.toByteArray(), path.toByteArray(), jsonValue.toString().toByteArray()) }
     }
+
+    fun jsonGet(key: String, path: String): Any? {
+        return redisTemplate.execute { connection ->
+            connection.execute("JSON.GET", key.toByteArray(), path.toByteArray())
+        }
+    }
 }
