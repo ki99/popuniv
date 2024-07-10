@@ -9,6 +9,7 @@ import org.example.popunivkotlin.entity.User
 import org.example.popunivkotlin.repository.UniversityRepository
 import org.example.popunivkotlin.repository.UserRepository
 import org.example.popunivkotlin.security.TokenProvider
+import org.example.popunivkotlin.util.RedisUtil
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -18,7 +19,8 @@ class SignService (
     private val userRepository: UserRepository,
     private val universityRepository: UniversityRepository,
     private val tokenProvider: TokenProvider,
-    private val encoder: PasswordEncoder
+    private val encoder: PasswordEncoder,
+    private val redisUtil: RedisUtil
 ) {
     fun join(joinRequest: JoinRequest) {
         if (joinRequest.password != joinRequest.passwordCheck) {
@@ -44,6 +46,10 @@ class SignService (
             role = Role.USER
         )
         userRepository.save(user)
+
+        val key = "university:${university.id}"
+        val path = "$.users.${user.id}"
+        redisUtil.jsonSet(key, path, 0)
     }
 
     fun login(loginRequest: LoginRequest): LoginResponse {

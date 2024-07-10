@@ -1,5 +1,6 @@
-package org.example.popunivkotlin.security
+package org.example.popunivkotlin.config
 
+import org.example.popunivkotlin.security.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
