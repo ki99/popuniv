@@ -7,6 +7,14 @@ import org.springframework.stereotype.Component
 @Component
 class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
 
+    fun get(key: String): Any? = redisTemplate.opsForValue().get(key)
+
+    fun set(key: String, value: Any) = redisTemplate.opsForValue().set(key, value)
+
+    fun incr(key: String, value: Long): Long? = redisTemplate.opsForValue().increment(key, value)
+
+    fun hasKey(key: String): Boolean = redisTemplate.hasKey(key)
+
     fun jsonSet(key: String, path: String, value: Any) {
         val mapper = jacksonObjectMapper()
         val jsonValue = mapper.writeValueAsString(value)
@@ -14,9 +22,15 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
             connection.execute("JSON.SET", key.toByteArray(), path.toByteArray(), jsonValue.toString().toByteArray()) }
     }
 
-    fun jsonGet(key: String, path: String): Any? {
+    fun jsonGet(key: String, path: String): String? {
         return redisTemplate.execute { connection ->
             connection.execute("JSON.GET", key.toByteArray(), path.toByteArray())
-        }
+        }?.let { String(it as ByteArray) }
+    }
+
+    fun jsonIncr(key: String, path: String, value: Long) : String? {
+        return redisTemplate.execute { connection ->
+            connection.execute("JSON.NUMINCRBY", key.toByteArray(), path.toByteArray(), value.toString().toByteArray())
+        }?.let { String(it as ByteArray) }
     }
 }

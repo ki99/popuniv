@@ -7,7 +7,6 @@ import org.example.popunivkotlin.repository.UniversityRepository
 import org.example.popunivkotlin.repository.UserRepository
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
-import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
@@ -17,7 +16,6 @@ class Initializer(
     private val universityRepository: UniversityRepository,
     private val encoder: PasswordEncoder,
     private val redisUtil: RedisUtil,
-    private val redisTemplate: RedisTemplate<String, Any>
 ) : ApplicationRunner {
     override fun run(args: ApplicationArguments?) {
         if (!universityRepository.findById(1).isPresent) {
@@ -28,18 +26,18 @@ class Initializer(
             universityRepository.save(university)
         }
 
-        if (redisTemplate.opsForValue().get("user:1_univ:1") == null) {
-            redisTemplate.opsForValue().set("user:1_univ:1", "0")
+        if (redisUtil.hasKey("user:1_univ:1").not()) {
+            redisUtil.set("user:1_univ:1", "0")
         }
 
         // if not already exist key total_clicks, store redis (key, value) : ("total_clicks", emptyMap<String, Any>()) using redisUtil
-        if (redisTemplate.hasKey("total_clicks").not()) {
+        if (redisUtil.hasKey("total_clicks").not()) {
             redisUtil.jsonSet("total_clicks", "$", emptyMap<String, Any>())
 
             val universityCount = universityRepository.count().toInt()
 
             for (i in 1..universityCount) {
-                redisUtil.jsonSet("total_clicks", "$.univ_$i", "0")
+                redisUtil.jsonSet("total_clicks", "$.univ_$i", 0)
             }
         }
     }
