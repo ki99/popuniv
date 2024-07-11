@@ -49,7 +49,7 @@ class SignService (
 
         // store redis (key, value) : ("user:${user.id}_univ_${university.id}", 0) using redisTemplate
         if (redisTemplate.opsForValue().get("user:${user.id}_univ:${university.id}") == null) {
-            redisTemplate.opsForValue().set("user:${user.id}_univ:${university.id}", "0")
+            redisTemplate.opsForValue().set("user:${user.id}_univ:${university.id}", 0)
         }
     }
 

@@ -27,17 +27,18 @@ class Initializer(
         }
 
         if (redisUtil.hasKey("user:1_univ:1").not()) {
-            redisUtil.set("user:1_univ:1", "0")
+            redisUtil.set("user:1_univ:1", 0)
         }
 
         // if not already exist key total_clicks, store redis (key, value) : ("total_clicks", emptyMap<String, Any>()) using redisUtil
         if (redisUtil.hasKey("total_clicks").not()) {
             redisUtil.jsonSet("total_clicks", "$", emptyMap<String, Any>())
 
-            val universityCount = universityRepository.count().toInt()
+            val universities = universityRepository.findAll()
 
-            for (i in 1..universityCount) {
-                redisUtil.jsonSet("total_clicks", "$.univ_$i", 0)
+            for (university in universities) {
+                val escapedName = university.name.replace("\"", "\\\"")
+                redisUtil.jsonSet("total_clicks", "$['${escapedName}']", 0)
             }
         }
     }

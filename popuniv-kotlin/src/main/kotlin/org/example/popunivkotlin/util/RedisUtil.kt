@@ -22,6 +22,12 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
             connection.execute("JSON.SET", key.toByteArray(), path.toByteArray(), jsonValue.toString().toByteArray()) }
     }
 
+    fun jsonGetNoPath(key: String): String? {
+        return redisTemplate.execute { connection ->
+            connection.execute("JSON.GET", key.toByteArray())
+        }?.let { String(it as ByteArray)}
+    }
+
     fun jsonGet(key: String, path: String): String? {
         return redisTemplate.execute { connection ->
             connection.execute("JSON.GET", key.toByteArray(), path.toByteArray())
