@@ -30,7 +30,7 @@ export const sendClicks = async ({ selectedId, clickCount }: ClickRequest) => {
   try {
     const data = await put<ClickResponse, ClickRequestBody>({
       token: getToken(),
-      url: `/click/${selectedId}`,
+      url: `/api/click/${selectedId}`,
       body: { clickCount },
     });
     revalidateTag('leaderboard');

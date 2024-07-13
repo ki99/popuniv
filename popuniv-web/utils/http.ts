@@ -1,7 +1,7 @@
-import { RequestGET, RequestUPDATE } from '../models/http.interface';
+import { RequestGET, RequestUPDATE, ResponseBody } from '../models/http.interface';
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const base = (path: string) => new URL(`/api${path}`, API_URL);
+const base = (path: string) => `${API_URL}${path}`;
 
 export async function get<TResponse, TParam = {}>({ token, url, param, cacheTag }: RequestGET<TParam>) {
   try {
@@ -22,10 +22,9 @@ export async function get<TResponse, TParam = {}>({ token, url, param, cacheTag 
       });
     }
 
-    const data: TResponse = await response.json();
-    // const data: TResponse = await json.data;
+    const data: ResponseBody<TResponse> = await response.json();
 
-    makeConsoleLog<TResponse>('GET', 'orange', endpoint.toString(), data);
+    makeConsoleLog<ResponseBody<TResponse>>('GET', 'orange', endpoint.toString(), data);
 
     return data;
   } catch (error) {
@@ -50,10 +49,9 @@ export async function post<TResponse, TRequest>({ token, url, body }: RequestUPD
       });
     }
 
-    const data: TResponse = await response.json();
-    // const data: TResponse = await json.data;
+    const data: ResponseBody<TResponse> = await response.json();
 
-    makeConsoleLog<TResponse>('POST', 'blue', url, data);
+    makeConsoleLog<ResponseBody<TResponse>>('POST', 'blue', url, data);
 
     return data;
   } catch (error) {
@@ -78,10 +76,9 @@ export async function put<TResponse, TRequest>({ token, url, body }: RequestUPDA
       });
     }
 
-    const data: TResponse = await response.json();
-    // const data: TResponse = await json.data;
+    const data: ResponseBody<TResponse> = await response.json();
 
-    makeConsoleLog<TResponse>('PUT', 'skyblue', url, data);
+    makeConsoleLog<ResponseBody<TResponse>>('PUT', 'skyblue', url, data);
 
     return data;
   } catch (error) {

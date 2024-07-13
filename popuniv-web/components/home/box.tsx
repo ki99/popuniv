@@ -36,7 +36,8 @@ const ClickBox = () => {
   const getClicks = useCallback(
     async (groupId: number) => {
       try {
-        const data = await get<ClickResponse>({ token, url: `/click/${groupId}` });
+        const res = await get<ClickResponse>({ token, url: `/api/click/${groupId}` });
+        const data = res?.data;
         if (data) {
           const { userClickCount, allClickCount } = data;
           if (token) {
@@ -61,11 +62,11 @@ const ClickBox = () => {
     new Audio('assets/audios/click.wav').play();
   };
 
-  const sendCountToServer = async () => {
+  const sendCountToServer = useCallback(async () => {
     if (count > 0) {
-      const data = await sendClicks({ selectedId: selected.value, clickCount: count });
-      if (data) {
-        const { userClickCount, allClickCount } = data;
+      const res = await sendClicks({ selectedId: selected.value, clickCount: count });
+      if (res?.data) {
+        const { userClickCount, allClickCount } = res.data;
         if (token) {
           setClickCount({ user: userClickCount, all: allClickCount });
         } else {
@@ -76,7 +77,7 @@ const ClickBox = () => {
         setCount(0);
       }
     }
-  };
+  }, [accumulatedCount, count, selected.value, token]);
 
   useEffect(() => {
     const interval = setInterval(sendCountToServer, 500);
@@ -84,7 +85,7 @@ const ClickBox = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [count]);
+  }, [count, sendCountToServer]);
 
   return (
     <div className='h-[76vh] flex flex-col items-center justify-between'>

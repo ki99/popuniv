@@ -42,8 +42,8 @@ const Signup = () => {
     }
     body = Object.assign(body, { selectedId: selected.value });
     try {
-      const data = await post<MessageResponse, SignupRequest>({ url: '/auth/join', body });
-      if (data) {
+      const res = await post<MessageResponse, SignupRequest>({ url: '/api/auth/join', body });
+      if (res?.status === 'SUCCESS') {
         alert('회원가입에 성공하였습니다 ✧*.◟(ˊᗨˋ)◞.*✧');
         router.push('/signin');
       }

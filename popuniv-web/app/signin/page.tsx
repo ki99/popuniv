@@ -27,7 +27,8 @@ const Signin = () => {
 
   async function onSubmit(body: SigninRequest) {
     try {
-      const data = await post<SigninResponse, SigninRequest>({ url: '/auth/login', body });
+      const res = await post<SigninResponse, SigninRequest>({ url: '/api/auth/login', body });
+      const data = res?.data;
       if (data?.token) {
         await localStorage.setItem('token', data.token);
         await setToken(data.token);

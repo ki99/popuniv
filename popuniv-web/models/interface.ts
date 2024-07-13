@@ -18,8 +18,12 @@ export interface SelectOption {
   readonly isDisabled?: boolean;
 }
 export interface ClicksByName {
-  group_name: string;
-  value: number;
+  groupName: string;
+  count: number;
+}
+
+export interface LeaderboardResponse {
+  [groupName: string]: number;
 }
 
 export interface LeaderboardRequest {

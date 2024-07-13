@@ -10,3 +10,11 @@ export interface RequestUPDATE<TRequest> {
   url: string;
   body: TRequest;
 }
+
+type Status = 'SUCCESS' | 'ERROR';
+
+export interface ResponseBody<TResponse> {
+  status: Status;
+  message?: string;
+  data?: TResponse;
+}
