@@ -1,4 +1,4 @@
-import { RequestGET, RequestUPDATE, ResponseBody } from '../models/http.interface';
+import { RequestGET, RequestUPDATE, ResponseBody } from '@/models/http.interface';
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const base = (path: string) => `${API_URL}${path}`;

@@ -1,8 +1,8 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { get, put } from '../utils/http';
-import { ClickRequest, ClickRequestBody, ClickResponse, UserInfo } from '../models/interface';
+import { get, put } from '@/utils/http';
+import { ClickRequest, ClickRequestBody, ClickResponse, UserInfo } from '@/models/interface';
 import { cookies } from 'next/headers';
 
 export const setToken = async (token: string) => {

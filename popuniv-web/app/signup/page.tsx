@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-import Button from '../../components/common/button';
-import Input from '../../components/common/input';
-import { MessageResponse, SelectOption, SignupRequest } from '../../models/interface';
-import { post } from '../../utils/http';
+import Button from '@/components/common/button';
+import Input from '@/components/common/input';
+import { MessageResponse, SelectOption, SignupRequest } from '@/models/interface';
+import { post } from '@/utils/http';
 import { useState } from 'react';
-import GroupList from '../../components/home/list';
+import GroupList from '@/components/home/list';
 import { redirect, useRouter } from 'next/navigation';
 
 const Signup = () => {

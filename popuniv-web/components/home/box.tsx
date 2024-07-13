@@ -3,10 +3,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import GroupList from './list';
-import { sendClicks } from '../../app/actions';
-import { get } from '../../utils/http';
-import { addComma } from '../../utils/number';
-import { ClickResponse, SelectOption } from '../../models/interface';
+import { sendClicks } from '@/app/actions';
+import { get } from '@/utils/http';
+import { addComma } from '@/utils/number';
+import { ClickResponse, SelectOption } from '@/models/interface';
 import Mascot from 'public/assets/images/mascot.png';
 
 const ClickBox = () => {

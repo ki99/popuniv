@@ -2,8 +2,8 @@
 
 import React, { useEffect, useId, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { LeaderboardRequest, Group, GroupInfo, SelectOption } from '../../models/interface';
-import { get } from '../../utils/http';
+import { LeaderboardRequest, Group, GroupInfo, SelectOption } from '@/models/interface';
+import { get } from '@/utils/http';
 
 interface ListProps {
   defaultValue?: SelectOption;

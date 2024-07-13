@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { initFlowbite } from 'flowbite';
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
-import { updateLeaderboard } from '../../../app/actions';
-import useFirstRender from '../../../hooks/common/useFirstRender';
-import { addComma, numToRank } from '../../../utils/number';
-import { ClicksByName } from '../../../models/interface';
+import { updateLeaderboard } from '@/app/actions';
+import useFirstRender from '@/hooks/common/useFirstRender';
+import { addComma, numToRank } from '@/utils/number';
+import { ClicksByName } from '@/models/interface';
 
 interface DrawerProps {
   data: ClicksByName[];

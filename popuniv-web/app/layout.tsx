@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import classNames from 'classnames';
 import './globals.css';
 import { noto_sans, noto_sans_kr } from './fonts';
-import Navigation from '../components/common/navigation';
+import Navigation from '@/components/common/navigation';
 import { getToken } from './actions';
 
 export const metadata: Metadata = {

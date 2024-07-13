@@ -4,11 +4,11 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { getUserInfo, setToken } from '../actions';
-import Button from '../../components/common/button';
-import Input from '../../components/common/input';
-import { SigninRequest, SigninResponse } from '../../models/interface';
-import { post } from '../../utils/http';
+import { getUserInfo, setToken } from '@/app/actions';
+import Button from '@/components/common/button';
+import Input from '@/components/common/input';
+import { SigninRequest, SigninResponse } from '@/models/interface';
+import { post } from '@/utils/http';
 
 const Signin = () => {
   if (typeof window !== 'undefined' && localStorage.getItem('token')) {
