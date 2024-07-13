@@ -19,7 +19,7 @@ export const deleteToken = () => {
 
 export const getUserInfo = async () => {
   try {
-    const data = await get<UserInfo, {}>({ token: getToken(), url: '/auth/info' });
+    const data = await get<UserInfo, {}>({ token: getToken(), url: '/api/auth/info' });
     return data;
   } catch (error) {
     console.error(error);
