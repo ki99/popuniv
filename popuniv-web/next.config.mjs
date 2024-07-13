@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/proxy/:path*',
+        destination: `${process.env.NEXT_PUBLIC_ORIGIN_SERVER_URL}/:path*`,
+      },
+    ];
+  },
   reactStrictMode: true,
   swcMinify: true,
   output: 'standalone',
