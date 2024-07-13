@@ -9,7 +9,11 @@ const Leaderboard = async () => {
     param: { type: Group.UNIVERSITY },
     cacheTag: ['leaderboard'],
   });
-  const data = Object.entries(res?.data || {}).map((item) => ({ groupName: item[0], count: item[1] }));
+  const data = Object.entries(res?.data || {})
+    .map((item) => ({ groupName: item[0], count: item[1] }))
+    .sort(
+      (a, b) => b.count - a.count || a.groupName.toLowerCase().charCodeAt(0) - b.groupName.toLowerCase().charCodeAt(0)
+    );
 
   return (
     <div className='absolute left-0 top-0 h-full'>
