@@ -33,12 +33,11 @@ const Signin = () => {
         await localStorage.setItem('token', data.token);
         await setToken(data.token);
         const userInfo = await getUserInfo();
-        await localStorage.setItem('user', JSON.stringify(userInfo));
+        await localStorage.setItem('user', JSON.stringify(userInfo?.data));
       } else {
         alert('문제가 발생하였습니다 ( ´△｀) 다시 시도해주세요');
       }
     } catch (error) {
-      console.error(error);
       alert(error);
     }
   }

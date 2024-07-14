@@ -70,5 +70,5 @@ export interface UserInfo {
   email: string;
   nickname: string;
   role: string;
-  groupId: number;
+  university: { name: string; id: number };
 }

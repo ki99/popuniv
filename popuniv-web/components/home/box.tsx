@@ -19,8 +19,8 @@ const ClickBox = () => {
   const defaultValue = useMemo(() => {
     const user = (typeof window !== 'undefined' && localStorage.getItem('user')) || null;
     if (user) {
-      const group = JSON.parse(user).group;
-      return { value: group.id, label: group.name };
+      const university = JSON.parse(user).university;
+      return { value: university.id, label: university.name };
     }
     return { value: 1, label: 'Default University' };
   }, []);
