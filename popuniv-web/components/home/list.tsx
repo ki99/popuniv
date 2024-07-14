@@ -51,7 +51,7 @@ const List = ({ value, defaultValue, onChange }: ListProps) => {
 
   const getList = async () => {
     try {
-      const res = await get<GroupInfo[], LeaderboardRequest>({ url: '/api/group', param: { type: Group.UNIVERSITY } });
+      const res = await get<GroupInfo[], LeaderboardRequest>({ url: '/api/university' });
       setList(res?.data?.map((x) => ({ value: x.id, label: x.name })) || []);
     } catch (error) {
       console.error('선택 목록을 가져오는 동안 오류가 발생했습니다.', error);

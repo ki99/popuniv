@@ -6,7 +6,6 @@ import { get } from '@/utils/http';
 const Leaderboard = async () => {
   const res = await get<LeaderboardResponse, LeaderboardRequest>({
     url: '/api/dashboard',
-    param: { type: Group.UNIVERSITY },
     cacheTag: ['leaderboard'],
   });
   const data = Object.entries(res?.data || {})
