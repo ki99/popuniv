@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@UserAuthorize
 @RestController
 @RequestMapping("/api/click")
 class ClickController (
@@ -23,8 +22,8 @@ class ClickController (
     // getMapping with variable group_id
     // we should use User information and group_id parameter
     @GetMapping("/{universityId}")
-    fun getClicks(@AuthenticationPrincipal user: User, @PathVariable universityId: Long) = ApiResponse.success(clickService.getClicks(user, universityId))
+    fun getClicks(@AuthenticationPrincipal user: User?, @PathVariable universityId: Long) = ApiResponse.success(clickService.getClicks(user, universityId))
 
     @PutMapping("/{universityId}")
-    fun click(@AuthenticationPrincipal user: User, @PathVariable universityId: Long, @RequestBody requestBody: ClickRequest) = ApiResponse.success(clickService.click(user, universityId, requestBody))
+    fun click(@AuthenticationPrincipal user: User?, @PathVariable universityId: Long, @RequestBody requestBody: ClickRequest) = ApiResponse.success(clickService.click(user, universityId, requestBody))
 }

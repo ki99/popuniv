@@ -16,8 +16,8 @@ class ClickService (
     private val universityRepository: UniversityRepository
 ) {
     // using universityId, get value of key "user:userId_univ:universityId" from redis, and also get value of key "total_clicks" with path $.universityId from redis
-    fun getClicks(user: User, universityId: Long): ClickResponse {
-        val userId = userRepository.findByEmail(user.username)!!.id
+    fun getClicks(user: User?, universityId: Long): ClickResponse {
+        val userId = user?.let { userRepository.findByEmail(it.username)?.id } ?: 1L
         val userClicks = redisUtil.get("user:${userId}_univ:$universityId").toString()
         val university : University = universityRepository.findById(universityId).get()
         val path = university.name.replace("\"", "\\\"")
@@ -27,18 +27,15 @@ class ClickService (
         )
     }
 
-    fun click(user: User, universityId: Long, requestBody: ClickRequest): ClickResponse {
-        val netUser = userRepository.findByEmail(user.username)
+    fun click(user: User?, universityId: Long, requestBody: ClickRequest): ClickResponse {
+        val userId = user?.let { userRepository.findByEmail(it.username)?.id } ?: 1L
         val university : University = universityRepository.findById(universityId).get()
         val clickCount = requestBody.clickCount
 
-        val key = "user:${netUser!!.id}_univ:$universityId"
-        println("123")
+        val key = "user:${userId}_univ:$universityId"
         val incrRet = redisUtil.incr(key, clickCount).toString()
-        println("456")
         val totalKey = "total_clicks"
         val totalPath = university.name.replace("\"", "\\\"")
-        println("['$totalPath']")
 
         val jsonIncrRet = redisUtil.jsonIncr(totalKey, "['$totalPath']", clickCount)
         return ClickResponse(
