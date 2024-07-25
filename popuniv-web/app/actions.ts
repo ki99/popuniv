@@ -9,8 +9,9 @@ export const setToken = async (token: string) => {
   cookies().set('token', token);
 };
 
-export const getToken = () => {
-  return cookies().get('token')?.value || '';
+export const getToken = async () => {
+  const cookieValue = await cookies().get('token');
+  return cookieValue?.value || '';
 };
 
 export const deleteToken = () => {
@@ -19,7 +20,8 @@ export const deleteToken = () => {
 
 export const getUserInfo = async () => {
   try {
-    const data = await get<UserInfo, {}>({ token: getToken(), url: '/api/auth/info' });
+    const token = await getToken();
+    const data = await get<UserInfo, {}>({ token: token, url: '/api/auth/info' });
     return data;
   } catch (error) {
     console.error(error);
@@ -27,9 +29,10 @@ export const getUserInfo = async () => {
 };
 
 export const sendClicks = async ({ selectedId, clickCount }: ClickRequest) => {
+  const token = await getToken();
   try {
     const data = await put<ClickResponse, ClickRequestBody>({
-      token: getToken(),
+      token: token,
       url: `/api/click/${selectedId}`,
       body: { clickCount },
     });
