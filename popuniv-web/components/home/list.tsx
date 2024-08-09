@@ -2,8 +2,9 @@
 
 import React, { useEffect, useId, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { LeaderboardRequest, Group, GroupInfo, SelectOption } from '@/models/interface';
-import { get } from '@/utils/http';
+import type { GroupInfo, SelectOption } from '@/models/interface';
+import { publicApi } from '@/utils/ky';
+import type { ResponseBody } from '@/models/http.interface';
 
 interface ListProps {
   defaultValue?: SelectOption;
@@ -51,8 +52,8 @@ const List = ({ value, defaultValue, onChange }: ListProps) => {
 
   const getList = async () => {
     try {
-      const res = await get<GroupInfo[], LeaderboardRequest>({ url: '/api/university' });
-      setList(res?.data?.map((x) => ({ value: x.id, label: x.name })) || []);
+      const res: ResponseBody<GroupInfo[]> = await publicApi.get('api/university').json();
+      setList(res?.data?.map((group) => ({ value: group.id, label: group.name })) || []);
     } catch (error) {
       console.error('선택 목록을 가져오는 동안 오류가 발생했습니다.', error);
     }

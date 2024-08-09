@@ -3,21 +3,23 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';
-import { deleteToken } from '@/app/actions';
+
+import { deleteCookie } from '@/app/actions';
 import { dynaPuff } from '@/app/fonts';
+import { api } from '@/utils/ky';
+import useFetch from '@/hooks/common/useFetch';
+import type { UserInfo } from '@/models/interface';
 
-interface NavigationProps {
-  isAuth: boolean;
-}
-
-const Navigation = ({ isAuth }: NavigationProps) => {
+const Navigation = () => {
   const path = usePathname();
   const isSigninSignup = path === '/signin' || path === '/signup';
+
+  const { data: user } = useFetch<UserInfo>(() => api.get('api/auth/info'));
 
   return (
     <nav className='z-[999] flex flex-row justify-between p-8'>
       <Logo />
-      {isAuth ? <SignOut /> : !isSigninSignup && <SigninSignUp />}
+      {user ? <SignOut /> : !isSigninSignup && <SigninSignUp />}
     </nav>
   );
 };
@@ -50,11 +52,9 @@ const SigninSignUp = () => {
 };
 
 const SignOut = () => {
-  const handleClick = async () => {
-    await deleteToken();
-    await localStorage.removeItem('token');
-    await localStorage.removeItem('user');
-    await window.location.reload();
+  const handleClick = () => {
+    deleteCookie('token');
+    window.location.reload();
   };
 
   return (

@@ -5,11 +5,12 @@ import { useForm } from 'react-hook-form';
 
 import Button from '@/components/common/button';
 import Input from '@/components/common/input';
-import { MessageResponse, SelectOption, SignupRequest } from '@/models/interface';
-import { post } from '@/utils/http';
+import { SelectOption, SignupRequest } from '@/models/interface';
 import { useState } from 'react';
 import GroupList from '@/components/home/list';
 import { redirect, useRouter } from 'next/navigation';
+import { publicApi } from '@/utils/ky';
+import { ErrorResponse, type ResponseBody } from '@/models/http.interface';
 
 const Signup = () => {
   if (typeof window !== 'undefined' && localStorage.getItem('token')) {
@@ -42,14 +43,23 @@ const Signup = () => {
     }
     body = Object.assign(body, { selectedId: selected.value });
     try {
-      const res = await post<MessageResponse, SignupRequest>({ url: '/api/auth/join', body });
+      const res: ResponseBody<null> = await publicApi.post('api/auth/join', { json: body }).json();
       if (res?.status === 'SUCCESS') {
         alert('회원가입에 성공하였습니다 ✧*.◟(ˊᗨˋ)◞.*✧');
         router.push('/signin');
+      } else {
+        throw new Error();
       }
-    } catch (error) {
-      console.error(error);
-      alert(error);
+    } catch (err) {
+      try {
+        const error = err as ErrorResponse;
+        const errorResponse = await error.response.json();
+        if (errorResponse.message) {
+          alert(errorResponse.message);
+        }
+      } catch {
+        alert('회원가입을 하지 못했습니다.');
+      }
     }
   };
 
