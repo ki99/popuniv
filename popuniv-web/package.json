@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@toss/ky": "^1.2.0",
     "classnames": "^2.5.1",
     "flowbite": "^2.3.0",
     "next": "14.1.0",

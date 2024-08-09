@@ -1,12 +1,10 @@
-import ClickBox from '@/components/home/box';
-import Leaderboard from '@/components/home/leaderboard';
+import Box from '@/components/home/box/index';
+import Leaderboard from '@/components/home/leaderboard/index';
 
 const Home = async () => {
-  // const [type, setType] = useState<GroupType>(Group.UNIVERSITY);
-
   return (
     <div>
-      <ClickBox />
+      <Box />
       {/* @ts-expect-error Server Component */}
       <Leaderboard />
     </div>

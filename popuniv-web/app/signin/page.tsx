@@ -2,21 +2,19 @@
 
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-import { getUserInfo, setToken } from '@/app/actions';
+import { setCookie } from '@/app/actions';
 import Button from '@/components/common/button';
 import Input from '@/components/common/input';
 import { SigninRequest, SigninResponse } from '@/models/interface';
-import { post } from '@/utils/http';
+import { publicApi } from '@/utils/ky';
+import { ResponseBody } from '@/models/http.interface';
 
 const Signin = () => {
-  if (typeof window !== 'undefined' && localStorage.getItem('token')) {
-    redirect('/');
-  }
-
   const { register, handleSubmit, formState } = useForm<SigninRequest>({ mode: 'onBlur' });
   const { errors } = formState;
+  const router = useRouter();
 
   const fields = {
     email: register('email', { required: 'Id is required' }),
@@ -27,18 +25,16 @@ const Signin = () => {
 
   async function onSubmit(body: SigninRequest) {
     try {
-      const res = await post<SigninResponse, SigninRequest>({ url: '/api/auth/login', body });
-      const data = res?.data;
-      if (data?.token) {
-        await localStorage.setItem('token', data.token);
-        await setToken(data.token);
-        const userInfo = await getUserInfo();
-        await localStorage.setItem('user', JSON.stringify(userInfo?.data));
+      const res: ResponseBody<SigninResponse> = await publicApi.post('api/auth/login', { json: body }).json();
+      const token = res?.data?.token;
+      if (token) {
+        setCookie('token', token);
+        router.push('/');
       } else {
-        alert('문제가 발생하였습니다 ( ´△｀) 다시 시도해주세요');
+        throw new Error();
       }
     } catch (error) {
-      alert(error);
+      alert('문제가 발생하였습니다 ( ´△｀) 다시 시도해주세요');
     }
   }
 
