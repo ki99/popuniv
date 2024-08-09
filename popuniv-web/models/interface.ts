@@ -42,7 +42,7 @@ export interface ClickRequestBody {
 
 export interface ClickResponse {
   userClickCount: number;
-  allClickCount: number;
+  totalClickCount: number;
 }
 
 export interface SignupRequest {
