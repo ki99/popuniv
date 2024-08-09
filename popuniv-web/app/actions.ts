@@ -1,45 +1,32 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { get, put } from '@/utils/http';
-import { ClickRequest, ClickRequestBody, ClickResponse, UserInfo } from '@/models/interface';
 import { cookies } from 'next/headers';
 
-export const setToken = async (token: string) => {
-  cookies().set('token', token);
+import type { ClickRequest, ClickResponse } from '@/models/interface';
+import type { ResponseBody } from '@/models/http.interface';
+
+import { api } from '@/utils/ky';
+
+export const getCookie = (name: string) => {
+  cookies().get(name);
 };
 
-export const getToken = async () => {
-  const cookieValue = await cookies().get('token');
-  return cookieValue?.value || '';
+export const setCookie = (name: string, value: string) => {
+  cookies().set(name, value);
 };
 
-export const deleteToken = () => {
-  return cookies().delete('token');
-};
-
-export const getUserInfo = async () => {
-  try {
-    const token = await getToken();
-    const data = await get<UserInfo, {}>({ token: token, url: '/api/auth/info' });
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
+export const deleteCookie = (name: string) => {
+  cookies().delete(name);
 };
 
 export const sendClicks = async ({ selectedId, clickCount }: ClickRequest) => {
-  const token = await getToken();
   try {
-    const data = await put<ClickResponse, ClickRequestBody>({
-      token: token,
-      url: `/api/click/${selectedId}`,
-      body: { clickCount },
-    });
+    const res: ResponseBody<ClickResponse> = await api.put(`api/click/${selectedId}`, { json: { clickCount } }).json();
     revalidateTag('leaderboard');
-    return data;
+    return res;
   } catch (error) {
-    console.error(error);
+    throw new Error();
   }
 };
 
