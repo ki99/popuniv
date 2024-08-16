@@ -2,7 +2,12 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'noto-sans-kr': ['Noto Sans KR'],
+        dynapuff: ['DynaPuff'],
+      },
+    },
   },
   plugins: [],
-};
+}
