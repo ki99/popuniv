@@ -29,6 +29,9 @@ dependencies:
   react-error-boundary:
     specifier: ^4.0.13
     version: 4.0.13(react@19.0.0-rc-19bd26be-20240815)
+  react-hook-form:
+    specifier: ^7.52.2
+    version: 7.52.2(react@19.0.0-rc-19bd26be-20240815)
   react-router-dom:
     specifier: ^6.26.0
     version: 6.26.0(react-dom@19.0.0-rc-19bd26be-20240815)(react@19.0.0-rc-19bd26be-20240815)
@@ -2336,6 +2339,15 @@ packages:
       react: '>=16.13.1'
     dependencies:
       '@babel/runtime': 7.25.0
+      react: 19.0.0-rc-19bd26be-20240815
+    dev: false
+
+  /react-hook-form@7.52.2(react@19.0.0-rc-19bd26be-20240815):
+    resolution: {integrity: sha512-pqfPEbERnxxiNMPd0bzmt1tuaPcVccywFDpyk2uV5xCIBphHV5T8SVnX9/o3kplPE1zzKt77+YIoq+EMwJp56A==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
+    dependencies:
       react: 19.0.0-rc-19bd26be-20240815
     dev: false
 
