@@ -10,6 +10,7 @@ import Register from '@/app/routes/(auth)/register/page'
 import Home from '@/app/routes/home/page'
 import NotFound from '@/app/routes/not-found'
 import { Toaster } from '@/components/ui/toaster'
+import { ProtectedRoute } from '@/lib/router'
 
 const router = createBrowserRouter([
   {
@@ -18,11 +19,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/register',
-    element: <Register />,
+    element: (
+      <ProtectedRoute>
+        <Register />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <ProtectedRoute>
+        <Login />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '*',
