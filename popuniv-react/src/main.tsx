@@ -9,6 +9,7 @@ import Login from '@/app/routes/(auth)/login/page'
 import Register from '@/app/routes/(auth)/register/page'
 import Home from '@/app/routes/home/page'
 import NotFound from '@/app/routes/not-found'
+import { Toaster } from '@/components/ui/toaster'
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AppProvider>
       <RouterProvider router={router} />
+      <Toaster />
     </AppProvider>
   </StrictMode>,
 )
