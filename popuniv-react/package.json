@@ -54,5 +54,12 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.0",
     "vite": "^5.4.0"
+  },
+  "engines": {
+    "node": "^20.12.0",
+    "pnpm": "^8.0.0",
+    "bun": "use pnpm instead of bun",
+    "npm": "use pnpm instead of npm",
+    "yarn": "use pnpm instead of yarn"
   }
 }
