@@ -14,7 +14,7 @@ export default function AuthLayout({ title, children }: LayoutProps) {
       <title>{`${title}`}</title>
       <Background
         url={background}
-        className="z-10 flex items-center sm:p-6 lg:p-8"
+        className="z-10 flex items-center p-4 lg:p-8"
       >
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="flex flex-col justify-center gap-4 bg-white bg-opacity-90 px-4 py-8 shadow sm:rounded-lg sm:px-10">
