@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 import HomeLayout from './layout'
 
+import Counter from '@/components/features/click/counter'
 import Leaderboard from '@/components/features/leaderboard'
 import Spinner from '@/components/ui/spinner'
 
@@ -24,6 +25,7 @@ export default function HomePage() {
       >
         <HomeLayout>
           <Leaderboard />
+          <Counter />
         </HomeLayout>
       </ErrorBoundary>
     </Suspense>

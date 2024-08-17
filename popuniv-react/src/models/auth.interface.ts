@@ -19,7 +19,6 @@ export interface User {
   id: number
   email: string
   nickname: string
-  // role: 'ADMIN' | 'USER'
-  role: string
+  role: 'ADMIN' | 'USER'
   university: { name: string; id: number }
 }

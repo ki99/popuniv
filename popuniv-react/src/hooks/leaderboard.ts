@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
+import { REFETCH_INTERVAL_MS } from '@/constants/react-query'
 import { getLeaderboard } from '@/services/leaderboard'
 
 const alphabetize = (strA: string, strB: string) =>
@@ -7,7 +8,7 @@ const alphabetize = (strA: string, strB: string) =>
 
 export const useLeaderboard = () => {
   return useQuery({
-    queryKey: ['Leaderboard'],
+    queryKey: ['leaderboard'],
     queryFn: getLeaderboard,
     select: (response) =>
       Object.entries(response?.data || {})
@@ -15,5 +16,6 @@ export const useLeaderboard = () => {
         .sort(
           (a, b) => b.count - a.count || alphabetize(a.groupName, b.groupName),
         ),
+    refetchInterval: REFETCH_INTERVAL_MS,
   })
 }

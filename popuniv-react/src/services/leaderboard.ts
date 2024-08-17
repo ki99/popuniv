@@ -1,3 +1,4 @@
+import { DEFAULT_GROUP } from '@/constants/group'
 import { api } from '@/lib/api-client'
 import type { User } from '@/models/auth.interface'
 import type {
@@ -15,7 +16,7 @@ export const getUserGroupFromLeaderboard = (
 ) => {
   if (!leaderboard) return undefined
 
-  const universityName = user?.university.name || 'Popuniv University'
+  const universityName = user?.university.name || DEFAULT_GROUP.name
 
   const userGroupIndex = leaderboard.findIndex(
     (row) => row.groupName === universityName,
