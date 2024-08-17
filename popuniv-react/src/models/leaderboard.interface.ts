@@ -7,3 +7,8 @@ export interface LeaderboardResponse {
 export interface LeaderboardRequest {
   type: GroupType
 }
+
+export interface LeaderboardRow {
+  groupName: string
+  count: number
+}

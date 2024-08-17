@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 import HomeLayout from './layout'
 
+import Leaderboard from '@/components/features/leaderboard'
 import Spinner from '@/components/ui/spinner'
 
 export default function HomePage() {
@@ -21,7 +22,9 @@ export default function HomePage() {
         key={location.pathname}
         fallback={<div>Something went wrong!</div>}
       >
-        <HomeLayout>홈</HomeLayout>
+        <HomeLayout>
+          <Leaderboard />
+        </HomeLayout>
       </ErrorBoundary>
     </Suspense>
   )
