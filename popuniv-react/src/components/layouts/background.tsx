@@ -1,14 +1,19 @@
 import { type ReactNode } from 'react'
 
+import background from '@/assets/images/background.jpeg'
 import { cn } from '@/utils/cn'
 
 interface BackgroundProps {
-  url: string
+  url?: string
   className?: string
   children: ReactNode
 }
 
-export const Background = ({ url, className, children }: BackgroundProps) => {
+export const Background = ({
+  url = background,
+  className,
+  children,
+}: BackgroundProps) => {
   return (
     <div
       style={{

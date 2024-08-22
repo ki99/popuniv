@@ -11,7 +11,10 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <Background url={background} className="z-10 flex flex-col p-4 lg:p-8">
+      <Background
+        url={background}
+        className="z-10 flex flex-col gap-8 p-4 lg:p-8"
+      >
         <div className="flex items-center justify-between">
           <Link to="/" className="w-fit">
             <span className="font-dynapuff text-3xl font-bold text-black">
@@ -28,7 +31,7 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
           )}
         </div>
 
-        <div className="mt-8 flex flex-1">{children}</div>
+        <div className="flex-1">{children}</div>
       </Background>
     </>
   )
