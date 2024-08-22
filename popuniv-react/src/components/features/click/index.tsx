@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import ClickAlert from './alert'
 import ClickCounter from './counter'
 import CounterErrorFallback from './counter.error'
+import CounterLoadingFallback from './counter.loading'
 import Layout from './layout'
 import ClickSelect from './select'
 import SelectErrorFallback from './select.error'
@@ -45,6 +46,7 @@ export default function Click() {
 
       <AsyncBoundary
         ErrorFallback={(props) => <CounterErrorFallback {...props} />}
+        LoadingFallback={<CounterLoadingFallback />}
       >
         <ClickCounter selectedId={selectedId} />
       </AsyncBoundary>

@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useGroups } from '@/hooks/group'
 
 interface ClickSelectProps {
@@ -13,12 +14,16 @@ interface ClickSelectProps {
 }
 
 export default function ClickSelect({ value, onChange }: ClickSelectProps) {
-  const { data: groups } = useGroups()
+  const { data: groups, isLoading } = useGroups()
 
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="bg-background">
-        <SelectValue placeholder="대학교를 선택해주세요." />
+        {isLoading ? (
+          <Skeleton className="mr-2 w-full">&nbsp;</Skeleton>
+        ) : (
+          <SelectValue placeholder="대학교를 선택해주세요." />
+        )}
       </SelectTrigger>
       <SelectContent>
         {groups?.map((group) => (

@@ -14,6 +14,7 @@ export default function LeaderboardDrawerTrigger() {
     leaderboard,
     user,
   )
+
   return (
     <DrawerTrigger className="fixed bottom-0 left-0 h-12 w-full rounded-t-[10px] border bg-background">
       {userGroupFromLeaderboard ? (

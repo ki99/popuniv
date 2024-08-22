@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 import background from '@/assets/images/background.jpeg'
 import LogoutButtonAlert from '@/components/features/user/logout-button-alert'
 import { Background } from '@/components/layouts/background'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useUser } from '@/hooks/auth'
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
-  const { data: user } = useUser()
+  const { data: user, isLoading } = useUser()
 
   return (
     <>
@@ -22,7 +23,9 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
             </span>
           </Link>
 
-          {user ? (
+          {isLoading ? (
+            <Skeleton className="w-16">&nbsp;</Skeleton>
+          ) : user ? (
             <LogoutButtonAlert nickname={user.nickname} />
           ) : (
             <Link to="/login" className="text-sm font-medium">
