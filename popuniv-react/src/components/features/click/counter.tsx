@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
+import Box from './box'
 import { useQueryClient } from '@tanstack/react-query'
 
 import clickAudio from '@/assets/audios/click.wav'
-import mascot from '@/assets/images/mascot.png'
 import { useUser } from '@/hooks/auth'
 import { useClicks, useClicksMutation } from '@/hooks/click'
 import { commaizeNumber } from '@/utils/numbers'
@@ -65,12 +65,7 @@ export default function ClickCounter({ selectedId }: ClickCounterProps) {
         </div>
       </div>
 
-      <img
-        src={mascot}
-        alt="클릭할 캐릭터"
-        onClick={handleClick}
-        className="h-[240px] w-[240px] sm:h-[300px] sm:w-[300px]"
-      />
+      <Box onClick={handleClick} />
     </>
   )
 }
