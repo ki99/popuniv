@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom'
 
-import Layout from '@/app/routes/home/layout'
+import Layout from '@/app/routes/layout'
 import Spinner from '@/components/ui/spinner'
 import { useUser } from '@/hooks/auth'
 
