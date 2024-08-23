@@ -1,14 +1,21 @@
 import { type ReactNode } from 'react'
 
+import backgroundJpeg from '@/assets/images/background.jpeg'
+import backgroundWebp from '@/assets/images/background.webp'
 import { cn } from '@/utils/cn'
+import { supportFormatWebp } from '@/utils/detection'
 
 interface BackgroundProps {
-  url: string
+  url?: string
   className?: string
   children: ReactNode
 }
 
-export const Background = ({ url, className, children }: BackgroundProps) => {
+export const Background = ({
+  url = supportFormatWebp() ? backgroundWebp : backgroundJpeg,
+  className,
+  children,
+}: BackgroundProps) => {
   return (
     <div
       style={{

@@ -1,12 +1,12 @@
-import { ClickRequest } from '../models/click.interface'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import type { QueryClient } from '@tanstack/react-query'
 
-import { User } from '@/models/auth.interface'
+import type { User } from '@/models/auth.interface'
+import type { ClickRequest } from '@/models/click.interface'
 import { getClicks, sendClicks } from '@/services/click'
 
 export const useClicks = (groupId: number, user: User | undefined) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['clicks', groupId],
     queryFn: () => getClicks(groupId),
     select: (response) => {
@@ -14,7 +14,7 @@ export const useClicks = (groupId: number, user: User | undefined) => {
       if (!user) {
         return {
           userClickCount: Number(localStorage.getItem('click_count')) || 0,
-          totalClickCount: data?.totalClickCount,
+          totalClickCount: data?.totalClickCount || 0,
         }
       } else {
         return data
