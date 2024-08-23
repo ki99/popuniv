@@ -1,7 +1,9 @@
 import { type ReactNode } from 'react'
 
-import background from '@/assets/images/background.jpeg'
+import backgroundJpeg from '@/assets/images/background.jpeg'
+import backgroundWebp from '@/assets/images/background.webp'
 import { cn } from '@/utils/cn'
+import { supportFormatWebp } from '@/utils/detection'
 
 interface BackgroundProps {
   url?: string
@@ -10,7 +12,7 @@ interface BackgroundProps {
 }
 
 export const Background = ({
-  url = background,
+  url = supportFormatWebp() ? backgroundWebp : backgroundJpeg,
   className,
   children,
 }: BackgroundProps) => {
