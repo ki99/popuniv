@@ -19,7 +19,7 @@ prod:
 
 .PHONY: push-web
 push-web:
-	cd popuniv-web && docker build -f prod.Dockerfile -t ki99/popuniv-web:latest .
+	cd popuniv-react && docker build -f prod.Dockerfile -t ki99/popuniv-web:latest .
 	docker push ki99/popuniv-web:latest
 
 .PHONY: push-api
