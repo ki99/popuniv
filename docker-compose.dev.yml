@@ -20,20 +20,20 @@ services:
         condition: service_healthy
       # mysql:
       #   condition: service_healthy
-  web:
+  vite-dev:
     image: popuniv-web
     build:
-      context: ./popuniv-web
-      dockerfile: dev.Dockerfile
+      context: ./popuniv-react
+      dockerfile: Dockerfile
     env_file:
-      - ./popuniv-web/.env.development
+      - ./popuniv-react/.env.local
     volumes:
-      - ./popuniv-web/:/app
+      - ./popuniv-react/:/app
       - /app/node_modules
       - /app/.next
     restart: always
     ports:
-      - 3000:3000
+      - 4173:4173
 
   redis:
     image: redis:alpine
@@ -48,7 +48,7 @@ services:
       interval: 5s
   mysql:
     container_name: mysql_db
-    image: mysql
+    image: mysql:8.3
     ports:
       - 3306:3306
     environment:
